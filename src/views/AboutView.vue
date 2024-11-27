@@ -1,4 +1,5 @@
 <template>
+  <SidebarComp/>
   <div class="about">
     <h1>This is an about page</h1>
     <v-row justify="space-around">
@@ -24,6 +25,12 @@
   </v-row>
   </div>
 </template>
+
+<script setup>
+import SidebarComp from '@/components/SidebarComp.vue';
+
+</script>
+
 
 <style>
 @media (min-width: 1024px) {
