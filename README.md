@@ -1,15 +1,24 @@
 # zoo_frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+> Make sure you have internet connection, and that you're un the current project folder
 
-## Recommended IDE Setup
+To set **bootstrap** in your local project you'll need to paste these comands in the console:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+```sh
+npm install bootstrap @popperjs/core
+```
 
-## Customize configuration
+To set **vuetify** in your local project, paste this on your console:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+```sh
+npm install vuetify
+```
 
+To set **MaterialDesignIcons** in your local project, paste this on your console:
+
+```sh
+npm install @mdi/font -D
+```
 ## Project Setup
 
 ```sh
