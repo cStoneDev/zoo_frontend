@@ -1,6 +1,17 @@
 <template>
     <v-card>
         <v-layout>
+            <v-app-bar image="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" dark prominent>
+                <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        
+                <v-toolbar-title>Vuetify</v-toolbar-title>
+        
+                <v-spacer></v-spacer>
+        
+                <v-btn icon>
+                    <v-icon>mdi-export</v-icon>
+                </v-btn>
+            </v-app-bar>
             <v-navigation-drawer v-model="drawer" temporary>
                 <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
                     title="John Leider"></v-list-item>
