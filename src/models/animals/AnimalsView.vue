@@ -23,9 +23,9 @@ const animalData = ref([
 
 // Encabezados de la tabla
 const animalHeaders = ref([
-  { title: 'Nombre', value: 'nombre' },
-  { title: 'Edad (años)', value: 'edad' },
-  { title: 'Peso (kg)', value: 'peso' },
-  { title: 'Días en Refugio', value: 'dias_refugio' },
+  { title: 'Nombre', value: 'nombre', sortable:'true' },
+  { title: 'Edad (años)', value: 'edad', sortable:'true' },
+  { title: 'Peso (kg)', value: 'peso', sortable:'true' },
+  { title: 'Días en Refugio', value: 'dias_refugio', sortable:'true'},
 ]);
 </script>
