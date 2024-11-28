@@ -4,6 +4,7 @@ import AboutView from '@/views/AboutView.vue';
 import AnimalsView from '@/models/animals/AnimalsView.vue';
 import LoginView from '@/models/LoginView.vue';
 import SidebarComp from '@/components/SidebarComp.vue';
+import DashboardView from '@/views/DashboardView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +22,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
     },*/
-    
+
     // Persistent Layout
       path: '/',
       component: SidebarComp, // Sidebar persistente
@@ -35,6 +36,11 @@ const router = createRouter({
           path: 'about',
           name: 'About',
           component: AboutView, // Renderizado en el slot
+        },
+        {
+          path: 'dashboard',
+          name: 'Dashboard',
+          component: DashboardView,
         },
       ],
     },
