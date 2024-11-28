@@ -19,6 +19,17 @@ To set **MaterialDesignIcons** in your local project, paste this on your console
 ```sh
 npm install @mdi/font -D
 ```
+
+To set **Vue-chartJS** in your local project, paste this on your console:
+
+```sh
+pnpm add vue-chartjs chart.js
+# or
+yarn add vue-chartjs chart.js
+# or
+npm i vue-chartjs chart.js
+```
+
 ## Project Setup
 
 ```sh
