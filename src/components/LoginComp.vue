@@ -1,27 +1,34 @@
 <template>
+    <v-app>
+        <v-main style="background-color: #F5F1E3;">
+            <v-container>
+                <v-card class="mx-auto" prepend-icon="$vuetify" max-width="400" width="100%">
+                    <template v-slot:title>
+                        <span class="font-weight-black">Fauna Viva</span>
+                    </template>
+                    <v-card-text class="login_card">
 
-    <v-card class="mx-auto" prepend-icon="$vuetify" width="400">
-        <template v-slot:title>
-            <span class="font-weight-black">Fauna Viva</span>
-        </template>
+                        <v-sheet class="mx-auto" width="300">
+                            <v-form fast-fail @submit.prevent>
+                                <v-text-field v-model="firstName" :rules="firstNameRules" variant="underlined"
+                                    label="First name"></v-text-field>
 
-        <v-card-text class="login_card">
-                
+                                <v-text-field v-model="lastName" :rules="lastNameRules" variant="underlined"
+                                    label="Last name"></v-text-field>
 
-            <v-sheet class="mx-auto" width="300">
-                <v-form fast-fail @submit.prevent>
-                    <v-text-field v-model="firstName" :rules="firstNameRules" label="First name"></v-text-field>
+                                <br>
 
-                    <v-text-field v-model="lastName" :rules="lastNameRules" label="Last name"></v-text-field>
-
-                    <v-btn class="submit_button mt-2" type="submit" block>Submit</v-btn>
-                </v-form>
-            </v-sheet>
-        </v-card-text>
-    </v-card>
-
-
-
+                                <v-btn class="submit_button mt-2" type="submit" block tabindex="0"
+                                    aria-label="Submit your details">
+                                    Submit
+                                </v-btn>
+                            </v-form>
+                        </v-sheet>
+                    </v-card-text>
+                </v-card>
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
 <script setup>
@@ -49,20 +56,42 @@ let lastNameRules = [
 
 
 <style scoped>
-
-.login_card{
-    background-color: #9D8A69;
-    padding: 10%;
+.v-form {
+    padding-bottom: 10%;
 }
-.submit_button{
+
+.v-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f1e3;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.v-card {
+    border-radius: 10px;
+}
+
+.login_card {
+    background-color: white;
+    padding: 10%;
+    padding-top: 0%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.submit_button {
     background-color: #1A3E45;
     color: white;
+    transition: background-color 0.3s ease;
 }
 
-.v-sheet{
-    border-radius: 3%;
+.submit_button:hover {
+    background-color: #142C33;
 }
-.v-card{
-    align-items: center;
+
+.v-sheet {
+    border-radius: 10px;
 }
 </style>
