@@ -5,9 +5,12 @@
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-toolbar-title>Vuetify</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn icon>
+          <RouterLink to="/login">
+            <v-btn icon>
             <v-icon>mdi-export</v-icon>
           </v-btn>
+          </RouterLink>
+          
         </v-app-bar>
   
         <v-navigation-drawer v-model="drawer" temporary>
@@ -22,6 +25,9 @@
             </RouterLink>
             <RouterLink to="/dashboard">
               <v-list-item prepend-icon="mdi-forum" title="Dashboard"></v-list-item>
+            </RouterLink>
+            <RouterLink to="/animals">
+              <v-list-item prepend-icon="mdi-forum" title="Animals"></v-list-item>
             </RouterLink>
           </v-list>
         </v-navigation-drawer>
@@ -52,7 +58,7 @@
   }
   
   .main-container {
-    height: calc(100vh - 64px); /* Ajusta para el app-bar */
+    height: calc(100vh); /* Ajusta para el app-bar */
   }
   </style>
   

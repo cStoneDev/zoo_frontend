@@ -20,6 +20,7 @@
       :hover="true"
       select-strategy="single"
       show-select
+      height="300"
       item-key="id"
       @click:row="selectItem"
     >

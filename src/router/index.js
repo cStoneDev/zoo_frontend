@@ -23,32 +23,33 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },*/
 
-    // Persistent Layout
-      path: '/',
+      // Persistent Layout
+      path: "/",
       component: SidebarComp, // Sidebar persistente
       children: [
         {
-          path: '',
-          name: 'Home',
+          path: "",
+          name: "Home",
           component: HomeView, // Renderizado en el slot
         },
         {
-          path: 'about',
-          name: 'About',
+          path: "about",
+          name: "About",
           component: AboutView, // Renderizado en el slot
         },
         {
-          path: 'dashboard',
-          name: 'Dashboard',
+          path: "dashboard",
+          name: "Dashboard",
           component: DashboardView,
+        },
+        {
+          path: "/animals",
+          name: "animals",
+          component: AnimalsView,
         },
       ],
     },
-    {
-      path: "/animals",
-      name: "animals",
-      component: AnimalsView,
-    },
+
     {
       path: "/login",
       name: "login",
