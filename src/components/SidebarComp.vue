@@ -20,6 +20,9 @@
             <RouterLink to="/about">
               <v-list-item prepend-icon="mdi-forum" title="About"></v-list-item>
             </RouterLink>
+            <RouterLink to="/dashboard">
+              <v-list-item prepend-icon="mdi-forum" title="Dashboard"></v-list-item>
+            </RouterLink>
           </v-list>
         </v-navigation-drawer>
   
