@@ -4,10 +4,11 @@
     :items="animalData"
     :headers="animalHeaders"
     :buttons="animalButtons"
+    :animal-default="animalDefault"
     @update="handleUpdate"
   >
     <template #dialog-content="{ item, mode }">
-      <AnimalFormEdit_View :item="item" :mode="mode" v-if="mode=='edit'||mode=='add'"/>
+      <AnimalFormEdit_View_Add :item="item" :mode="mode" v-if="mode=='edit'||mode=='view' ||mode=='add'"/>
       <AnimalFormDelete :item="item" :mode="mode" v-if="mode=='delete'"/>
     </template>
   </DataTable>
@@ -15,7 +16,7 @@
 
 <script setup>
   import DataTable from "../../components/table/Table.vue";
-  import AnimalFormEdit_View from "./components/AnimalFormEdit_View.vue";
+  import AnimalFormEdit_View_Add from "./components/AnimalFormEdit_View_Add.vue";
   import AnimalFormDelete from "./components/AnimalFormDelete.vue";
   import { ref } from "vue";
 
@@ -78,9 +79,19 @@
       dias_refugio: 25,
     },
   ]);
-
+  
+  const animalDefault = ref({
+      id: 0,
+      nombre: "",
+      id_raza: 0,
+      edad: 0,
+      peso: 0,
+      dias_refugio: 0,
+    })
   // Encabezados de la tabla
   const animalHeaders = ref([
+    { title: "ID", value: "id", sortable: "true" },
+    { title: "Tipo de Raza", value: "id_raza", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Edad (años)", value: "edad", sortable: "true" },
     { title: "Peso (kg)", value: "peso", sortable: "true" },
@@ -116,11 +127,17 @@
 
 // Manejo de actualizaciones desde el hijo
 function handleUpdate({ mode, item }) {
+  
   if (mode === 'add') {
     animalData.value.push({ id: Date.now(), ...item });
   } else if (mode === 'edit') {
     const index = animalData.value.findIndex((data) => data.id === item.id);
-    if (index !== -1) animalData.value[index] = item;
+    if (index !== -1) {
+      // Crear un nuevo arreglo con el elemento actualizado
+      animalData.value = animalData.value.map((data, i) =>
+        i === index ? { ...item } : data
+      );
+    }
   } else if (mode === "delete") {
       animalData.value = animalData.value.filter((data) => data.id !== item.id);
     }

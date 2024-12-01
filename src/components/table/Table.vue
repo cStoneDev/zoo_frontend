@@ -18,11 +18,13 @@
       :items="items"
       :search="search"
       :hover="true"
+      v-model="selected"
+      item-value="id"
+      return-object
       select-strategy="single"
       show-select
       height="300"
       item-key="id"
-      @click:row="selectItem"
     >
       <template v-slot:no-data>
         <v-alert>No hay datos disponibles.</v-alert>
@@ -42,13 +44,15 @@
       </template>
     </v-data-table>
 
-    <div class="container-fluid mb-8 justify-content-start">
+    <div
+      class="container-fluid mb-8 justify-content-start d-flex flex-wrap gap-2"
+    >
       <v-btn
         v-for="button in buttons"
         :key="button.text"
         class="mx-2"
         color="primary"
-        @click="handleAction(button.mode)"
+        @click="handleAction(button.mode, animalDefault, button.text)"
       >
         <v-icon left>{{ button.icon }}</v-icon>
         {{ button.text }}
@@ -58,21 +62,37 @@
     <!-- Diálogo Genérico -->
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
-        <v-card-title>
-          <span class="headline">{{ dialogTitle }}</span>
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>{{ dialogTitle }}</span>
         </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text>
+        <v-divider class="mt-0 mb-0"></v-divider>
+        <v-card-text class="pl-4 pr-4 pb-4">
           <slot
             name="dialog-content"
-            :item="selectedItem"
+            :item="reactive(animalTemplate)"
             :mode="dialogMode"
           ></slot>
         </v-card-text>
-        <v-divider></v-divider>
+        <v-divider class="mt-0 mb-2"></v-divider>
         <v-card-actions>
-          <v-btn text @click="dialog = false">Cancelar</v-btn>
-          <v-btn text color="surface-variant" variant="flat" @click="onSave">Continuar</v-btn>
+          <v-btn
+            color="error"
+            variant="tonal"
+            @click="dialog = false"
+            v-if="dialogMode !== 'view'"
+            >Cancelar</v-btn
+          >
+          <v-btn
+            text
+            color="red"
+            variant="flat"
+            @click="onSave"
+            v-if="dialogMode === 'delete'"
+            >Eliminar</v-btn
+          >
+          <v-btn text color="primary" variant="flat" @click="onSave" v-else
+            >Continuar</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -80,7 +100,8 @@
 </template>
 
 <script setup>
-  import { ref } from "vue";
+  import { reactive, ref } from "vue";
+  import { toRaw } from "vue";
   import { defineProps, defineEmits } from "vue";
 
   defineProps({
@@ -100,32 +121,52 @@
       type: Array,
       required: true,
     },
+    animalDefault: {
+      type: Object,
+      required: true,
+    },
   });
 
   const search = ref("");
-  const selectedItem = ref(null);
+  const selected = ref([]);
   const dialog = ref(false);
   const dialogMode = ref("");
   const dialogTitle = ref("");
+  let animalTemplate = ref(null); //main selected object, keep an eye on it
+  let rawSelected = null; //raw item selected from checkbox
 
   // Emitimos eventos al componente padre si es necesario
   const emit = defineEmits(["update"]);
 
-  // Selecciona un ítem de la tabla
-  function selectItem(item) {
-    selectedItem.value = item;
-  }
-
   // Maneja la acción de cada botón
-  function handleAction(mode) {
+  function handleAction(mode, animalDefault, text) {
     dialogMode.value = mode;
-    dialogTitle.value = mode.charAt(0).toUpperCase() + mode.slice(1);
-    dialog.value = true;
+    animalTemplate = { ...animalDefault };
+    dialogTitle.value = text;
+    if (selected != false) {
+      rawSelected = selected.value.map((item) => toRaw(item))[0];
+      animalTemplate = { ...rawSelected };
+    }
+
+    if (rawSelected == null) {
+      if (dialogMode.value === "add") {
+        animalTemplate = { ...animalDefault };
+        dialog.value = true;
+      } else {
+        dialog.value = false;
+      }
+    } else {
+      dialog.value = true;
+      if (dialogMode.value === "add") {
+        animalTemplate = { ...animalDefault };
+        rawSelected = null;
+      }
+    }
   }
 
-  // Lógica cuando se guarda algo en el diálogo
+  // When continue button is pressed
   function onSave() {
-    emit("update", { mode: dialogMode.value, item: selectedItem.value });
+    emit("update", { mode: dialogMode.value, item: animalTemplate });
     dialog.value = false;
   }
 </script>
