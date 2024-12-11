@@ -13,8 +13,8 @@
                                 <v-text-field v-model="firstName" :rules="firstNameRules" variant="underlined"
                                     label="First name"></v-text-field>
 
-                                <v-text-field v-model="lastName" :rules="lastNameRules" variant="underlined"
-                                    label="Last name"></v-text-field>
+                                <v-text-field v-model="password" :rules="firstNameRules" variant="underlined"
+                                    label="Password" type="password"></v-text-field>
 
                                 <br>
 
@@ -32,17 +32,21 @@
 </template>
 
 <script setup>
-let firstName = '';
+import { ref } from 'vue';
+
+let firstName = ref('');
+let password = ref('');
+
 let firstNameRules = [
     value => {
-        if (value?.length >= 3) {
+        if (value?.length >= 4) {
             return true;
         }
-        return 'First name must be at least 3 characters.';
+        return 'Must be at least 4 characters.';
     }
 ];
-let lastName = '';
-let lastNameRules = [
+
+/*let lastNameRules = [
     value => {
         if (/[^0-9]/.test(value)) {
             return true;
@@ -50,7 +54,7 @@ let lastNameRules = [
         return 'Last name can not contain digits.';
     }
 ];
-
+*/
 
 </script>
 
