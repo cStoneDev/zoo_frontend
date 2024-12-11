@@ -42,23 +42,29 @@
           @update:model-value="toggleSelect(internalItem)"
         ></v-checkbox-btn>
       </template>
-    </v-data-table>
 
-    <div
-      class="container-fluid mb-8 justify-content-start d-flex flex-wrap gap-2"
+      <template v-slot:footer.prepend>
+      <div id="CRUD-buttons-container"
+      class="row"
     >
       <v-btn
         v-for="button in buttons"
         :key="button.text"
-        class="mx-2"
+        class="col-2 col-sm-6 col-md-4 col-lg-4 col-xl-2 col-xxl-2 mr-2 ml-4 mb-2"
         color="primary"
         @click="handleAction(button.mode, animalDefault, button.text)"
       >
         <v-icon left>{{ button.icon }}</v-icon>
         {{ button.text }}
       </v-btn>
-    </div>
+    </div>  
 
+    </template>
+
+
+    </v-data-table>
+    
+    
     <!-- Diálogo Genérico -->
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
@@ -172,5 +178,19 @@
 </script>
 
 <style scoped>
-  /* Estilos personalizados si es necesario */
+  #CRUD-buttons-container{
+    margin-right: 2%;
+    width: 100%;
+}
+
+/*
+  hasta el width de un iPad
+*/ 
+
+@media (min-width: 768px){
+  #CRUD-buttons-container{
+    width: 50%;
+  }
+}
+
 </style>
