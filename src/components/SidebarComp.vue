@@ -1,20 +1,20 @@
 <template>
   <v-card class="full-height">
     <v-layout class="full-height">
-      <v-app-bar image="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" dark prominent>
+      <v-app-bar :color="'#1A3E45'">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>Vuetify</v-toolbar-title>
+        
+          <v-toolbar-title>Sección</v-toolbar-title>
+
         <v-spacer></v-spacer>
-        <RouterLink to="/login">
-          <v-btn icon>
+          <v-btn icon @click="handleLogout">
             <v-icon>mdi-export</v-icon>
           </v-btn>
-        </RouterLink>
 
       </v-app-bar>
 
-      <v-navigation-drawer v-model="drawer" temporary>
-        <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg" title="John Leider"></v-list-item>
+      <v-navigation-drawer v-model="drawer" temporary :color="'#F5F1E3'" class="p-3">
+        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="ZO'NA"></v-list-item >
         <v-divider></v-divider>
         <v-list density="compact" nav>
 
@@ -106,11 +106,23 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const handleLogout = ()=>{
+  // Borra el token del almacenamiento local
+    localStorage.removeItem('token');
+
+    // Redirige a la ruta de inicio de sesión
+    router.push('/login');
+}
 
 const drawer = ref(false);
 </script>
 
 <style scoped>
+
 a {
   text-decoration: none;
   color: gray;
