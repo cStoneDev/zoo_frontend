@@ -9,7 +9,7 @@
                     <v-card-text class="login_card">
 
                         <v-sheet class="mx-auto" width="300">
-                            <v-form fast-fail @submit.prevent>
+                            <v-form fast-fail @submit.prevent="handleSubmit">
                                 <v-text-field v-model="firstName" :rules="firstNameRules" variant="underlined"
                                     label="First name"></v-text-field>
 
@@ -33,6 +33,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 let firstName = ref('');
 let password = ref('');
@@ -46,15 +49,32 @@ let firstNameRules = [
     }
 ];
 
-/*let lastNameRules = [
-    value => {
-        if (/[^0-9]/.test(value)) {
-            return true;
-        }
-        return 'Last name can not contain digits.';
+const handleSubmit = () => {
+    if (firstName.value === 'Pepe' && password.value === '1234') {
+        // Simulación de autenticación exitosa
+        // En un escenario real, aquí harías una petición a tu servidor
+        // para verificar las credenciales
+        simulateLogin();
+    } else {
+        // Maneja el caso de credenciales incorrectas (opcional)
+        alert('Credenciales incorrectas');
     }
-];
-*/
+};
+
+
+const simulateLogin = () => {
+
+    /*
+     simulateLogin: Esta función simula el inicio de sesión exitoso.
+     En una aplicación real, aquí harías una petición al servidor para autenticar al usuario y obtener un token. 
+     Por simplicidad, se almacena un token simulado en localStorage.
+    */
+
+    // Simula el guardado del token en el localStorage (en una app real, esto vendría del servidor)
+    localStorage.setItem('token', 'simulated-token');
+    router.push('/'); // Redirige a la ruta "/"
+};
+
 
 </script>
 
