@@ -8,22 +8,11 @@ import DashboardView from '@/views/DashboardView.vue';
 import ActivitiesView from '@/models/activities/ActivitiesView.vue';
 import ProvidersView from '@/models/providers/ProvidersView.vue';
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      /*path: "/",
-      name: "home",
-      component: HomeView,
-    },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
-    },*/
 
       // Persistent Layout
       path: "/",
@@ -69,5 +58,25 @@ const router = createRouter({
     },
   ],
 });
+
+// Guard global
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = checkAuthentication(); //  función para comprobar autenticación
+
+  // Si la ruta actual NO es '/login' Y el usuario NO está autenticado, redirige a '/login'
+  if (!to.path.startsWith('/login') && !isAuthenticated) {
+    next('/login');
+  } else {
+    next(); // Permite la navegación
+  }
+});
+
+// Funcion para comprobar autentificacion
+function checkAuthentication() {
+  // Ejemplo: usando localStorage para un token
+  return localStorage.getItem('token') !== null;
+}
+
+
 
 export default router
