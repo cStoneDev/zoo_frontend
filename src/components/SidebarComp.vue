@@ -22,10 +22,10 @@
           <v-card class="my-3">
             <v-card-title class="pr-5">
               <span class="headline custom-text">
-                <RouterLink to="/" exact>
+                <RouterLink to="/dashboard" exact>
                   <!-- Para reducirles el tamano y que coincidan con los de la lista que se expande -->
                   <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
-                    <v-list-item prepend-icon="mdi-view-dashboard" title="Home" class="custom-text"></v-list-item>
+                    <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" class="custom-text"></v-list-item>
                   </v-defaults-provider>
                 </RouterLink>
               </span>
@@ -62,6 +62,10 @@
 
                 <RouterLink to="/activities">
                   <v-list-item prepend-icon="mdi-clipboard-text-outline" title="Actividades" class="custom-text mb-3"></v-list-item>
+                </RouterLink>
+
+                <RouterLink to="/providers">
+                  <v-list-item prepend-icon="mdi-account-tie" title="Proveedores" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
               </v-expansion-panel-text>

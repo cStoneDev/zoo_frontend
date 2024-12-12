@@ -6,6 +6,7 @@ import LoginView from '@/models/LoginView.vue';
 import SidebarComp from '@/components/SidebarComp.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import ActivitiesView from '@/models/activities/ActivitiesView.vue';
+import ProvidersView from '@/models/providers/ProvidersView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,11 @@ const router = createRouter({
           path: "/activities",
           name: "activities",
           component: ActivitiesView,
+        },
+        {
+          path: "/providers",
+          name: "providers",
+          component: ProvidersView,
         },
       ],
     },
