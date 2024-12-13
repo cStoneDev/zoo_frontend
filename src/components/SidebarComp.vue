@@ -3,18 +3,18 @@
     <v-layout class="full-height">
       <v-app-bar :color="'#1A3E45'">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        
-          <v-toolbar-title>Sección</v-toolbar-title>
+
+        <v-toolbar-title>Sección</v-toolbar-title>
 
         <v-spacer></v-spacer>
-          <v-btn icon @click="handleLogout">
-            <v-icon>mdi-export</v-icon>
-          </v-btn>
+        <v-btn icon @click="handleLogout">
+          <v-icon>mdi-export</v-icon>
+        </v-btn>
 
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" temporary :color="'#F5F1E3'" class="p-3">
-        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="ZO'NA"></v-list-item >
+        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="ZO'NA"></v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
 
@@ -45,6 +45,20 @@
             </v-card-title>
           </v-card>
 
+
+          <v-card class="my-3">
+            <v-card-title class="pr-5">
+              <span class="headline custom-text">
+                <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
+                  <v-list-item prepend-icon="mdi-pencil" title="Nomencladores" class="custom-text"
+                    @click="showModal"></v-list-item>
+                </v-defaults-provider>
+              </span>
+            </v-card-title>
+            <NomenclatorsModal ref="modalRef" />
+          </v-card>
+
+
           <v-expansion-panels>
             <!-- Panel para tablas -->
 
@@ -61,11 +75,13 @@
                 </RouterLink>
 
                 <RouterLink to="/activities">
-                  <v-list-item prepend-icon="mdi-clipboard-text-outline" title="Actividades" class="custom-text mb-3"></v-list-item>
+                  <v-list-item prepend-icon="mdi-clipboard-text-outline" title="Actividades"
+                    class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/providers">
-                  <v-list-item prepend-icon="mdi-account-tie" title="Proveedores" class="custom-text mb-3"></v-list-item>
+                  <v-list-item prepend-icon="mdi-account-tie" title="Proveedores"
+                    class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
               </v-expansion-panel-text>
@@ -104,25 +120,32 @@
 </template>
 
 <script setup>
+import NomenclatorsModal from '@/models/Nomenclators/components/NomenclatorsModal.vue';
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const handleLogout = ()=>{
+const handleLogout = () => {
   // Borra el token del almacenamiento local
-    localStorage.removeItem('token');
+  localStorage.removeItem('token');
 
-    // Redirige a la ruta de inicio de sesión
-    router.push('/login');
+  // Redirige a la ruta de inicio de sesión
+  router.push('/login');
 }
 
 const drawer = ref(false);
+
+const modalRef = ref();
+
+const showModal = () => {
+  modalRef.value.openModal();
+};
+
 </script>
 
 <style scoped>
-
 a {
   text-decoration: none;
   color: gray;
@@ -148,7 +171,7 @@ a {
 }
 
 /* Para que coincidan los tamanos de las cards, ademas de la posicion de icono y letras */
-.headline .custom-text{
+.headline .custom-text {
   padding: 9%;
 }
 </style>
