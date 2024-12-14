@@ -89,6 +89,11 @@
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
+                <RouterLink to="/users">
+                  <v-list-item prepend-icon="mdi-account-tie" title="Usuarios"
+                    class="custom-text mb-3"></v-list-item>
+                </RouterLink>
+
               </v-expansion-panel-text>
             </v-expansion-panel>
 

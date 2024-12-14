@@ -2,7 +2,8 @@
     <DataTable title="Lista de Usuarios" :items="usersData" :headers="usersHeaders" :buttons="usersButtons"
         :users-default="usersDefault" @update="handleUpdate">
         <template #dialog-content="{ item, mode }">
-            <UsersFormEdit_View_Add :item="item" :mode="mode" v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
+            <UsersFormEdit_View_Add :item="item" :mode="mode"
+                v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
             <UsersFormDelete :item="item" :mode="mode" v-if="mode == 'delete'" />
         </template>
     </DataTable>

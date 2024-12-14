@@ -8,6 +8,7 @@ import DashboardView from '@/views/DashboardView.vue';
 import ActivitiesView from '@/models/activities/ActivitiesView.vue';
 import ProvidersView from '@/models/providers/ProvidersView.vue';
 import ContractsView from '@/models/contracts/ContractsView.vue';
+import UsersView from '@/models/users/UsersView.vue';
 
 // nomencladores
 import ClinicaView from '@/models/Nomenclators/clinica/ClinicaView.vue';
@@ -60,6 +61,11 @@ const router = createRouter({
           path: "/providers",
           name: "providers",
           component: ProvidersView,
+        },
+        {
+          path: "/users",
+          name: "users",
+          component: UsersView,
         },
         {
           path: "/contracts",
