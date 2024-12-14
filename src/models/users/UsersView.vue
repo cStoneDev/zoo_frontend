@@ -1,6 +1,6 @@
 <template>
     <DataTable title="Lista de Usuarios" :items="usersData" :headers="usersHeaders" :buttons="usersButtons"
-        :users-default="usersDefault" @update="handleUpdate">
+        :users-default="usersDefault" @update="handleUpdate" :filters="usersFilters">
         <template #dialog-content="{ item, mode }">
             <UsersFormEdit_View_Add :item="item" :mode="mode"
                 v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
@@ -14,9 +14,10 @@ import DataTable from "../../components/table/Table.vue";
 import UsersFormEdit_View_Add from "./components/UsersFormEdit_View_Add.vue";
 import UsersFormDelete from "./components/UsersFormDelete.vue";
 import { ref } from "vue";
+import { reactive } from 'vue';
 
 // Datos de animales
-const usersData = ref([
+const usersData = reactive([
     {
         id: 1,
         rol: "Moderador",
@@ -34,7 +35,18 @@ const usersData = ref([
     },
 ]);
 
-const userDefault = ref({
+const usersFilters = reactive({
+    id: {
+        lista: usersData.map(item => item.id), // Ejemplo de IDs posibles
+        label: "ID Actividad"
+    },
+    rol: {
+        lista: ["Moderador", "Admin"],
+        label: "Rol"
+    }
+});
+
+const userDefault = reactive({
     id: 0,
     rol: "",
     nombre: "",
