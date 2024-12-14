@@ -8,6 +8,14 @@ import DashboardView from '@/views/DashboardView.vue';
 import ActivitiesView from '@/models/activities/ActivitiesView.vue';
 import ProvidersView from '@/models/providers/ProvidersView.vue';
 
+// nomencladores
+import ClinicaView from '@/models/Nomenclators/ClinicaView.vue';
+import EspecialidadView from '@/models/Nomenclators/EspecialidadView.vue';
+import EspecieView from '@/models/Nomenclators/EspecieView.vue';
+import ProvinciaView from '@/models/Nomenclators/ProvinciaView.vue';
+import RazaView from '@/models/Nomenclators/RazaView.vue';
+import TipoProveedorView from '@/models/Nomenclators/TipoProveedorView.vue';
+import TipoServicioView from '@/models/Nomenclators/TipoServicioView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +56,42 @@ const router = createRouter({
           name: "providers",
           component: ProvidersView,
         },
+        // nomencladores
+        {
+          path: "/clinica",
+          name: "clinica",
+          component: ClinicaView,
+        },
+        {
+          path: "/especialidad",
+          name: "especialidad",
+          component: EspecialidadView,
+        },
+        {
+          path: "/especie",
+          name: "especie",
+          component: EspecieView,
+        },
+        {
+          path: "/provincia",
+          name: "provincia",
+          component: ProvinciaView,
+        },
+        {
+          path: "/raza",
+          name: "raza",
+          component: RazaView,
+        },
+        {
+          path: "/tipoproveedor",
+          name: "tipoproveedor",
+          component: TipoProveedorView,
+        },
+        {
+          path: "/tiposervicio",
+          name: "tiposervicio",
+          component: TipoServicioView,
+        }
       ],
     },
 
