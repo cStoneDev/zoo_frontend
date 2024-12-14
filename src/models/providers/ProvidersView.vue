@@ -3,7 +3,8 @@
         :items="providerData" 
         :headers="providersHeaders"
         :buttons="providersButtons" 
-        :provider-default="providerDefault" @update="handleUpdate">
+        :provider-default="providerDefault" @update="handleUpdate"
+        :filters="providerFilter">
         <template #dialog-content="{ item, mode }">
             <ProviderFormEdit_View_Add :item="item" :mode="mode"
                 v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
@@ -13,14 +14,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, reactive} from 'vue';
 import DataTable from "../../components/table/Table.vue";
 import ProviderFormDelete from './components/ProviderFormDelete.vue';
 import ProviderFormEdit_View_Add from './components/ProviderFormEdit_View_Add.vue';
 
 
 // Datos de animales
-const providerData = ref([
+const providerData = reactive([
     {
         id: 1,
         nombre: "Juancarlos",
@@ -33,6 +34,25 @@ const providerData = ref([
         nombre_responsable: "Ernesto"
     }
 ]);
+
+const providerFilter = reactive({
+    id: {
+        lista: providerData.map(item => item.id),
+        label: "ID Proveedor"
+    },
+    id_provincia: {
+        lista: providerData.map(item => item.id_provincia),
+        label: "ID Provincia"
+    },
+    id_tipo_servicio: {
+        lista: providerData.map(item => item.id_tipo_servicio),
+        label: "ID tipo de servicio"
+    },
+    id_tipo_proveedor: {
+        lista: providerData.map(item => item.id_tipo_proveedor),
+        label: "ID tipo de proveedor"
+    }
+});
 
 const providerDefault = ref({
     id: 0,
