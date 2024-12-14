@@ -107,18 +107,18 @@
 
                 <!-- Aca irian los router link de los reportes-->
                 <RouterLink to="/reports/vet">
-                  <v-list-item @click="showModal" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
+                  <v-list-item @click="showModal2" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/reports/feeder">
-                  <v-list-item @click="showModal" prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
+                  <v-list-item @click="showModal2" prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/reports/complementary">
-                  <v-list-item @click="showModal" prepend-icon="mdi-view-dashboard" title="Complementary contracts" class="custom-text mb-3"></v-list-item>
+                  <v-list-item @click="showModal2" prepend-icon="mdi-view-dashboard" title="Complementary contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
               </v-expansion-panel-text>
-              <VetCompFeedModal ref="modalRef" />
+              <VetCompFeedModal ref="modalRef2" />
             </v-expansion-panel>
 
           </v-expansion-panels>
@@ -153,9 +153,13 @@ const handleLogout = () => {
 const drawer = ref(false);
 
 const modalRef = ref();
+const modalRef2 = ref();
 
 const showModal = () => {
   modalRef.value.openModal();
+};
+const showModal2 = () => {
+  modalRef2.value.openModal();
 };
 
 </script>
