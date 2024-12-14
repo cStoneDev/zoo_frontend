@@ -94,6 +94,11 @@
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
+                <RouterLink to="/programs">
+                  <v-list-item prepend-icon="mdi-calendar" title="Programación"
+                    class="custom-text mb-3"></v-list-item>
+                </RouterLink>
+
               </v-expansion-panel-text>
             </v-expansion-panel>
 
