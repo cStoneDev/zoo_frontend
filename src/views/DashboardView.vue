@@ -8,7 +8,9 @@
       <Line :data="lineData" :options="lineOptions" />
 
       <h2>Distribución de Ventas</h2>
-      <Pie :data="pieData" :options="pieOptions" />
+      <div class="pie-chart">
+        <Pie :data="pieData" :options="pieOptions" />
+      </div>
     </div>
   </div>
 </template>
@@ -43,7 +45,6 @@ let barData = ref({
     borderWidth: 1,
     barThickness: 30 // Ajusta el ancho de las barras
   }]
-
 })
 
 let barOptions = ref({
@@ -63,7 +64,6 @@ let barOptions = ref({
       beginAtZero: true
     }
   }
-
 })
 
 let lineData = ref({
@@ -134,15 +134,34 @@ let pieOptions = ref({
 
 <style scoped>
 .chart-container {
-  width: 100vw;
+  width: 70vw;
+  /* Reduce el ancho a 80% del viewport */
   margin: auto;
-  height: 100vh;
-  overflow-y: auto;
+  /* Centra el contenido en el contenedor */
+  height: auto;
+  /* Ajusta la altura automáticamente según el contenido */
   padding: 5%;
+  margin-left: auto;
+  /* Añade márgenes a la izquierda */
+  margin-right: auto;
+  /* Añade márgenes a la derecha */
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  /* Aumenta el margen inferior para separar los gráficos */
+  font-size: 1.5rem;
+  /* Reduce el tamaño de los títulos */
+}
+
+/* Clase para controlar el tamaño del gráfico de pastel */
+.pie-chart {
+  justify-content: center;
+  /* Centra el gráfico horizontalmente */
+  width: 80%;
+  margin-left: 10%;
+  /* Reduce el ancho del gráfico de pastel */
+  height: auto;
 }
 </style>
