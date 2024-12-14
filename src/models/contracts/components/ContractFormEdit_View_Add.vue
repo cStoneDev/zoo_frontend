@@ -7,6 +7,13 @@
         required 
         :readonly="mode === 'view'" 
       />
+      
+      <!-- hay que ponerle v-model al select -->
+      <v-select 
+        :items="[Pescadero, Carnicero]" 
+        label="Proveedor" 
+        required 
+        :readonly="mode === 'view'" />
       <v-text-field 
         v-model="item.precio_base"
         label="Precio"
@@ -64,5 +71,6 @@
         required: true,
       },
     });
+
   </script>
   

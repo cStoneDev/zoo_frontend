@@ -7,13 +7,14 @@
         required 
         :readonly="mode === 'view'" 
       />
-      <v-text-field 
-        v-model="item.id_contrato" 
+      <v-select
+        v-model="item.id_contrato"
         label="Id Contrato" 
-        type="number" 
+        :items="[1,2,3,4,5,6,7,8,9,10,11]" 
         required 
         :readonly="mode === 'view'" 
       />
+
       <v-text-field 
         v-model="item.fecha" 
         label="Fecha"
