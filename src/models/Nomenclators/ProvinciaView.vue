@@ -1,12 +1,13 @@
 <template>
     <div>
-        Raza
+        Provincia
     </div>
 </template>
 
-<script setup>
+<script>
 
 </script>
 
 <style>
+
 </style>

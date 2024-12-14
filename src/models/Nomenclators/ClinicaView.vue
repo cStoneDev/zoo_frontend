@@ -1,12 +1,13 @@
 <template>
     <div>
-        Raza
+        Clinica
     </div>
 </template>
 
-<script setup>
+<script>
 
 </script>
 
 <style>
+
 </style>

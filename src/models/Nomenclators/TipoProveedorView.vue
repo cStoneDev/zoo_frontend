@@ -1,12 +1,13 @@
 <template>
     <div>
-        Raza
+        Tipo Proveedor
     </div>
 </template>
 
-<script setup>
+<script>
 
 </script>
 
 <style>
+
 </style>

@@ -1,12 +1,13 @@
 <template>
     <div>
-        Raza
+        Especie
     </div>
 </template>
 
-<script setup>
+<script>
 
 </script>
 
 <style>
+
 </style>

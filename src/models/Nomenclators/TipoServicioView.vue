@@ -1,12 +1,13 @@
 <template>
     <div>
-        Raza
+        Tipo Servicio
     </div>
 </template>
 
-<script setup>
+<script>
 
 </script>
 
 <style>
+
 </style>
