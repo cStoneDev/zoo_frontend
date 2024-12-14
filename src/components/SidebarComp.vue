@@ -84,6 +84,11 @@
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
+                <RouterLink to="/contracts">
+                  <v-list-item prepend-icon="mdi-note-text" title="Contratos"
+                    class="custom-text mb-3"></v-list-item>
+                </RouterLink>
+
               </v-expansion-panel-text>
             </v-expansion-panel>
 
@@ -96,12 +101,12 @@
               <v-expansion-panel-text>
 
                 <!-- Aca irian los router link de los reportes-->
-                <RouterLink to="/animals">
-                  <v-list-item prepend-icon="mdi-cat" title="Animals" class="custom-text mb-3"></v-list-item>
+                <RouterLink to="/reports/vet">
+                  <v-list-item prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
-                <RouterLink to="/" exact>
-                  <v-list-item prepend-icon="mdi-view-dashboard" title="Home" class="custom-text mb-3"></v-list-item>
+                <RouterLink to="/reports/feeder">
+                  <v-list-item prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
               </v-expansion-panel-text>
