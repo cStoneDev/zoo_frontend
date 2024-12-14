@@ -2,10 +2,15 @@
     <v-app>
         <v-main style="background-color: #F5F1E3;">
             <v-container>
-                <v-card class="mx-auto" prepend-icon="$vuetify" max-width="400" width="100%">
-                    <template v-slot:title>
-                        <span class="font-weight-black">Fauna Viva</span>
-                    </template>
+                <v-card class="mx-auto" max-width="400" width="100%">
+
+                    <v-card-title class="text-center">
+                        <img height="200px"  src="../assets/logos/3.png"></img>
+                    </v-card-title>
+                    <v-card-title class="text-h4 font-weight-bold text-center">
+                        Fauna Viva
+                    </v-card-title>
+                    
                     <v-card-text class="login_card">
 
                         <v-sheet class="mx-auto" width="300">
