@@ -7,10 +7,10 @@
       required 
       :readonly="mode === 'view'" 
     />
-    <v-text-field 
+    <v-select
       v-model="item.id_raza" 
       label="Tipo de Raza" 
-      type="number" 
+      :items="[101,102,103,104,105,106,107,108,109,110,111]" 
       required 
       :readonly="mode === 'view'" 
     />
