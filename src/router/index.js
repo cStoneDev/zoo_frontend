@@ -98,22 +98,21 @@ const router = createRouter({
         },
         //reports
         {
-          path: "/reports",
+          path: "reports",
           name: "Reports",
-          component: { template: "<router-view />" }, // empty component, it acts like a container
           children: [
             {
-              path: "/vet",
+              path: "vet",
               name: "VetReport",
               component: VetReportView,
             },
             {
-              path: "/feeder",
+              path: "feeder",
               name: "FeederReport",
               component: FeederReportView,
             },
             {
-              path: "/complementary",
+              path: "complementary",
               name: "ComplementaryReport",
               component: ComplementaryReportView,
             },
