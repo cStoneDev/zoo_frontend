@@ -14,7 +14,7 @@
       </v-app-bar>
 
       <v-navigation-drawer v-model="drawer" temporary :color="'#F5F1E3'" class="p-3">
-        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="ZO'NA"></v-list-item>
+        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="Fauna Viva"></v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
 
@@ -85,12 +85,12 @@
                 </RouterLink>
 
                 <RouterLink to="/contracts">
-                  <v-list-item prepend-icon="mdi-note-text" title="Contratos"
+                  <v-list-item prepend-icon="mdi-file-sign" title="Contratos"
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/users">
-                  <v-list-item prepend-icon="mdi-account-tie" title="Usuarios"
+                  <v-list-item prepend-icon="mdi-account-group" title="Usuarios"
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
