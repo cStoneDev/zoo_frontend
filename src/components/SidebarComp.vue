@@ -97,14 +97,18 @@
 
                 <!-- Aca irian los router link de los reportes-->
                 <RouterLink to="/reports/vet">
-                  <v-list-item prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
+                  <v-list-item @click="showModal" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/reports/feeder">
-                  <v-list-item prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
+                  <v-list-item @click="showModal" prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
+                <RouterLink to="/reports/complementary">
+                  <v-list-item @click="showModal" prepend-icon="mdi-view-dashboard" title="Complementary contracts" class="custom-text mb-3"></v-list-item>
+                </RouterLink>
               </v-expansion-panel-text>
+              <VetCompFeedModal ref="modalRef" />
             </v-expansion-panel>
 
           </v-expansion-panels>
@@ -121,6 +125,7 @@
 
 <script setup>
 import NomenclatorsModal from '@/models/Nomenclators/components/NomenclatorsModal.vue';
+import VetCompFeedModal from '@/models/reports/modals/VetCompFeedModal.vue';
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
