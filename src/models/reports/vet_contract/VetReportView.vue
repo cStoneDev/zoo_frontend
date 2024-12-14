@@ -1,11 +1,12 @@
-<template>
-<h1>Hola</h1>
-</template>
-
 <script setup>
 
 </script>
 
-<style scoped>
+<template>
 
-</style>
+    <h1>Vet</h1>
+  
+</template>
+
+
+<style></style>

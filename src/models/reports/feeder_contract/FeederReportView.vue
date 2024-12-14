@@ -1,11 +1,12 @@
-<template>
-
-</template>
-
 <script setup>
 
 </script>
 
-<style scoped>
+<template>
 
-</style>
+    <h1>Feeder</h1>
+  
+</template>
+
+
+<style></style>

@@ -106,19 +106,19 @@
               <v-expansion-panel-text>
 
                 <!-- Aca irian los router link de los reportes-->
-                <RouterLink to="/reports/vet">
-                  <v-list-item @click="showModal2" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
-                </RouterLink>
+                
+                  <v-list-item @click="showModal2('vet')" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
+                
 
-                <RouterLink to="/reports/feeder">
-                  <v-list-item @click="showModal2" prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
-                </RouterLink>
+                
+                  <v-list-item @click="showModal2('feeder')" prepend-icon="mdi-view-dashboard" title="Feeder contracts" class="custom-text mb-3"></v-list-item>
+                
 
-                <RouterLink to="/reports/complementary">
-                  <v-list-item @click="showModal2" prepend-icon="mdi-view-dashboard" title="Complementary contracts" class="custom-text mb-3"></v-list-item>
-                </RouterLink>
+                
+                  <v-list-item @click="showModal2('complementary')" prepend-icon="mdi-view-dashboard" title="Complementary contracts" class="custom-text mb-3"></v-list-item>
+                
               </v-expansion-panel-text>
-              <VetCompFeedModal ref="modalRef2" />
+              <VetCompFeedModal ref="modalRef2" :mode="mode" />
             </v-expansion-panel>
 
           </v-expansion-panels>
@@ -150,6 +150,7 @@ const handleLogout = () => {
   router.push('/login');
 }
 
+let mode = ref('');
 const drawer = ref(false);
 
 const modalRef = ref();
@@ -158,7 +159,8 @@ const modalRef2 = ref();
 const showModal = () => {
   modalRef.value.openModal();
 };
-const showModal2 = () => {
+const showModal2 = (modeText) => {
+  mode = modeText;
   modalRef2.value.openModal();
 };
 
