@@ -84,6 +84,11 @@
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
+                <RouterLink to="/contracts">
+                  <v-list-item prepend-icon="mdi-note-text" title="Contratos"
+                    class="custom-text mb-3"></v-list-item>
+                </RouterLink>
+
               </v-expansion-panel-text>
             </v-expansion-panel>
 

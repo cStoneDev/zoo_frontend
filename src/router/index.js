@@ -7,6 +7,7 @@ import SidebarComp from '@/components/SidebarComp.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import ActivitiesView from '@/models/activities/ActivitiesView.vue';
 import ProvidersView from '@/models/providers/ProvidersView.vue';
+import ContractsView from '@/models/contracts/ContractsView.vue';
 
 // nomencladores
 import ClinicaView from '@/models/Nomenclators/clinica/ClinicaView.vue';
@@ -60,6 +61,12 @@ const router = createRouter({
           name: "providers",
           component: ProvidersView,
         },
+        {
+          path: "/contracts",
+          name: "contracts",
+          component: ContractsView,
+        },
+
         // nomencladores
         {
           path: "/clinica",
