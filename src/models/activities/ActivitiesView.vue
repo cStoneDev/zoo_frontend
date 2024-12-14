@@ -3,7 +3,8 @@
         :items="activitiesData" 
         :headers="activityHeaders"
         :buttons="activityButtons" 
-        :activity-default="activityDefault" @update="handleUpdate">
+        :activity-default="activityDefault" @update="handleUpdate"
+        :filters="activityFilters">
         <template #dialog-content="{ item, mode }">
             <ActivityFormEdit_View_Add :item="item" :mode="mode"
                 v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
@@ -14,6 +15,7 @@
 
 <script setup>
 import {ref} from 'vue';
+import {reactive} from 'vue';
 import DataTable from "../../components/table/Table.vue";
 import ActivityFormEdit_View_Add from "./components/ActivityFormEdit_View_Add.vue";
 import ActivityFormDelete from "./components/ActivityFormDelete.vue";
@@ -55,8 +57,35 @@ const activitiesData = ref([
         hora: "07:23:00",
         id_contrato: 9,
         descripcion: "Pancito de la bodega"
+    },
+    {
+        id: 6,
+        fecha: "2025-11-18",
+        hora: "07:23:00",
+        id_contrato: 9,
+        descripcion: "Boniatillo"
     }
 ]);
+
+const activityFilters = reactive({
+  id: {
+    lista: [0, 1, 2, 3, 4], // Ejemplo de IDs posibles
+    label: "ID Actividad"
+  },
+  fecha: {
+    lista: ["2025-11-18", "2025-11-16", "2024-03-01"], // Fechas específicas
+    label: "Fecha"
+  },
+  hora: {
+    lista: ["09:00:00", "12:00:00", "15:00:00"], // Horarios disponibles
+    label: "Hora"
+  },
+  id_contrato: {
+    lista: [0, 5, 4, 3, 9], // IDs de contrato posibles
+    label: "ID Contrato"
+  }
+});
+
 
 const activityDefault = ref({
     id: 0,

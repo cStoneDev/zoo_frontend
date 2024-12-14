@@ -1,0 +1,152 @@
+<template>
+    <DataTable title="Lista de Contratos" :items="contractData" :headers="contractHeaders" :buttons="contractButtons"
+        :contract-default="contractDefault" @update="handleUpdate">
+        <template #dialog-content="{ item, mode }">
+            <ContractFormEdit_View_Add :item="item" :mode="mode"
+                v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
+            <ContractFormDelete :item="item" :mode="mode" v-if="mode == 'delete'" />
+        </template>
+    </DataTable>
+</template>
+
+<script setup>
+import DataTable from "../../components/table/Table.vue";
+import ContractFormEdit_View_Add from "./components/ContractFormEdit_View_Add.vue";
+import ContractFormDelete from "./components/ContractFormDelete.vue";
+import { ref } from "vue";
+
+// Datos de los contratos
+const contractData = ref([
+    {
+        id: 1,
+        descripcion: "Consultas generales de cuidado a los animales",
+        precio_base: 500.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 2,
+        descripcion: "Aseguramiento en situaciones de emergencia",
+        precio_base: 600.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 1,
+        descripcion: "Consultas para animales pequeños",
+        precio_base: 300.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 1,
+        descripcion: "Servicios de transporte",
+        precio_base: 550.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 1,
+        descripcion: "Dar de beber a los animales",
+        precio_base: 150.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 1,
+        descripcion: "Cirujias de emergencia",
+        precio_base: 100.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+    {
+        id: 1,
+        descripcion: "Alimentacion básica general",
+        precio_base: 100.0,
+        recargo: 50.0,
+        fecha_conciliacion: "2024-11-14",
+        fecha_inicio: "2024-11-14",
+        fecha_final: "2024-11-14",
+    },
+]);
+
+const contractDefault = ref({
+    id: 0,
+    descripcion: "",
+    precio_base: 0.0,
+    recargo: 0.0,
+    fecha_conciliacion: 0,
+    fecha_inicio: 0,
+    fecha_final: 0,
+})
+// Encabezados de la tabla
+const contractHeaders = ref([
+    { title: "ID", value: "id", sortable: "true" },
+    { title: "Descripción", value: "descripcion", sortable: "true" },
+    { title: "Precio Base", value: "precio_base", sortable: "true" },
+    { title: "Recargo", value: "recargo", sortable: "true" },
+    { title: "Fecha de conciliación", value: "fecha_conciliacion", sortable: "true" },
+    { title: "Fecha de inicio", value: "fecha_inicio", sortable: "true" },
+    { title: "Fecha final", value: "fecha_final", sortable: "true" },
+]);
+
+// Configuración de botones CRUD
+const contractButtons = ref([
+    {
+        text: "Ver",
+        icon: "mdi-eye",
+        mode: "view",
+
+    },
+    {
+        text: "Editar",
+        icon: "mdi-pencil",
+        mode: "edit",
+
+    },
+    {
+        text: "Agregar",
+        icon: "mdi-plus",
+        mode: "add",
+
+    },
+    {
+        text: "Eliminar",
+        icon: "mdi-delete",
+        mode: "delete",
+    },
+]);
+
+// Manejo de actualizaciones desde el hijo
+function handleUpdate({ mode, item }) {
+
+    if (mode === 'add') {
+        contractData.value.push({ id: Date.now(), ...item });
+    } else if (mode === 'edit') {
+        const index = contractData.value.findIndex((data) => data.id === item.id);
+        if (index !== -1) {
+            // Crear un nuevo arreglo con el elemento actualizado
+            contractData.value = contractData.value.map((data, i) =>
+                i === index ? { ...item } : data
+            );
+        }
+    } else if (mode === "delete") {
+        contractData.value = contractData.value.filter((data) => data.id !== item.id);
+    }
+}
+
+
+
+</script>
