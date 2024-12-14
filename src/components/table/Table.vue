@@ -1,4 +1,5 @@
 <template>
+  
   <v-card class="container justify-content-center mt-5 mb-5">
     <v-card-title>
       <span class="headline">{{ title }}</span>
@@ -10,12 +11,32 @@
         single-line
         hide-details
       ></v-text-field>
+      
     </v-card-title>
 
+    <!-- Filtros dinámicos -->
+    <div v-if="filters" class="filters-container mb-4">
+      <v-row>
+        <v-col
+          v-for="(filterData, filterName) in filters"
+          :key="filterName"
+          cols="12" sm="6" md="4"
+        >
+          <v-select
+            v-model="activeFilters[filterName]"
+            :label="filterData.label"
+            :items="['No', ...filterData.lista]"
+            outlined
+            dense
+          ></v-select>
+        </v-col>
+      </v-row>
+    </div>
+    
     <!-- Tabla de Datos -->
     <v-data-table
       :headers="headers"
-      :items="items"
+      :items="filteredItems"
       :search="search"
       :hover="true"
       v-model="selected"
@@ -29,6 +50,7 @@
       <template v-slot:no-data>
         <v-alert>No hay datos disponibles.</v-alert>
       </template>
+
       <template
         v-slot:item.data-table-select="{
           internalItem,
@@ -44,27 +66,21 @@
       </template>
 
       <template v-slot:footer.prepend>
-      <div id="CRUD-buttons-container"
-      class="row"
-    >
-      <v-btn
-        v-for="button in buttons"
-        :key="button.text"
-        class="col-2 col-sm-6 col-md-4 col-lg-4 col-xl-2 col-xxl-2 mr-2 ml-4 mb-2"
-        color="primary"
-        @click="handleAction(button.mode, animalDefault, button.text)"
-      >
-        <v-icon left>{{ button.icon }}</v-icon>
-        {{ button.text }}
-      </v-btn>
-    </div>  
-
-    </template>
-
-
+        <div id="CRUD-buttons-container" class="row">
+          <v-btn
+            v-for="button in buttons"
+            :key="button.text"
+            class="col-2 col-sm-6 col-md-4 col-lg-4 col-xl-2 col-xxl-2 mr-2 ml-4 mb-2"
+            color="primary"
+            @click="handleAction(button.mode, animalDefault, button.text)"
+          >
+            <v-icon left>{{ button.icon }}</v-icon>
+            {{ button.text }}
+          </v-btn>
+        </div>
+      </template>
     </v-data-table>
-    
-    
+
     <!-- Diálogo Genérico -->
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
@@ -103,14 +119,15 @@
       </v-card>
     </v-dialog>
   </v-card>
+
 </template>
 
 <script setup>
-  import { reactive, ref } from "vue";
+  import { reactive, ref, computed } from "vue";
   import { toRaw } from "vue";
   import { defineProps, defineEmits } from "vue";
 
-  defineProps({
+  const props = defineProps({
     title: {
       type: String,
       required: true,
@@ -131,6 +148,10 @@
       type: Object,
       required: true,
     },
+    filters: {
+      type: Object,
+      required: false,
+    },
   });
 
   const search = ref("");
@@ -138,13 +159,30 @@
   const dialog = ref(false);
   const dialogMode = ref("");
   const dialogTitle = ref("");
-  let animalTemplate = ref(null); //main selected object, keep an eye on it
-  let rawSelected = null; //raw item selected from checkbox
+  let animalTemplate = ref(null);
+  let rawSelected = null;
 
-  // Emitimos eventos al componente padre si es necesario
+  // Estado reactivo para los filtros activos
+  const activeFilters = reactive(
+  Object.keys(props.filters || {}).reduce((acc, key) => {
+    acc[key] = "No"; // Inicializa todos los filtros como "No"
+    return acc;
+  }, {})
+);
+
+// Computed para filtrar los items según los filtros activos
+const filteredItems = computed(() => {
+  return props.items.filter((item) => {
+    return Object.entries(activeFilters).every(([key, value]) => {
+      if (value === "No") return true; // No filtra si está en "No"
+      return item[key]?.toString() === value.toString();
+    });
+  });
+});
+
+
   const emit = defineEmits(["update"]);
 
-  // Maneja la acción de cada botón
   function handleAction(mode, animalDefault, text) {
     dialogMode.value = mode;
     animalTemplate = { ...animalDefault };
@@ -170,7 +208,6 @@
     }
   }
 
-  // When continue button is pressed
   function onSave() {
     emit("update", { mode: dialogMode.value, item: animalTemplate });
     dialog.value = false;
@@ -178,19 +215,21 @@
 </script>
 
 <style scoped>
-  #CRUD-buttons-container{
-    margin-right: 2%;
-    width: 100%;
+
+.filters-container {
+  padding: 2%;
 }
 
-/*
-  hasta el width de un iPad
-*/ 
+#CRUD-buttons-container {
+  margin-right: 2%;
+  width: 100%;
+}
 
-@media (min-width: 768px){
-  #CRUD-buttons-container{
+@media (min-width: 768px) {
+  #CRUD-buttons-container {
     width: 50%;
   }
 }
+
 
 </style>
