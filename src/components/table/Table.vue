@@ -44,7 +44,7 @@
       return-object
       select-strategy="single"
       show-select
-      height="300"
+      height="360"
       item-key="id"
     >
       <template v-slot:no-data>

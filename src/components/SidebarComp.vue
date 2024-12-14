@@ -171,7 +171,7 @@ a {
 }
 
 .main-container {
-  height: calc(100vh);
+  min-height: 100dvh;
   /* Ajusta para el app-bar */
 }
 
