@@ -20,7 +20,7 @@
       <v-col
         v-for="(filterData, filterName) in filters" :key="filterName" cols="12" sm="6" md="4">
         <component
-          v-if="filterName === 'fecha'"
+          v-if="filterName.includes('fecha')"
           is="v-text-field"
           v-model="activeFilters[filterName]"
           :label="filterData.label"
