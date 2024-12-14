@@ -1,26 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue';
-import AboutView from '@/views/AboutView.vue';
-import AnimalsView from '@/models/animals/AnimalsView.vue';
-import LoginView from '@/models/LoginView.vue';
-import SidebarComp from '@/components/SidebarComp.vue';
-import DashboardView from '@/views/DashboardView.vue';
-import ActivitiesView from '@/models/activities/ActivitiesView.vue';
-import ProvidersView from '@/models/providers/ProvidersView.vue';
-import ContractsView from '@/models/contracts/ContractsView.vue';
-import UsersView from '@/models/users/UsersView.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import AboutView from "@/views/AboutView.vue";
+import AnimalsView from "@/models/animals/AnimalsView.vue";
+import LoginView from "@/models/LoginView.vue";
+import SidebarComp from "@/components/SidebarComp.vue";
+import DashboardView from "@/views/DashboardView.vue";
+import ActivitiesView from "@/models/activities/ActivitiesView.vue";
+import ProvidersView from "@/models/providers/ProvidersView.vue";
+import ContractsView from "@/models/contracts/ContractsView.vue";
+import UsersView from "@/models/users/UsersView.vue";
+import ProgramsView from "@/models/programs/ProgramsView.vue";
+import forgotPassword from "@/components/forgotPassword.vue";
 
 // nomencladores
-import ClinicaView from '@/models/Nomenclators/clinica/ClinicaView.vue';
-import EspecialidadView from '@/models/Nomenclators/especialidad/EspecialidadView.vue';
-import EspecieView from '@/models/Nomenclators/especie/EspecieView.vue';
-import ProvinciaView from '@/models/Nomenclators/provincia/ProvinciaView.vue';
-import RazaView from '@/models/Nomenclators/raza/RazaView.vue';
-import TipoProveedorView from '@/models/Nomenclators/tipoproveedor/TipoProveedorView.vue';
-import TipoServicioView from '@/models/Nomenclators/tiposervicio/TipoServicioView.vue';
+import ClinicaView from "@/models/Nomenclators/clinica/ClinicaView.vue";
+import EspecialidadView from "@/models/Nomenclators/especialidad/EspecialidadView.vue";
+import EspecieView from "@/models/Nomenclators/especie/EspecieView.vue";
+import ProvinciaView from "@/models/Nomenclators/provincia/ProvinciaView.vue";
+import RazaView from "@/models/Nomenclators/raza/RazaView.vue";
+import TipoProveedorView from "@/models/Nomenclators/tipoproveedor/TipoProveedorView.vue";
+import TipoServicioView from "@/models/Nomenclators/tiposervicio/TipoServicioView.vue";
 
 //reports
-import VetReportView from '@/models/reports/vet_contract/VetReportView.vue';
+import VetReportView from "@/models/reports/vet_contract/VetReportView.vue";
 import FeederReportView from "@/models/reports/feeder_contract/FeederReportView.vue";
 import ComplementaryReportView from "@/models/reports/complementary-contract/ComplementaryReportView.vue";
 
@@ -71,6 +73,11 @@ const router = createRouter({
           path: "/contracts",
           name: "contracts",
           component: ContractsView,
+        },
+        {
+          path: "/programs",
+          name: "programs",
+          component: ProgramsView,
         },
 
         // nomencladores
@@ -139,16 +146,21 @@ const router = createRouter({
       name: "login",
       component: LoginView,
     },
+    {
+      path: "/forgotPassword",
+      name: "forgotPassword",
+      component: forgotPassword,
+    },
   ],
 });
 
 // Guard global
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = checkAuthentication(); //  función para comprobar autenticación
+  const isAuthenticated = checkAuthentication(); // Comprueba si hay autenticación
 
-  // Si la ruta actual NO es '/login' Y el usuario NO está autenticado, redirige a '/login'
-  if (!to.path.startsWith('/login') && !isAuthenticated) {
-    next('/login');
+  // Si la ruta actual NO es '/login' NI '/forgotPassword' Y el usuario NO está autenticado
+  if (!["/login", "/forgotPassword"].includes(to.path) && !isAuthenticated) {
+    next("/login"); // Redirige a '/login'
   } else {
     next(); // Permite la navegación
   }
@@ -157,9 +169,7 @@ router.beforeEach((to, from, next) => {
 // Funcion para comprobar autentificacion
 function checkAuthentication() {
   // Ejemplo: usando localStorage para un token
-  return localStorage.getItem('token') !== null;
+  return localStorage.getItem("token") !== null;
 }
 
-
-
-export default router
+export default router;

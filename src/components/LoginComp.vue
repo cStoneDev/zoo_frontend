@@ -1,28 +1,38 @@
 <template>
     <v-app>
-        <v-main style="background-color: #F5F1E3;">
+        <v-main style="background-color: #F5F1E3; ">
             <v-container>
-                <v-card class="mx-auto" prepend-icon="$vuetify" max-width="400" width="100%">
-                    <template v-slot:title>
-                        <span class="font-weight-black">Fauna Viva</span>
-                    </template>
+                <v-card class="mx-auto" max-width="400" width="100%">
+
+                    <v-card-title class="text-center">
+                        <img height="150px" src="../assets/logos/3.png"></img>
+                    </v-card-title>
+                    <v-card-title class="text-h4 font-weight-bold text-center" style="color: #1A3E45" font-size: large>
+                        Fauna Viva
+                    </v-card-title>
+
                     <v-card-text class="login_card">
 
                         <v-sheet class="mx-auto" width="300">
                             <v-form fast-fail @submit.prevent="handleSubmit">
                                 <v-text-field v-model="firstName" :rules="firstNameRules" variant="underlined"
-                                    label="First name"></v-text-field>
+                                    label="Usuario"></v-text-field>
 
                                 <v-text-field v-model="password" :rules="firstNameRules" variant="underlined"
-                                    label="Password" type="password"></v-text-field>
+                                    label="Contraseña" type="password"></v-text-field>
 
                                 <br>
 
                                 <v-btn class="submit_button mt-2" type="submit" block tabindex="0"
                                     aria-label="Submit your details">
-                                    Submit
+                                    Iniciar Sesión
                                 </v-btn>
                             </v-form>
+
+                            <p class="forgot-password" style="text-align: center; cursor: pointer;" @click="router.push('/forgotPassword')">
+                                Olvidé mi contraseña
+                            </p>
+
                         </v-sheet>
                     </v-card-text>
                 </v-card>
@@ -45,7 +55,7 @@ let firstNameRules = [
         if (value?.length >= 4) {
             return true;
         }
-        return 'Must be at least 4 characters.';
+        return 'Deben ser más de 4 caracteres';
     }
 ];
 
@@ -66,7 +76,7 @@ const simulateLogin = () => {
 
     /*
      simulateLogin: Esta función simula el inicio de sesión exitoso.
-     En una aplicación real, aquí harías una petición al servidor para autenticar al usuario y obtener un token. 
+     En una aplicación real, aquí harías una petición al servidor para autenticar al usuario y obtener un token.
      Por simplicidad, se almacena un token simulado en localStorage.
     */
 
@@ -74,7 +84,6 @@ const simulateLogin = () => {
     localStorage.setItem('token', 'simulated-token');
     router.push('/'); // Redirige a la ruta "/"
 };
-
 
 </script>
 
@@ -84,12 +93,12 @@ const simulateLogin = () => {
     padding-bottom: 10%;
 }
 
-.v-container {
+.v-main {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f5f1e3;
+    background: linear-gradient(135deg, #F5F1E3, #f9f0cd); /* Degradado */
     padding: 16px;
     box-sizing: border-box;
 }
@@ -118,4 +127,15 @@ const simulateLogin = () => {
 .v-sheet {
     border-radius: 10px;
 }
+
+.forgot-password{
+    color: #1A3E45;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover {
+    color: #0C2D33;
+}
+
 </style>

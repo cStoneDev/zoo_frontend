@@ -16,22 +16,41 @@
 
     <!-- Filtros dinámicos -->
     <div v-if="filters" class="filters-container mb-4">
-      <v-row>
-        <v-col
-          v-for="(filterData, filterName) in filters"
-          :key="filterName"
-          cols="12" sm="6" md="4"
-        >
-          <v-select
-            v-model="activeFilters[filterName]"
-            :label="filterData.label"
-            :items="['No', ...filterData.lista]"
-            outlined
-            dense
-          ></v-select>
-        </v-col>
-      </v-row>
-    </div>
+    <v-row>
+      <v-col
+        v-for="(filterData, filterName) in filters" :key="filterName" cols="12" sm="6" md="4">
+        <component
+          v-if="filterName.includes('fecha')"
+          is="v-text-field"
+          v-model="activeFilters[filterName]"
+          :label="filterData.label"
+          type="date"
+          outlined
+          dense
+        ></component>
+        
+        <component
+          v-else-if="filterName === 'hora'"
+          is="v-text-field"
+          v-model="activeFilters[filterName]"
+          :label="filterData.label"
+          type="time"
+          outlined
+          dense
+        ></component>
+
+        <component
+          v-else
+          is="v-select"
+          v-model="activeFilters[filterName]"
+          :label="filterData.label"
+          :items="['No', ...filterData.lista]"
+          outlined
+          dense
+        ></component>
+      </v-col>
+    </v-row>
+  </div>
     
     <!-- Tabla de Datos -->
     <v-data-table
@@ -127,6 +146,7 @@
   import { toRaw } from "vue";
   import { defineProps, defineEmits } from "vue";
 
+
   const props = defineProps({
     title: {
       type: String,
@@ -175,11 +195,19 @@ const filteredItems = computed(() => {
   return props.items.filter((item) => {
     return Object.entries(activeFilters).every(([key, value]) => {
       if (value === "No") return true; // No filtra si está en "No"
+      if (value === "") return true; // No filtra si está en "" el date o la hora (backspace para borrar lo que hay en el campo de hora)
       return item[key]?.toString() === value.toString();
     });
   });
 });
 
+
+
+const getComponent = (filterName) => {
+  if (filterName === 'fecha') return VDatePicker;
+  if (filterName === 'hora') return VTimePicker;
+  return VSelect; // Default to v-select for other filters
+};
 
   const emit = defineEmits(["update"]);
 

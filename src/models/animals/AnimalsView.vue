@@ -5,6 +5,7 @@
     :headers="animalHeaders"
     :buttons="animalButtons"
     :animal-default="animalDefault"
+    :filters="animalFilters"
     @update="handleUpdate"
   >
     <template #dialog-content="{ item, mode }">
@@ -18,10 +19,10 @@
   import DataTable from "../../components/table/Table.vue";
   import AnimalFormEdit_View_Add from "./components/AnimalFormEdit_View_Add.vue";
   import AnimalFormDelete from "./components/AnimalFormDelete.vue";
-  import { ref } from "vue";
+  import { ref, reactive } from "vue";
 
   // Datos de animales
-  const animalData = ref([
+  const animalData = reactive([
     {
       id: 1,
       nombre: "León",
@@ -80,6 +81,30 @@
     },
   ]);
   
+  const animalFilters = reactive({
+    id: {
+      lista: animalData.map(item => item.id),
+      label: "ID Animales"
+    },
+    id_raza: {
+      lista: animalData.map(item=> item.id_raza).sort((a,b)=> a- b),
+      label: "ID raza"
+    },
+    edad: {
+      lista: animalData.map(item => item.edad).sort((a,b)=> a- b),
+      label: "Edad"
+    },
+    peso: {
+      lista: animalData.map(item => item.peso).sort((a,b)=> a- b),
+      label: "Peso"
+    },
+    dias_refugio: {
+      lista: animalData.map(item => item.dias_refugio).sort((a,b)=> a- b),
+      label: "Días en refugio"
+    }
+  });
+
+
   const animalDefault = ref({
       id: 0,
       nombre: "",
