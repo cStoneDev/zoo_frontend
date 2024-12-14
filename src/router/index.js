@@ -9,13 +9,13 @@ import ActivitiesView from '@/models/activities/ActivitiesView.vue';
 import ProvidersView from '@/models/providers/ProvidersView.vue';
 
 // nomencladores
-import ClinicaView from '@/models/Nomenclators/ClinicaView.vue';
-import EspecialidadView from '@/models/Nomenclators/EspecialidadView.vue';
-import EspecieView from '@/models/Nomenclators/EspecieView.vue';
-import ProvinciaView from '@/models/Nomenclators/ProvinciaView.vue';
-import RazaView from '@/models/Nomenclators/RazaView.vue';
-import TipoProveedorView from '@/models/Nomenclators/TipoProveedorView.vue';
-import TipoServicioView from '@/models/Nomenclators/TipoServicioView.vue';
+import ClinicaView from '@/models/Nomenclators/clinica/ClinicaView.vue';
+import EspecialidadView from '@/models/Nomenclators/especialidad/EspecialidadView.vue';
+import EspecieView from '@/models/Nomenclators/especie/EspecieView.vue';
+import ProvinciaView from '@/models/Nomenclators/provincia/ProvinciaView.vue';
+import RazaView from '@/models/Nomenclators/raza/RazaView.vue';
+import TipoProveedorView from '@/models/Nomenclators/tipoproveedor/TipoProveedorView.vue';
+import TipoServicioView from '@/models/Nomenclators/tiposervicio/TipoServicioView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
