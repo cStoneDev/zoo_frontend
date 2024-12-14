@@ -87,7 +87,7 @@ const programData = reactive([
 const programFilters = reactive({
   id: {
     lista: programData.map(item=>item.id), // Ejemplo de IDs posibles
-    label: "ID Actividad"
+    label: "ID Programa"
   },
   especie: {
     lista: Array.from(new Set(programData.map(item => item.especie))),

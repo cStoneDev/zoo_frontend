@@ -38,7 +38,7 @@ const usersData = reactive([
 const usersFilters = reactive({
     id: {
         lista: usersData.map(item => item.id), // Ejemplo de IDs posibles
-        label: "ID Actividad"
+        label: "ID Usuario"
     },
     rol: {
         lista: ["Moderador", "Admin"],
