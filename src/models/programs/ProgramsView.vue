@@ -1,6 +1,6 @@
 <template>
     <DataTable title="Programación" :items="programData" :headers="programHeaders" :buttons="programButtons"
-        :program-default="programDefault" @update="handleUpdate">
+        :program-default="programDefault" @update="handleUpdate" :filters="programFilters">
         <template #dialog-content="{ item, mode }">
             <ProgramFormEdit_View_Add :item="item" :mode="mode"
                 v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
@@ -13,10 +13,10 @@
 import DataTable from "../../components/table/Table.vue";
 import ProgramFormEdit_View_Add from "./components/ProgramFormEdit_View_Add.vue";
 import ProgramFormDelete from "./components/ProgramFormDelete.vue";
-import { ref } from "vue";
+import { ref, reactive} from "vue";
 
 // Datos de los contratos
-const programData = ref([
+const programData = reactive([
     {
         id: 1,
         actividad: "Alimentar",
@@ -74,9 +74,36 @@ const programData = ref([
         hora: "08:05:00",
         descripcion: "Mano pongase a Alimentar a los leones",
     },
+    {
+        id: 8,
+        actividad: "pasear",
+        especie: "Ranas",
+        fecha: "2024-11-14",
+        hora: "08:05:00",
+        descripcion: "Mano pongase a Alimentar a los leones",
+    },
 ]);
 
-const programDefault = ref({
+const programFilters = reactive({
+  id: {
+    lista: programData.map(item=>item.id), // Ejemplo de IDs posibles
+    label: "ID Actividad"
+  },
+  especie: {
+    lista: Array.from(new Set(programData.map(item => item.especie))),
+    label: "Especie"
+  },
+  fecha: {
+    lista: [], // Fechas específicas
+    label: "Fecha"
+  },
+  hora: {
+    lista: [], // Horarios disponibles
+    label: "Hora"
+  },
+});
+
+const programDefault = reactive({
     id: 0,
     actividad: "",
     especie: 0.0,
