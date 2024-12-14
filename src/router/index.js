@@ -17,11 +17,15 @@ import RazaView from '@/models/Nomenclators/raza/RazaView.vue';
 import TipoProveedorView from '@/models/Nomenclators/tipoproveedor/TipoProveedorView.vue';
 import TipoServicioView from '@/models/Nomenclators/tiposervicio/TipoServicioView.vue';
 
+//reports
+import VetReportView from '@/models/reports/vet_contract/VetReportView.vue';
+import FeederReportView from "@/models/reports/feeder_contract/FeederReportView.vue";
+import ComplementaryReportView from "@/models/reports/complementary-contract/ComplementaryReportView.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-
       // Persistent Layout
       path: "/",
       component: SidebarComp, // Sidebar persistente
@@ -91,7 +95,30 @@ const router = createRouter({
           path: "/tiposervicio",
           name: "tiposervicio",
           component: TipoServicioView,
-        }
+        },
+        //reports
+        {
+          path: "/reports",
+          name: "Reports",
+          component: { template: "<router-view />" }, // empty component, it acts like a container
+          children: [
+            {
+              path: "/vet",
+              name: "VetReport",
+              component: VetReportView,
+            },
+            {
+              path: "/feeder",
+              name: "FeederReport",
+              component: FeederReportView,
+            },
+            {
+              path: "/complementary",
+              name: "ComplementaryReport",
+              component: ComplementaryReportView,
+            },
+          ],
+        },
       ],
     },
 
