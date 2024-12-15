@@ -5,7 +5,8 @@
       label="ID" 
       type="number" 
       required 
-      :readonly="mode === 'view'" 
+      :readonly="mode === 'view'"
+      :rules="numberRules" 
     />
     <v-select
       v-model="item.id_raza" 
@@ -25,7 +26,8 @@
       label="Edad (años)" 
       type="number" 
       required 
-      :readonly="mode === 'view'" 
+      :readonly="mode === 'view'"
+      :rules="numberRules" 
     />
     <v-text-field 
       v-model="item.peso" 
@@ -33,6 +35,7 @@
       type="number" 
       required 
       :readonly="mode === 'view'" 
+      :rules="numberRules"
     />
     <v-text-field 
       v-model="item.dias_refugio" 
@@ -40,6 +43,7 @@
       type="number" 
       required 
       :readonly="mode === 'view'" 
+      :rules="numberRules"
     />
   </v-form>
 </template>
@@ -57,4 +61,14 @@
       required: true,
     },
   });
+
+  let numberRules = [
+      value => {
+        if (value <= 0 || value === 0) {
+          return 'Debe ser el número mayor que 0.';
+        }
+        return true;
+      }
+    ];
+
 </script>

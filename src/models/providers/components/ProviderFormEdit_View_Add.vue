@@ -5,12 +5,13 @@
         label="ID" 
         type="number" 
         required 
-        :readonly="mode === 'view'" 
+        :readonly="mode === 'view'"
+        :rules="numberRules" 
       />
-      <v-text-field 
+      <v-select 
+        :items="[1,2,3,4,5]" 
         v-model="item.id_provincia" 
-        label="Provincia" 
-        type="number" 
+        label="Provincia"  
         required 
         :readonly="mode === 'view'" 
       />
@@ -20,17 +21,17 @@
         required 
         :readonly="mode === 'view'" 
       />
-      <v-text-field 
+      <v-select
         v-model="item.id_tipo_servicio" 
-        label="Tipo servicio" 
-        type="number" 
+        :items="[1,2,3,4,5]"
+        label="Tipo servicio"  
         required 
         :readonly="mode === 'view'" 
       />
-      <v-text-field 
+      <v-select
         v-model="item.id_tipo_proveedor" 
+        :items="[1,2,3,4,5]"
         label="Tipo" 
-        type="number" 
         required 
         :readonly="mode === 'view'" 
       />
@@ -39,6 +40,7 @@
         label="Telefono"  
         required 
         :readonly="mode === 'view'" 
+        :rules="phoneRules"
       />
       <v-text-field 
         v-model="item.direccion" 
@@ -49,8 +51,10 @@
       <v-text-field 
         v-model="item.email" 
         label="Email"  
+        type="email"
         required 
         :readonly="mode === 'view'" 
+        :rules="emailRules"
       />
       <v-text-field 
         v-model="item.nombre_responsable" 
@@ -74,5 +78,34 @@
         required: true,
       },
     });
+
+    let numberRules = [
+      value => {
+        if (value <= 0 || value === 0) {
+          return 'Debe ser el número mayor que 0.';
+        }
+        return true;
+      }
+    ];
+
+    let phoneRules = [
+      value => {
+        if (value?.length == 7) {
+          return true;
+        }
+        return 'Un teléfono tiene 7 dígitos';
+      }
+    ];
+
+    let emailRules = [
+  value => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(value)) {
+      return true;
+    }
+    return 'Por favor, ingrese un correo electrónico válido';
+  }
+];
+
   </script>
   

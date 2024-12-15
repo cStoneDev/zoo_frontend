@@ -4,7 +4,8 @@
         v-model="item.id" 
         label="ID" 
         type="number" 
-        required 
+        required
+        :rules="numberRules"
         :readonly="mode === 'view'" 
       />
       <v-select
@@ -34,6 +35,7 @@
         label="Descripcion" 
         required 
         :readonly="mode === 'view'" 
+        :rules="textRules"
       />
     </v-form>
   </template>
@@ -51,5 +53,23 @@
         required: true,
       },
     });
+
+    let numberRules = [
+      value => {
+        if (value <= 0 || value === 0) {
+          return 'Debe ser el número mayor que 0.';
+        }
+        return true;
+      }
+    ];
+
+    let textRules = [
+      value => {
+        if (value?.length >= 10) {
+          return true;
+        }
+        return 'Deben ser más de 10 caracteres';
+    }
+];
   </script>
   
