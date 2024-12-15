@@ -13,8 +13,8 @@
 
       </v-app-bar>
 
-      <v-navigation-drawer v-model="drawer" temporary :color="'#F5F1E3'" class="p-3">
-        <v-list-item prepend-avatar="/src/assets/logos/3.png" title="Fauna Viva"></v-list-item>
+      <v-navigation-drawer v-model="drawer" temporary :color="'#F5F1E3'" class="p-3" :width="290">
+        <v-list-item prepend-avatar="/src/assets/logos/5.png" title="Fauna Viva"></v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
 
