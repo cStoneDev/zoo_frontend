@@ -15,11 +15,26 @@
 
                         <v-sheet class="mx-auto" width="300">
                             <v-form fast-fail @submit.prevent="handleSubmit">
-                                <v-text-field v-model="firstName" :rules="firstNameRules" variant="underlined"
-                                    label="Usuario"></v-text-field>
+                                <v-text-field 
+                                    prepend-inner-icon="mdi-account"
+                                    v-model="firstName" 
+                                    :rules="firstNameRules"
+                                    variant="underlined"
+                                    label="Usuario"
+                                    >
+                                </v-text-field>
 
-                                <v-text-field v-model="password" :rules="firstNameRules" variant="underlined"
-                                    label="Contraseña" type="password"></v-text-field>
+                                <v-text-field 
+                                    prepend-inner-icon="mdi-lock-outline"
+                                    :type="visible ? 'text' : 'password'"
+                                    :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                    v-model="password" 
+                                    :rules="firstNameRules" 
+                                    variant="underlined"
+                                    label="Contraseña" 
+                                    @click:append-inner="visible = !visible"
+                                >
+                                </v-text-field>
 
                                 <br>
 
@@ -49,6 +64,7 @@ const router = useRouter();
 
 let firstName = ref('');
 let password = ref('');
+const visible = ref(false);
 
 let firstNameRules = [
     value => {
