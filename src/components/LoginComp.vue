@@ -98,7 +98,7 @@ const simulateLogin = () => {
 
     // Simula el guardado del token en el localStorage (en una app real, esto vendría del servidor)
     localStorage.setItem('token', 'simulated-token');
-    router.push('/'); // Redirige a la ruta "/"
+    router.push('/dashboard'); // Redirige a la ruta "/"
 };
 
 </script>
