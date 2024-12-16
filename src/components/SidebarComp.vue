@@ -4,7 +4,7 @@
       <v-app-bar :color="'#1A3E45'">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Sección</v-toolbar-title>
+        <v-toolbar-title>Sistema de Gestión</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <v-btn icon @click="handleLogout">
@@ -25,20 +25,7 @@
                 <RouterLink to="/dashboard" exact>
                   <!-- Para reducirles el tamano y que coincidan con los de la lista que se expande -->
                   <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
-                    <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" class="custom-text"></v-list-item>
-                  </v-defaults-provider>
-                </RouterLink>
-              </span>
-            </v-card-title>
-          </v-card>
-
-          <v-card class="my-3">
-            <v-card-title class="pr-5">
-              <span class="headline custom-text">
-                <RouterLink to="/about" exact>
-                  <!-- Para reducirles el tamano y que coincidan con los de la lista que se expande -->
-                  <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
-                    <v-list-item prepend-icon="mdi-pencil" title="About" class="custom-text"></v-list-item>
+                    <v-list-item prepend-icon="mdi-chart-line" title="Estadísticas" class="custom-text"></v-list-item>
                   </v-defaults-provider>
                 </RouterLink>
               </span>
