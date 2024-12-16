@@ -90,7 +90,7 @@
             v-for="button in buttons"
             :key="button.text"
             class="col-2 col-sm-6 col-md-4 col-lg-4 col-xl-2 col-xxl-2 mr-2 ml-4 mb-2"
-            color="primary"
+            color="#1A3E45"
             @click="handleAction(button.mode, animalDefault, button.text)"
           >
             <v-icon left>{{ button.icon }}</v-icon>
