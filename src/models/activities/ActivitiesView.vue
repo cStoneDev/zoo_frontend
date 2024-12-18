@@ -22,7 +22,7 @@ import ActivityFormDelete from "./components/ActivityFormDelete.vue";
 
 
 // Datos de animales
-const activitiesData = reactive([
+const activitiesData = ref([
     {
         id: 1,
         fecha: "2025-10-12",
@@ -69,7 +69,7 @@ const activitiesData = reactive([
 
 const activityFilters = reactive({
   id: {
-    lista: activitiesData.map(item=>item.id), // Ejemplo de IDs posibles
+    lista: activitiesData.value.map(item=>item.id), // Ejemplo de IDs posibles
     label: "ID Actividad"
   },
   fecha: {
@@ -81,7 +81,7 @@ const activityFilters = reactive({
     label: "Hora"
   },
   id_contrato: {
-    lista: new Set(activitiesData.map(item=>item.id_contrato).sort((a,b)=>a-b)), // IDs de contrato posibles
+    lista: new Set(activitiesData.value.map(item=>item.id_contrato).sort((a,b)=>a-b)), // IDs de contrato posibles
     label: "ID Contrato"
   }
 });

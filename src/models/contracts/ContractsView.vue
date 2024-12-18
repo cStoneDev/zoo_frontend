@@ -18,7 +18,7 @@ import ContractFormDelete from "./components/ContractFormDelete.vue";
 import { ref } from "vue";
 
 // Datos de los contratos
-const contractData = reactive([
+const contractData = ref([
     {
         id: 1,
         descripcion: "Consultas generales de cuidado a los animales",
@@ -86,19 +86,19 @@ const contractData = reactive([
 
 const contractFilters = reactive({
     id: {
-        lista: contractData.map(item => item.id), // Ejemplo de IDs posibles
+        lista: contractData.value.map(item => item.id), // Ejemplo de IDs posibles
         label: "ID Contrato"
     },
     fecha_conciliacion: {
-        lista: [contractData.map(item => item.fecha_conciliacion)], // Fechas específicas
+        lista: [contractData.value.map(item => item.fecha_conciliacion)], // Fechas específicas
         label: "Fecha Conciliación"
     },
     fecha_inicio: {
-        lista: [contractData.map(item => item.fecha_inicio)], // Fechas específicas
+        lista: [contractData.value.map(item => item.fecha_inicio)], // Fechas específicas
         label: "Fecha Inicio"
     },
     fecha_final: {
-        lista: [contractData.map(item => item.fecha_final)], // Fechas específicas
+        lista: [contractData.value.map(item => item.fecha_final)], // Fechas específicas
         label: "Fecha Final"
     },
 });

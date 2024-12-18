@@ -17,7 +17,7 @@ import { ref } from "vue";
 import { reactive } from 'vue';
 
 // Datos de animales
-const usersData = reactive([
+const usersData = ref([
     {
         id: 1,
         rol: "Moderador",
@@ -37,7 +37,7 @@ const usersData = reactive([
 
 const usersFilters = reactive({
     id: {
-        lista: usersData.map(item => item.id), // Ejemplo de IDs posibles
+        lista: usersData.value.map(item => item.id), // Ejemplo de IDs posibles
         label: "ID Usuario"
     },
     rol: {

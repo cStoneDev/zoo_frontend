@@ -21,7 +21,7 @@ import ProviderFormEdit_View_Add from './components/ProviderFormEdit_View_Add.vu
 
 
 // Datos de animales
-const providerData = reactive([
+const providerData = ref([
     {
         id: 1,
         nombre: "Juancarlos",
@@ -37,19 +37,19 @@ const providerData = reactive([
 
 const providerFilter = reactive({
     id: {
-        lista: providerData.map(item => item.id),
+        lista: providerData.value.map(item => item.id),
         label: "ID Proveedor"
     },
     id_provincia: {
-        lista: providerData.map(item => item.id_provincia),
+        lista: providerData.value.map(item => item.id_provincia),
         label: "ID Provincia"
     },
     id_tipo_servicio: {
-        lista: providerData.map(item => item.id_tipo_servicio),
+        lista: providerData.value.map(item => item.id_tipo_servicio),
         label: "ID tipo de servicio"
     },
     id_tipo_proveedor: {
-        lista: providerData.map(item => item.id_tipo_proveedor),
+        lista: providerData.value.map(item => item.id_tipo_proveedor),
         label: "ID tipo de proveedor"
     }
 });

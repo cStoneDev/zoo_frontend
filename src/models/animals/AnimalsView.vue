@@ -22,7 +22,7 @@
   import { ref, reactive } from "vue";
 
   // Datos de animales
-  const animalData = reactive([
+  const animalData = ref([
     {
       id: 1,
       nombre: "León",
@@ -83,23 +83,23 @@
   
   const animalFilters = reactive({
     id: {
-      lista: animalData.map(item => item.id),
+      lista: animalData.value.map(item => item.id),
       label: "ID Animales"
     },
     id_raza: {
-      lista: animalData.map(item=> item.id_raza).sort((a,b)=> a- b),
+      lista: animalData.value.map(item=> item.id_raza).sort((a,b)=> a- b),
       label: "ID raza"
     },
     edad: {
-      lista: animalData.map(item => item.edad).sort((a,b)=> a- b),
+      lista: animalData.value.map(item => item.edad).sort((a,b)=> a- b),
       label: "Edad"
     },
     peso: {
-      lista: animalData.map(item => item.peso).sort((a,b)=> a- b),
+      lista: animalData.value.map(item => item.peso).sort((a,b)=> a- b),
       label: "Peso"
     },
     dias_refugio: {
-      lista: animalData.map(item => item.dias_refugio).sort((a,b)=> a- b),
+      lista: animalData.value.map(item => item.dias_refugio).sort((a,b)=> a- b),
       label: "Días en refugio"
     }
   });
@@ -154,7 +154,7 @@
 function handleUpdate({ mode, item }) {
   
   if (mode === 'add') {
-    animalData.value.push({ id: Date.now(), ...item });
+    animalData.push({ id: Date.now(), ...item });
   } else if (mode === 'edit') {
     const index = animalData.value.findIndex((data) => data.id === item.id);
     if (index !== -1) {

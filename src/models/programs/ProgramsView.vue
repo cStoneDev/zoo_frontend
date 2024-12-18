@@ -16,7 +16,7 @@ import ProgramFormDelete from "./components/ProgramFormDelete.vue";
 import { ref, reactive} from "vue";
 
 // Datos de los contratos
-const programData = reactive([
+const programData = ref([
     {
         id: 1,
         actividad: "Alimentar",
@@ -86,11 +86,11 @@ const programData = reactive([
 
 const programFilters = reactive({
   id: {
-    lista: programData.map(item=>item.id), // Ejemplo de IDs posibles
+    lista: programData.value.map(item=>item.id), // Ejemplo de IDs posibles
     label: "ID Programa"
   },
   especie: {
-    lista: Array.from(new Set(programData.map(item => item.especie))),
+    lista: Array.from(new Set(programData.value.map(item => item.especie))),
     label: "Especie"
   },
   fecha: {
