@@ -1,10 +1,10 @@
 <template>
     <v-form>
       <v-text-field 
-        v-model="item.nombre" 
-        label="Nombre" 
-        required 
-        :readonly="mode === 'view'" 
+        v-model="item.nombre"
+        label="Nombre"
+        required
+        :readonly="mode === 'view'"
       />
     </v-form>
   </template>

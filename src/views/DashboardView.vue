@@ -1,18 +1,14 @@
 <template>
-  <div>
     <div class="chart-container">
-      <h2>Gráfico de Barras</h2>
-      <Bar :data="barData" :options="barOptions" />
-
-      <h2>Gráfico de Líneas</h2>
-      <Line :data="lineData" :options="lineOptions" />
-
-      <h2>Distribución de Ventas</h2>
+      <h2>Estadísiticas Mensuales</h2>
+      <Bar :data="barData" :options="barOptions" class="mb-5"/>
+      <v-divider />
+      <Line :data="lineData" :options="lineOptions" class="mb-5"/>
+      <v-divider />
       <div class="pie-chart">
-        <Pie :data="pieData" :options="pieOptions" />
+        <Pie :data="pieData" :options="pieOptions" class="mb-5"/>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -36,7 +32,7 @@ import { Bar, Line, Pie } from 'vue-chartjs'
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, ArcElement, Title, Tooltip, Legend)
 
 let barData = ref({
-  labels: ['January', 'February', 'March'],
+  labels: ['Enero', 'Febrero', 'Marzo'],
   datasets: [{
     label: 'Ventas',
     data: [40, 20, 12],
@@ -67,7 +63,7 @@ let barOptions = ref({
 })
 
 let lineData = ref({
-  labels: ['January', 'February', 'March'],
+  labels: ['Enero', 'Febrero', 'Marzo'],
   datasets: [{
     label: 'Tendencia de Ventas',
     data: [30, 25, 15],
@@ -98,7 +94,7 @@ let lineOptions = ref({
 })
 
 let pieData = ref({
-  labels: ['January', 'February', 'March'],
+  labels: ['Enero', 'Febrero', 'Marzo'],
   datasets: [{
     label: 'Distribución de Ventas',
     data: [40, 20, 12],
@@ -135,33 +131,24 @@ let pieOptions = ref({
 <style scoped>
 .chart-container {
   width: 70vw;
-  /* Reduce el ancho a 80% del viewport */
   margin: auto;
-  /* Centra el contenido en el contenedor */
   height: auto;
-  /* Ajusta la altura automáticamente según el contenido */
   padding: 5%;
   margin-left: auto;
-  /* Añade márgenes a la izquierda */
   margin-right: auto;
-  /* Añade márgenes a la derecha */
+  gap: 20px;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  /* Aumenta el margen inferior para separar los gráficos */
   font-size: 1.5rem;
-  /* Reduce el tamaño de los títulos */
 }
 
-/* Clase para controlar el tamaño del gráfico de pastel */
 .pie-chart {
   justify-content: center;
-  /* Centra el gráfico horizontalmente */
   width: 80%;
   margin-left: 10%;
-  /* Reduce el ancho del gráfico de pastel */
   height: auto;
 }
 </style>

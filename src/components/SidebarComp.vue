@@ -1,5 +1,5 @@
 <template>
-  <v-card class="full-height">
+  <v-card class="full-height" :style = "{ backgroundColor: '#F5F1E3' }" >
     <v-layout class="full-height">
       <v-app-bar :color="'#1A3E45'">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -30,19 +30,6 @@
                 </RouterLink>
               </span>
             </v-card-title>
-          </v-card>
-
-
-          <v-card class="my-3">
-            <v-card-title class="pr-5">
-              <span class="headline custom-text">
-                <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
-                  <v-list-item prepend-icon="mdi-pencil" title="Nomencladores" class="custom-text"
-                    @click="showModal"></v-list-item>
-                </v-defaults-provider>
-              </span>
-            </v-card-title>
-            <NomenclatorsModal ref="modalRef" />
           </v-card>
 
 
@@ -98,7 +85,7 @@
               <v-expansion-panel-text>
 
                 <!-- Aca irian los router link de los reportes-->
-                
+                 
                   <v-list-item @click="showModal2('vet')" prepend-icon="mdi-cat" title="Veterinarian contracts" class="custom-text mb-3"></v-list-item>
                 
 
@@ -114,6 +101,21 @@
             </v-expansion-panel>
 
           </v-expansion-panels>
+
+          <v-divider />
+
+          <v-card class="my-3">
+            <v-card-title class="pr-5">
+              <span class="headline custom-text">
+                <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
+                  <v-list-item prepend-icon="mdi-pencil" title="Otras Tablas" class="custom-text"
+                    @click="showModal"></v-list-item>
+                </v-defaults-provider>
+              </span>
+            </v-card-title>
+            <NomenclatorsModal ref="modalRef" />
+          </v-card>
+
         </v-list>
       </v-navigation-drawer>
 

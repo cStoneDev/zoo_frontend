@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="headline">
         Seleccionar nomenclador
-        <v-btn icon @click="close" class="close-button">
+        <v-btn icon @click="close" class="close-button" style="font-size: 15px;" >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
@@ -18,9 +18,9 @@
         ></v-select>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="close">Cerrar</v-btn>
-        <v-btn color="primary" @click="seleccionar">Seleccionar</v-btn>
+        <v-spacer></v-spacer>"
+        <v-btn color="error" variant="tonal" @click="close">Cerrar</v-btn>
+        <v-btn text color="primary" variant="flat" @click="seleccionar">Continuar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
