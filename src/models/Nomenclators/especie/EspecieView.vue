@@ -46,33 +46,17 @@ const especieDefault = ref({
 // Encabezados de la tabla
 const especieHeaders = ref([
     { title: "ID", value: "id", sortable: "true" },
-    { title: "Nombre", value: "nombre", sortable: "true" }
+    { title: "Nombre", value: "nombre", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const especieButtons = ref([
     {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
-
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
-    {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
-    },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
     },
 ]);
 

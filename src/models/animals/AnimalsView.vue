@@ -120,33 +120,18 @@
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Edad (años)", value: "edad", sortable: "true" },
     { title: "Peso (kg)", value: "peso", sortable: "true" },
-    { title: "Días en Refugio", value: "dias_refugio", sortable: "true" },
+    { title: "Días en Zoológico", value: "dias_refugio", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
+
   ]);
 
   // Configuración de botones CRUD
   const animalButtons = ref([
     {
-      text: "Ver",
-      icon: "mdi-eye",
-      mode: "view",
-      
-    },
-    {
-      text: "Editar",
-      icon: "mdi-pencil",
-      mode: "edit",
-      
-    },
-    {
       text: "Agregar",
       icon: "mdi-plus",
       mode: "add",
       
-    },
-    {
-      text: "Eliminar",
-      icon: "mdi-delete",
-      mode: "delete",
     },
   ]);
 

@@ -50,33 +50,17 @@ const razaDefault = ref({
 // Encabezados de la tabla
 const razaHeaders = ref([
     { title: "ID", value: "id", sortable: "true" },
-    { title: "Nombre", value: "nombre", sortable: "true" }
+    { title: "Nombre", value: "nombre", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const razaButtons = ref([
     {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
-
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
-    {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
-    },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
     },
 ]);
 

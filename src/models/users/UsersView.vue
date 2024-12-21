@@ -46,42 +46,26 @@ const usersFilters = reactive({
     }
 });
 
-const userDefault = reactive({
+const usersDefault = reactive({
     id: 0,
     rol: "",
     nombre: "",
 })
 // Encabezados de la tabla
-const animalHeaders = ref([
+const usersHeaders = ref([
     { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Rol", value: "rol", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const usersButtons = ref([
     {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
-
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
-    {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
-    },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
     },
 ]);
 

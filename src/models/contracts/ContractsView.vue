@@ -121,33 +121,20 @@ const contractHeaders = ref([
     { title: "Fecha de conciliación", value: "fecha_conciliacion", sortable: "true" },
     { title: "Fecha de inicio", value: "fecha_inicio", sortable: "true" },
     { title: "Fecha final", value: "fecha_final", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const contractButtons = ref([
-    {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
 
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
 
-    },
     {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
     },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
-    },
+
 ]);
 
 // Manejo de actualizaciones desde el hijo

@@ -119,33 +119,19 @@ const programHeaders = ref([
     { title: "Fecha", value: "fecha", sortable: "true" },
     { title: "Hora", value: "hora", sortable: "true" },
     { title: "Descripción", value: "descripcion", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const programButtons = ref([
-    {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
 
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
     {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
     },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
-    },
+
 ]);
 
 // Manejo de actualizaciones desde el hijo
