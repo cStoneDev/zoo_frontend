@@ -34,11 +34,11 @@ const router = createRouter({
       path: "/",
       component: SidebarComp, // Sidebar persistente
       children: [
-        {
-          path: "",
-          name: "Home",
-          component: HomeView, // Renderizado en el slot
-        },
+        // {
+        //   path: "",
+        //   name: "Home",
+        //   component: HomeView, // Renderizado en el slot
+        // },
         {
           path: "about",
           name: "About",
