@@ -98,34 +98,20 @@ const activityDefault = ref({
 const activityHeaders = ref([
     { title: "ID", value: "id", sortable: "true" },
     { title: "Fecha", value: "fecha", sortable: "true" },
-    { title: "Contrato", value: "id_contrato", sortable: "true" }
+    { title: "Contrato", value: "id_contrato", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const activityButtons = ref([
-    {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
 
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
     {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
     },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
-    },
+
 ]);
 
 // Manejo de actualizaciones desde el hijo

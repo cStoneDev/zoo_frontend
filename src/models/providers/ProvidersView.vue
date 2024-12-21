@@ -71,34 +71,20 @@ const providersHeaders = ref([
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Provincia", value: "id_provincia", sortable: "true" },
     { title: "Tipo_servicio", value: "id_tipo_servicio", sortable: "true" },
-    { title: "Tipo", value: "id_tipo_proveedor", sortable: "true" }
+    { title: "Tipo", value: "id_tipo_proveedor", sortable: "true" },
+    { title: "Acciones", value: "actions", align: "center"},
 ]);
 
 // Configuración de botones CRUD
 const providersButtons = ref([
-    {
-        text: "Ver",
-        icon: "mdi-eye",
-        mode: "view",
 
-    },
-    {
-        text: "Editar",
-        icon: "mdi-pencil",
-        mode: "edit",
-
-    },
     {
         text: "Agregar",
         icon: "mdi-plus",
         mode: "add",
 
     },
-    {
-        text: "Eliminar",
-        icon: "mdi-delete",
-        mode: "delete",
-    },
+
 ]);
 
 // Manejo de actualizaciones desde el hijo

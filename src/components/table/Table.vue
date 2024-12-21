@@ -1,5 +1,4 @@
 <template>
-	A
 	<v-card class="container justify-content-center mt-5 mb-5">
 		<!-- Aqui tenemos el titulo de la tabla que es variable y el buscador -->
 		<v-card-title>  
