@@ -139,7 +139,7 @@
 function handleUpdate({ mode, item }) {
   
   if (mode === 'add') {
-    animalData.push({ id: Date.now(), ...item });
+    animalData.value.push({ id: Date.now(), ...item });
   } else if (mode === 'edit') {
     const index = animalData.value.findIndex((data) => data.id === item.id);
     if (index !== -1) {
