@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import AboutView from "@/views/AboutView.vue";
 import AnimalsView from "@/models/animals/AnimalsView.vue";
 import LoginView from "@/models/LoginView.vue";
 import SidebarComp from "@/components/SidebarComp.vue";
@@ -34,16 +32,6 @@ const router = createRouter({
       path: "/",
       component: SidebarComp, // Sidebar persistente
       children: [
-        // {
-        //   path: "",
-        //   name: "Home",
-        //   component: HomeView, // Renderizado en el slot
-        // },
-        {
-          path: "about",
-          name: "About",
-          component: AboutView, // Renderizado en el slot
-        },
         {
           path: "dashboard",
           name: "Dashboard",

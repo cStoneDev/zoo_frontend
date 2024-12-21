@@ -1,14 +1,16 @@
 <template>
+  <v-card class="container justify-content-center mt-5 mb-5">
     <div class="chart-container">
       <h2>Estadísiticas Mensuales</h2>
-      <Bar :data="barData" :options="barOptions" class="mb-5"/>
+      <Bar :data="barData" :options="barOptions" class="mb-5" />
       <v-divider />
-      <Line :data="lineData" :options="lineOptions" class="mb-5"/>
+      <Line :data="lineData" :options="lineOptions" class="mb-5" />
       <v-divider />
       <div class="pie-chart">
-        <Pie :data="pieData" :options="pieOptions" class="mb-5"/>
+        <Pie :data="pieData" :options="pieOptions" class="mb-5" />
       </div>
     </div>
+  </v-card>
 </template>
 
 <script setup>
