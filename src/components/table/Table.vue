@@ -3,14 +3,28 @@
 		<!-- Aqui tenemos el titulo de la tabla que es variable y el buscador -->
 		<v-card-title>  
 			<span class="headline">{{ title }}</span>
-			<v-spacer></v-spacer>
-			<v-text-field v-model="search" label="Buscar" append-icon="mdi-magnify" single-line
-				hide-details></v-text-field>
-
 		</v-card-title>
+		<v-spacer></v-spacer>
+		<v-container class="d-flex flex-row align-center justify-space-between">
+			<v-text-field 
+					v-model="search" 
+					label="Buscar" 
+					prepend-icon="mdi-magnify" 
+					single-line
+					hide-details>
+				</v-text-field>
+				<v-btn 
+					v-if="filters"
+					class="ml-5"
+					icon="mdi-filter" 
+					:color="showFiltros ? '#217282' : '#1A3E45'" 
+					@click="showFiltros = !showFiltros">
+ 
+				</v-btn>
+		</v-container>
 
 		<!-- Filtros dinámicos -->
-		<div v-if="filters" class="filters-container mb-4">
+		<div v-if="filters" v-show="showFiltros" class="filters-container mb-4">
 			<v-row>
 				<v-col v-for="(filterData, filterName) in filters" :key="filterName" cols="12" sm="6" md="4">
 					<component v-if="filterName.includes('fecha')" is="v-text-field" v-model="activeFilters[filterName]"
@@ -139,6 +153,8 @@ const dialogMode = ref("");
 const dialogTitle = ref("");
 let animalTemplate = ref(null);
 let rawSelected = null;
+
+const showFiltros = ref(false);
 
 // Estado reactivo para los filtros activos
 const activeFilters = reactive(
