@@ -25,6 +25,7 @@
 
 		<!-- Filtros dinámicos -->
 		<div v-if="filters" v-show="showFiltros" class="filters-container mb-4">
+
 			<v-row>
 				<v-col v-for="(filterData, filterName) in filters" :key="filterName" cols="12" sm="6" md="4">
 					<component v-if="filterName.includes('fecha')" is="v-text-field" v-model="activeFilters[filterName]"
@@ -37,6 +38,11 @@
 						:items="['No', ...filterData.lista]" outlined dense></component>
 				</v-col>
 			</v-row>
+
+			<!-- Boton para limpiar los filtros -->
+			<v-btn @click="clearFilters()" color="error" prepend-icon="mdi-delete" variant="tonal">
+				Limpiar Filtros
+			</v-btn>
 		</div>
 
 		<!-- Tabla de Datos -->
@@ -182,6 +188,17 @@ const getComponent = (filterName) => {
 	if (filterName === 'hora') return VTimePicker;
 	return VSelect; // Default to v-select for other filters
 };
+
+/**
+ * Funcion para Limpiar los filtros
+ */
+function clearFilters() {
+    Object.keys(activeFilters).forEach(key => {
+        activeFilters[key] = "No"; // O cualquier valor que consideres como "sin filtro"
+    });
+    search.value = ""; // También puedes limpiar el campo de búsqueda si lo deseas
+}
+
 
 const emit = defineEmits(["update"]);
 
