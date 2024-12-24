@@ -3,7 +3,7 @@
     <v-text-field v-model="item.id" label="ID" type="number" required :readonly="mode === 'view'"
       :rules="numberRules" />
 
-    <v-autocomplete v-model="item.id_raza" :items=[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
+    <v-autocomplete v-model="item.id_raza" :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
       label="Tipo de Raza" required :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
 
     <v-text-field v-model="item.nombre" label="Nombre" required :readonly="mode === 'view'" />
