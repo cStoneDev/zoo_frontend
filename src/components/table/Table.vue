@@ -28,14 +28,22 @@
 
 			<v-row>
 				<v-col v-for="(filterData, filterName) in filters" :key="filterName" cols="12" sm="6" md="4">
-					<component v-if="filterName.includes('fecha')" is="v-text-field" v-model="activeFilters[filterName]"
+					
+					<!-- if para si es un dato de fecha -->
+					<component v-if="filterName.toLowerCase().includes('date')" is="v-text-field" v-model="activeFilters[filterName]"
 						:label="filterData.label" type="date" outlined dense></component>
 
-					<component v-else-if="filterName === 'hora'" is="v-text-field" v-model="activeFilters[filterName]"
+					<!-- Para si es un dato de hora -->
+					<component v-else-if="filterName === 'time'" is="v-text-field" v-model="activeFilters[filterName]"
 						:label="filterData.label" type="time" outlined dense></component>
 
-					<component v-else is="v-select" v-model="activeFilters[filterName]" :label="filterData.label"
+					<!-- Para si es un dato de nomenclador -->
+					<component v-else-if="filterName.toLowerCase().includes('id')" is="v-autocomplete" v-model="activeFilters[filterName]" :label="filterData.label"
 						:items="['No', ...filterData.lista]" outlined dense></component>
+
+					<!-- Para datos numericos -->
+					<component v-else  is="v-text-field" type="number" v-model="activeFilters[filterName]" :label="filterData.label"
+						outlined dense></component>
 				</v-col>
 			</v-row>
 
@@ -48,23 +56,20 @@
 		<!-- Tabla de Datos -->
 		<v-data-table :headers="headers" :items="filteredItems" :search="search" :hover="true" v-model="selected"
 			item-value="id" return-object select-strategy="single" height="360" item-key="id">
+			
+			<template v-slot:top>
+				<v-toolbar  :elevation="1">
+					<v-toolbar-title>Tabla</v-toolbar-title>
+					<v-btn color="#1A3E45" @click="handleAction('add', animalDefault, 'Agregar')" prependIcon="mdi-plus">
+						Agregar
+					</v-btn>
+				</v-toolbar>
+			</template>
+
+			<!-- para cuando no hay datos -->
 			<template v-slot:no-data>
 				<v-alert>No hay datos disponibles.</v-alert>
 			</template>
-
-			<!-- Los check boxes que se usaban antes para seleccionar las filas para hacer el crud -->
-
-			<!-- <template v-slot:item.data-table-select="{
-				internalItem,
-				isSelected,
-				toggleSelect,
-			}">
-				<v-checkbox-btn :model-value="isSelected(internalItem)" color="primary"
-					@update:model-value="toggleSelect(internalItem)"></v-checkbox-btn>
-			</template> -->
-
-			<!-- Botones de eliminar editar y ver por cada fila, utiliza la logica que existia antes de los check Boxes
-			 	Literalmente reutiliza toda la logica sin modificar nada-->
 			
 				<template v-slot:item.actions="{ item }">
 				<div class= "flex-column pa-2">
@@ -74,25 +79,16 @@
     				>
 						<!-- Los botones del crud llaman a unas funciones que se encargan de implementar la logica que existia de los check box
 						basicamente seleccionan el item y llaman al HandleActions y sigue el flujo de la logica antigua -->
+						<v-btn icon="mdi-eye"  @click="selectAndView(item)"></v-btn>
 						<v-btn icon="mdi-pencil"  @click="selectAndEdit(item)" ></v-btn>
 						<v-btn icon="mdi-delete" @click="selectAndDelete(item)"></v-btn>
-						<v-btn icon="mdi-eye"  @click="selectAndView(item)" ></v-btn>
 					</v-btn-group>
 				</div>
 
 			</template>
 
 
-			<template v-slot:footer.prepend>
-				<div id="CRUD-buttons-container" class="row">
-					<v-btn v-for="button in buttons" :key="button.text"
-						class="col-2 col-sm-6 col-md-4 col-lg-4 col-xl-2 col-xxl-2 mr-2 ml-4 mb-2" color="#1A3E45"
-						@click="handleAction(button.mode, animalDefault, button.text)">
-						<v-icon left>{{ button.icon }}</v-icon>
-						{{ button.text }}
-					</v-btn>
-				</div>
-			</template>
+
 		</v-data-table>
 
 		<!-- Diálogo Genérico -->
@@ -116,7 +112,6 @@
 			</v-card>
 		</v-dialog>
 	</v-card>
-
 </template>
 
 <script setup>
@@ -153,6 +148,7 @@ const props = defineProps({
 });
 
 const search = ref("");
+
 const selected = ref([]);
 const dialog = ref(false);
 const dialogMode = ref("");
@@ -162,6 +158,10 @@ let rawSelected = null;
 
 const showFiltros = ref(false);
 
+/**
+ * Funciones para los filtros
+ */
+
 // Estado reactivo para los filtros activos
 const activeFilters = reactive(
 	Object.keys(props.filters || {}).reduce((acc, key) => {
@@ -169,6 +169,11 @@ const activeFilters = reactive(
 		return acc;
 	}, {})
 );
+
+const JSONFilters = computed(() => ({
+    ...activeFilters,
+	searchField: search.value,
+}));
 
 // Computed para filtrar los items según los filtros activos
 const filteredItems = computed(() => {
@@ -182,12 +187,13 @@ const filteredItems = computed(() => {
 });
 
 
-
+//esto se usa?
 const getComponent = (filterName) => {
 	if (filterName === 'fecha') return VDatePicker;
 	if (filterName === 'hora') return VTimePicker;
 	return VSelect; // Default to v-select for other filters
 };
+
 
 /**
  * Funcion para Limpiar los filtros
