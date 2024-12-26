@@ -102,6 +102,8 @@ const getAnimalsFromService = async () => {
     const { animals } = await animalService.getAnimals(0, 10); // Ajusta los parámetros de la paginación si es necesario
     animalData.value = animals;
 
+    console.log(animalData);
+
     // Actualizar filtros basados en los datos obtenidos
     animalFilters.breedId.lista = animals.map(item => item.id_raza).sort((a, b) => a - b);
     animalFilters.speciesId.lista = animals.map(item => item.id_especie).sort((a, b) => a - b);

@@ -30,6 +30,7 @@ export const useAuthStore = defineStore("auth", () => {
         throw new Error("Respuesta del servidor inválida");
       }
     } catch (error) {
+      console.error(error);
       throw new Error("Credenciales incorrectas");
     }
   };
