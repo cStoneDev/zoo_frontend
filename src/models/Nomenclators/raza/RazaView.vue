@@ -49,7 +49,7 @@ const razaDefault = ref({
 })
 // Encabezados de la tabla
 const razaHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);

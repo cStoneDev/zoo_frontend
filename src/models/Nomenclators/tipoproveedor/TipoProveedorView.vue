@@ -41,7 +41,7 @@ const tipoproveedorDefault = ref({
 })
 // Encabezados de la tabla
 const tipoproveedorHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);

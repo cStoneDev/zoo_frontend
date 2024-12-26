@@ -45,7 +45,7 @@ const especialidadDefault = ref({
 })
 // Encabezados de la tabla
 const especialidadHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);

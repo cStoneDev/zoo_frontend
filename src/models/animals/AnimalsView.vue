@@ -26,6 +26,7 @@
     {
       id: 1,
       nombre: "León",
+      id_especie: "León",
       id_raza: 101,
       edad: 5,
       peso: 190.5,
@@ -34,6 +35,7 @@
     {
       id: 2,
       nombre: "Tigre",
+      id_especie: "Tigre",
       id_raza: 102,
       edad: 4,
       peso: 220.0,
@@ -42,6 +44,7 @@
     {
       id: 3,
       nombre: "Elefante",
+      id_especie: "Elefante",
       id_raza: 103,
       edad: 10,
       peso: 600.0,
@@ -50,6 +53,7 @@
     {
       id: 4,
       nombre: "Jirafa",
+      id_especie: "Jirafa",
       id_raza: 104,
       edad: 7,
       peso: 800.0,
@@ -58,6 +62,7 @@
     {
       id: 5,
       nombre: "Cebra",
+      id_especie: "Cebra",
       id_raza: 105,
       edad: 3,
       peso: 350.0,
@@ -66,6 +71,7 @@
     {
       id: 6,
       nombre: "Hipopótamo",
+      id_especie: "Hipopótamo",
       id_raza: 106,
       edad: 8,
       peso: 1500.0,
@@ -74,6 +80,7 @@
     {
       id: 7,
       nombre: "Rinoceronte",
+      id_especie: "Rinoceronte",
       id_raza: 107,
       edad: 6,
       peso: 2300.0,
@@ -82,26 +89,38 @@
   ]);
   
   const animalFilters = reactive({
-    id: {
-      lista: animalData.value.map(item => item.id),
-      label: "ID Animales"
-    },
-    id_raza: {
+    breedId: {
       lista: animalData.value.map(item=> item.id_raza).sort((a,b)=> a- b),
       label: "ID raza"
     },
-    edad: {
+    speciesId: {
+      lista: animalData.value.map(item=> item.id_raza).sort((a,b)=> a- b),
+      label: "ID especie"
+    },
+    minAge: {
       lista: animalData.value.map(item => item.edad).sort((a,b)=> a- b),
-      label: "Edad"
+      label: "Edad Mínima"
     },
-    peso: {
+    maxAge: {
+      lista: animalData.value.map(item => item.edad).sort((a,b)=> a- b),
+      label: "Edad Máxima"
+    },
+    minWeight: {
       lista: animalData.value.map(item => item.peso).sort((a,b)=> a- b),
-      label: "Peso"
+      label: "Peso Mínimo"
     },
-    dias_refugio: {
+    maxWeight: {
+      lista: animalData.value.map(item => item.peso).sort((a,b)=> a- b),
+      label: "Peso Máximo"
+    },
+    minDaysInShelter: {
       lista: animalData.value.map(item => item.dias_refugio).sort((a,b)=> a- b),
-      label: "Días en refugio"
-    }
+      label: "Días en refugio mínimo"
+    },
+    maxDaysInShelter: {
+      lista: animalData.value.map(item => item.dias_refugio).sort((a,b)=> a- b),
+      label: "Días en refugio máximo"
+    },
   });
 
 
@@ -109,14 +128,16 @@
       id: 0,
       nombre: "",
       id_raza: 0,
+      id_especie: 0,
       edad: 0,
       peso: 0,
       dias_refugio: 0,
     })
   // Encabezados de la tabla
   const animalHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
-    { title: "Tipo de Raza", value: "id_raza", sortable: "true" },
+    //{ title: "ID", value: "id", sortable: "true" },
+    { title: "Raza", value: "id_raza", sortable: "true" },
+    { title: "Especie", value: "id_especie", sortable: "true" },    
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Edad (años)", value: "edad", sortable: "true" },
     { title: "Peso (kg)", value: "peso", sortable: "true" },

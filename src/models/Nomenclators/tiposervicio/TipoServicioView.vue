@@ -41,7 +41,7 @@ const tiposervicioDefault = ref({
 })
 // Encabezados de la tabla
 const tiposervicioHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);

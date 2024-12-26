@@ -85,21 +85,29 @@ const contractData = ref([
 ]);
 
 const contractFilters = reactive({
-    id: {
-        lista: contractData.value.map(item => item.id), // Ejemplo de IDs posibles
-        label: "ID Contrato"
-    },
-    fecha_conciliacion: {
+    conciliationDate: {
         lista: [contractData.value.map(item => item.fecha_conciliacion)], // Fechas específicas
         label: "Fecha Conciliación"
     },
-    fecha_inicio: {
+    startDate: {
         lista: [contractData.value.map(item => item.fecha_inicio)], // Fechas específicas
         label: "Fecha Inicio"
     },
-    fecha_final: {
+    endDate: {
         lista: [contractData.value.map(item => item.fecha_final)], // Fechas específicas
         label: "Fecha Final"
+    },
+    basePriceMin: {
+        label: "Precio base mínimo"
+    },
+    basePriceMax: {  
+        label: "Precio base máximo"
+    },
+    minSurcharge: {
+        label: "Recargo mínimo"
+    },
+    maxSurcharge: {  
+        label: "Recargo máximo"
     },
 });
 
@@ -114,7 +122,7 @@ const contractDefault = ref({
 })
 // Encabezados de la tabla
 const contractHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Descripción", value: "descripcion", sortable: "true" },
     { title: "Precio Base", value: "precio_base", sortable: "true" },
     { title: "Recargo", value: "recargo", sortable: "true" },
