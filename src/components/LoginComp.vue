@@ -15,25 +15,15 @@
 
                         <v-sheet class="mx-auto" width="300">
                             <v-form fast-fail @submit.prevent="handleSubmit">
-                                <v-text-field 
-                                    prepend-inner-icon="mdi-account"
-                                    v-model="firstName" 
-                                    :rules="firstNameRules"
-                                    variant="underlined"
-                                    label="Usuario"
-                                    >
+                                <v-text-field prepend-inner-icon="mdi-account" v-model="firstName"
+                                    :rules="firstNameRules" variant="underlined" label="Usuario">
                                 </v-text-field>
 
-                                <v-text-field 
-                                    prepend-inner-icon="mdi-lock-outline"
+                                <v-text-field prepend-inner-icon="mdi-lock-outline"
                                     :type="visible ? 'text' : 'password'"
-                                    :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-                                    v-model="password" 
-                                    :rules="firstNameRules" 
-                                    variant="underlined"
-                                    label="Contraseña" 
-                                    @click:append-inner="visible = !visible"
-                                >
+                                    :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" v-model="password"
+                                    :rules="passwordRules" variant="underlined" label="Contraseña"
+                                    @click:append-inner="visible = !visible">
                                 </v-text-field>
 
                                 <br>
@@ -44,7 +34,8 @@
                                 </v-btn>
                             </v-form>
 
-                            <p class="forgot-password" style="text-align: center; cursor: pointer;" @click="router.push('/forgotPassword')">
+                            <p class="forgot-password" style="text-align: center; cursor: pointer;"
+                                @click="router.push('/forgotPassword')">
                                 Olvidé mi contraseña
                             </p>
 
@@ -59,49 +50,74 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth'
 
 const router = useRouter();
+const authStore = useAuthStore(); // Aquí invocas el store correctamente
 
 let firstName = ref('');
 let password = ref('');
 const visible = ref(false);
 
 let firstNameRules = [
-    value => {
-        if (value?.length >= 4) {
-            return true;
-        }
-        return 'Deben ser más de 4 caracteres';
-    }
+  value => value?.length >= 3 || 'Debe tener al menos 3 caracteres',
+  value => !!value || 'El nombre de usuario es obligatorio', 
 ];
 
-const handleSubmit = () => {
-    if (firstName.value === 'Pepe' && password.value === '1234') {
-        // Simulación de autenticación exitosa
-        // En un escenario real, aquí harías una petición a tu servidor
-        // para verificar las credenciales
-        simulateLogin();
-    } else {
-        // Maneja el caso de credenciales incorrectas (opcional)
-        alert('Credenciales incorrectas');
+let passwordRules = [
+  value => value?.length >= 4 || 'La contraseña debe tener al menos 4 caracteres',
+  value => !!value || 'La contraseña es obligatoria',
+];
+
+const form = ref(null);
+
+const handleSubmit = async () => {
+  // Verificación manual de las reglas
+  const isFirstNameValid = firstNameRules.every(rule => rule(firstName.value) === true);
+  const isPasswordValid = passwordRules.every(rule => rule(password.value) === true);
+
+  // Si ambas reglas son correctas, hacemos la solicitud
+  if (isFirstNameValid && isPasswordValid) {
+    try {
+      console.log(firstName.value, password.value);
+      await authStore.login(firstName.value, password.value);
+
+      // Redirigimos al dashboard si el login es exitoso
+      router.push('/dashboard');
+    } catch (error) {
+      alert(error.message || 'Error en las credenciales');
     }
+  } else {
+    alert('Por favor, complete los campos correctamente');
+  }
 };
-
-
-const simulateLogin = () => {
-
-    /*
-     simulateLogin: Esta función simula el inicio de sesión exitoso.
-     En una aplicación real, aquí harías una petición al servidor para autenticar al usuario y obtener un token.
-     Por simplicidad, se almacena un token simulado en localStorage.
-    */
-
-    // Simula el guardado del token en el localStorage (en una app real, esto vendría del servidor)
-    localStorage.setItem('token', 'simulated-token');
-    router.push('/dashboard'); // Redirige a la ruta "/"
-};
-
 </script>
+
+// const handleSubmit = () => {
+// if (firstName.value === 'Pepe' && password.value === '1234') {
+// // Simulación de autenticación exitosa
+// // En un escenario real, aquí harías una petición a tu servidor
+// // para verificar las credenciales
+// simulateLogin();
+// } else {
+// // Maneja el caso de credenciales incorrectas (opcional)
+// alert('Credenciales incorrectas');
+// }
+// };
+
+
+// const simulateLogin = () => {
+
+// /*
+// simulateLogin: Esta función simula el inicio de sesión exitoso.
+// En una aplicación real, aquí harías una petición al servidor para autenticar al usuario y obtener un token.
+// Por simplicidad, se almacena un token simulado en localStorage.
+// */
+
+// // Simula el guardado del token en el localStorage (en una app real, esto vendría del servidor)
+// localStorage.setItem('token', 'simulated-token');
+// router.push('/dashboard'); // Redirige a la ruta "/"
+// };
 
 
 <style scoped>
@@ -114,7 +130,8 @@ const simulateLogin = () => {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #F5F1E3, #f9f0cd); /* Degradado */
+    background: linear-gradient(135deg, #F5F1E3, #f9f0cd);
+    /* Degradado */
     padding: 16px;
     box-sizing: border-box;
 }
@@ -144,7 +161,7 @@ const simulateLogin = () => {
     border-radius: 10px;
 }
 
-.forgot-password{
+.forgot-password {
     color: #1A3E45;
     text-decoration: underline;
     transition: color 0.3s;
@@ -153,5 +170,4 @@ const simulateLogin = () => {
 .forgot-password:hover {
     color: #0C2D33;
 }
-
 </style>

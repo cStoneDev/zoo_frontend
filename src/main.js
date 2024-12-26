@@ -15,13 +15,6 @@ const app = createApp(App)
 const vuetify = createVuetify({
   components,
   directives,
-
-
-  locale: {
-    messages: {
-      noDataText: "No hay más datos disponibles", // Personaliza el texto aquí
-    },
-  },
 });
 
 app.use(createPinia())
