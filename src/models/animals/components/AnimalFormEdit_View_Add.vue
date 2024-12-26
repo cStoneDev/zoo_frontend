@@ -21,17 +21,29 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref, onMounted } from "vue";
+import animalService from "../animalService";
 
-defineProps({
-  item: {
-    type: Object,
-    default: () => ({}),
-  },
-  mode: {
-    type: String,
-    required: true,
-  },
+// defineProps({
+//   item: {
+//     type: Object,
+//     default: () => ({}),
+//   },
+//   mode: {
+//     type: String,
+//     required: true,
+//   },
+// });
+
+onMounted();
+
+const item = ref({
+  id: null,
+  id_raza: null,
+  nombre: "",
+  edad: null,
+  peso: null,
+  dias_refugio: null,
 });
 
 let numberRules = [
@@ -42,5 +54,41 @@ let numberRules = [
     return true;
   }
 ];
+
+// Método para obtener datos desde el servicio
+const fetchAnimalData = async () => {
+  try {
+    const response = await animalService.getAnimals();
+    if (response.data && response.data.content && response.data.content.length > 0) {
+      const animal = response.data.content[0]; // Toma el primer animal de la lista (ajusta según tus necesidades)
+      item.value = {
+        id: animal.id,
+        id_raza: animal.breedId, // Ajusta según el atributo del backend
+        nombre: animal.name,
+        edad: animal.age,
+        peso: animal.weight,
+        dias_refugio: calculateDaysInShelter(animal.entryDate), // Calcula los días en el refugio
+      };
+      console.log("Datos del animal cargados:", item.value);
+    } else {
+      console.warn("No hay datos disponibles en la respuesta.");
+    }
+  } catch (error) {
+    console.error("Error al obtener datos del servicio:", error);
+  }
+};
+
+// Método para calcular los días en el refugio
+const calculateDaysInShelter = entryDate => {
+  const entry = new Date(entryDate);
+  const today = new Date();
+  return Math.floor((today - entry) / (1000 * 60 * 60 * 24)); // Diferencia en días
+};
+
+// Llamar al método al cargar la pantalla
+onMounted(() => {
+  console.log("pincha");
+  fetchAnimalData();
+});
 
 </script>
