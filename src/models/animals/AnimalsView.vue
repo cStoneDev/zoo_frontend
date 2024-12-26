@@ -99,8 +99,10 @@ function handleUpdate({ mode, item }) {
 // Obtener animales desde el servicio
 const getAnimalsFromService = async () => {
   try {
-    const { animals } = await animalService.getAnimals(0, 10); // Ajusta los parámetros de la paginación si es necesario
+    const { animals } = await animalService.getAnimals(0, 20); // Ajustar los parámetros de la paginación si es necesario
     animalData.value = animals;
+
+    console.log(animalData);
 
     // Actualizar filtros basados en los datos obtenidos
     animalFilters.breedId.lista = animals.map(item => item.id_raza).sort((a, b) => a - b);

@@ -1,20 +1,19 @@
 import axios from '../../plugins/axios';
 
 
-const getAnimals = async (page = 0, size = 10, sort = 'name,asc', filters = {}) => {
+const getAnimals = async (pageNumber = 0, pageSize = 10, sort = 'name,asc', filters = {}) => {
   try {
     const response = await axios.get('http://localhost:8080/animals', {
       params: {
-        page,
-        size,
+        pageNumber, // Ajuste del nombre del parámetro
+        pageSize,   // Ajuste del nombre del parámetro
         sort,
-        ...filters, 
+        ...filters, // Filtros adicionales
       },
     });
 
     // Desestructuramos la respuesta para obtener los datos paginados
-    const { content, totalElements, totalPages, number, size: pageSize } = response.data;
-
+    const { content, totalElements, totalPages, number } = response.data;
 
     console.log('Animales recibidos:', content);
 

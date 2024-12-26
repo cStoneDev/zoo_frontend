@@ -23,6 +23,7 @@ import TipoServicioView from "@/models/Nomenclators/tiposervicio/TipoServicioVie
 import VetReportView from "@/models/reports/vet_contract/VetReportView.vue";
 import FeederReportView from "@/models/reports/feeder_contract/FeederReportView.vue";
 import ComplementaryReportView from "@/models/reports/complementary-contract/ComplementaryReportView.vue";
+import resetPassword from "@/components/resetPassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -138,6 +139,11 @@ const router = createRouter({
       path: "/forgotPassword",
       name: "forgotPassword",
       component: forgotPassword,
+    },
+    {
+      path: "/resetPassword",
+      name: "resetPassword",
+      component: resetPassword,
     },
   ],
 });
