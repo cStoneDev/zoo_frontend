@@ -85,19 +85,15 @@ const programData = ref([
 ]);
 
 const programFilters = reactive({
-  id: {
-    lista: programData.value.map(item=>item.id), // Ejemplo de IDs posibles
-    label: "ID Programa"
-  },
-  especie: {
+  speciesId: {
     lista: Array.from(new Set(programData.value.map(item => item.especie))),
     label: "Especie"
   },
-  fecha: {
+  date: {
     lista: [], // Fechas específicas
     label: "Fecha"
   },
-  hora: {
+  time: {
     lista: [], // Horarios disponibles
     label: "Hora"
   },
@@ -113,7 +109,7 @@ const programDefault = reactive({
 })
 // Encabezados de la tabla
 const programHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Actividad", value: "actividad", sortable: "true" },
     { title: "Especie", value: "especie", sortable: "true" },
     { title: "Fecha", value: "fecha", sortable: "true" },

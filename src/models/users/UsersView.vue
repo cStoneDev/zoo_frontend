@@ -36,10 +36,6 @@ const usersData = ref([
 ]);
 
 const usersFilters = reactive({
-    id: {
-        lista: usersData.value.map(item => item.id), // Ejemplo de IDs posibles
-        label: "ID Usuario"
-    },
     rol: {
         lista: ["Moderador", "Admin"],
         label: "Rol"
@@ -53,7 +49,7 @@ const usersDefault = reactive({
 })
 // Encabezados de la tabla
 const usersHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Rol", value: "rol", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},

@@ -45,7 +45,7 @@ const provinciaDefault = ref({
 })
 // Encabezados de la tabla
 const provinciaHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);

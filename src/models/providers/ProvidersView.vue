@@ -36,19 +36,15 @@ const providerData = ref([
 ]);
 
 const providerFilter = reactive({
-    id: {
-        lista: providerData.value.map(item => item.id),
-        label: "ID Proveedor"
-    },
-    id_provincia: {
+    provinceId: {
         lista: providerData.value.map(item => item.id_provincia),
         label: "ID Provincia"
     },
-    id_tipo_servicio: {
+    serviceTypeId: {
         lista: providerData.value.map(item => item.id_tipo_servicio),
         label: "ID tipo de servicio"
     },
-    id_tipo_proveedor: {
+    providerTypeId: {
         lista: providerData.value.map(item => item.id_tipo_proveedor),
         label: "ID tipo de proveedor"
     }
@@ -67,7 +63,7 @@ const providerDefault = ref({
 })
 // Encabezados de la tabla
 const providersHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Nombre", value: "nombre", sortable: "true" },
     { title: "Provincia", value: "id_provincia", sortable: "true" },
     { title: "Tipo_servicio", value: "id_tipo_servicio", sortable: "true" },

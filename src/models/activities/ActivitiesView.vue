@@ -68,19 +68,15 @@ const activitiesData = ref([
 ]);
 
 const activityFilters = reactive({
-  id: {
-    lista: activitiesData.value.map(item=>item.id), // Ejemplo de IDs posibles
-    label: "ID Actividad"
-  },
-  fecha: {
+  date: {
     lista: [], // Fechas específicas
     label: "Fecha"
   },
-  hora: {
+  time: {
     lista: [], // Horarios disponibles
     label: "Hora"
   },
-  id_contrato: {
+  contractId: {
     lista: new Set(activitiesData.value.map(item=>item.id_contrato).sort((a,b)=>a-b)), // IDs de contrato posibles
     label: "ID Contrato"
   }
@@ -96,7 +92,7 @@ const activityDefault = ref({
 })
 // Encabezados de la tabla
 const activityHeaders = ref([
-    { title: "ID", value: "id", sortable: "true" },
+//    { title: "ID", value: "id", sortable: "true" },
     { title: "Fecha", value: "fecha", sortable: "true" },
     { title: "Contrato", value: "id_contrato", sortable: "true" },
     { title: "Acciones", value: "actions", align: "center"},
