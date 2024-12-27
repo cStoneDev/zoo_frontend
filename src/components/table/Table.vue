@@ -54,8 +54,17 @@
 		</div>
 
 		<!-- Tabla de Datos -->
-		<v-data-table :headers="headers" :items="filteredItems" :search="search" :hover="true" v-model="selected"
-			item-value="id" return-object select-strategy="single" height="360" item-key="id">
+		<v-data-table-server 
+			:headers="headers" 
+			:items="filteredItems" 
+			:search="search" 
+			:hover="true" 
+			:loading="false"
+			:items-length="itemsLength"
+			v-model:items-per-page="pageStore.itemsPerPage"
+			@update:options="loadItems"
+
+			height="360">
 			
 			<template v-slot:top>
 				<v-toolbar  :elevation="1">
@@ -89,7 +98,7 @@
 
 
 
-		</v-data-table>
+		</v-data-table-server>
 
 		<!-- Diálogo Genérico -->
 		<v-dialog v-model="dialog" max-width="600">
@@ -118,6 +127,9 @@
 import { reactive, ref, computed } from "vue";
 import { toRaw } from "vue";
 import { defineProps, defineEmits } from "vue";
+import { usePageStore } from '/src/stores/page.js'
+
+const pageStore = usePageStore();
 
 
 const props = defineProps({
@@ -133,10 +145,6 @@ const props = defineProps({
 		type: Array,
 		required: true,
 	},
-	buttons: {
-		type: Array,
-		required: true,
-	},
 	animalDefault: {
 		type: Object,
 		required: true,
@@ -145,7 +153,14 @@ const props = defineProps({
 		type: Object,
 		required: false,
 	},
+	itemsLength: {
+		type: Number,
+		required: true,
+	},
+	
+	
 });
+
 
 const search = ref("");
 
@@ -157,6 +172,14 @@ let animalTemplate = ref(null);
 let rawSelected = null;
 
 const showFiltros = ref(false);
+
+
+const emit = defineEmits(["update"]);
+
+function loadItems(){
+	console.log("la tabla funciona")
+	emit("update")
+}
 
 /**
  * Funciones para los filtros
@@ -206,37 +229,8 @@ function clearFilters() {
 }
 
 
-const emit = defineEmits(["update"]);
 
-function handleAction(mode, animalDefault, text) {
-	dialogMode.value = mode;
-	animalTemplate = { ...animalDefault };
-	dialogTitle.value = text;
-	if (selected != false) {
-		rawSelected = selected.value.map((item) => toRaw(item))[0];
-		animalTemplate = { ...rawSelected };
-	}
 
-	if (rawSelected == null) {
-		if (dialogMode.value === "add") {
-			animalTemplate = { ...animalDefault };
-			dialog.value = true;
-		} else {
-			dialog.value = false;
-		}
-	} else {
-		dialog.value = true;
-		if (dialogMode.value === "add") {
-			animalTemplate = { ...animalDefault };
-			rawSelected = null;
-		}
-	}
-}
-
-function onSave() {
-	emit("update", { mode: dialogMode.value, item: animalTemplate });
-	dialog.value = false;
-}
 
 // FUNCIONES DEL VER, EDITAR Y ELIMINAR QUE UTILIZAN LA LOGICA DE LOS CHECK BOXES
 function selectAndEdit(item) {
