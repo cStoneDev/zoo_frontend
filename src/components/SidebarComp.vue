@@ -4,7 +4,7 @@
       <v-app-bar :color="'#1A3E45'">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Sistema de Gestión</v-toolbar-title>
+        <v-toolbar-title>{{ titleStore.titulo }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <v-btn icon @click="handleLogout">
@@ -175,6 +175,10 @@ import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
 
+import { useTitleStore } from '../stores/titleStore'
+
+const titleStore = useTitleStore(); // Creamos una instancia del store
+
 const router = useRouter();
 
 const handleLogout = () => {
@@ -195,6 +199,7 @@ const showModal2 = (modeText) => {
   mode = modeText;
   modalRef2.value.openModal();
 };
+
 
 </script>
 

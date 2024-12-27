@@ -25,6 +25,9 @@ import FeederReportView from "@/models/reports/feeder_contract/FeederReportView.
 import ComplementaryReportView from "@/models/reports/complementary-contract/ComplementaryReportView.vue";
 import resetPassword from "@/components/resetPassword.vue";
 
+//Manejo de titulos con pinia
+import { useTitleStore } from '../stores/titleStore'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -37,36 +40,43 @@ const router = createRouter({
           path: "dashboard",
           name: "Dashboard",
           component: DashboardView,
+          meta: { titulo: 'Estadísticas' }
         },
         {
           path: "/animals",
           name: "animals",
           component: AnimalsView,
+          meta: { titulo: 'Animales' }
         },
         {
           path: "/activities",
           name: "activities",
           component: ActivitiesView,
+          meta: { titulo: 'Actividades' }
         },
         {
           path: "/providers",
           name: "providers",
           component: ProvidersView,
+          meta: { titulo: 'Proveedores' }
         },
         {
           path: "/users",
           name: "users",
           component: UsersView,
+          meta: { titulo: 'Usuarios' }
         },
         {
           path: "/contracts",
           name: "contracts",
           component: ContractsView,
+          meta: { titulo: 'Contratos' }
         },
         {
           path: "/programs",
           name: "programs",
           component: ProgramsView,
+          meta: { titulo: 'Programación' }
         },
 
         // nomencladores
@@ -74,36 +84,43 @@ const router = createRouter({
           path: "/clinica",
           name: "clinica",
           component: ClinicaView,
+          meta: { titulo: 'Clinicas' }
         },
         {
           path: "/especialidad",
           name: "especialidad",
           component: EspecialidadView,
+          meta: { titulo: 'Especialidades' }
         },
         {
           path: "/especie",
           name: "especie",
           component: EspecieView,
+          meta: { titulo: 'Especies' }
         },
         {
           path: "/provincia",
           name: "provincia",
           component: ProvinciaView,
+          meta: { titulo: 'Provincias' }
         },
         {
           path: "/raza",
           name: "raza",
           component: RazaView,
+          meta: { titulo: 'Razas' }
         },
         {
           path: "/tipoproveedor",
           name: "tipoproveedor",
           component: TipoProveedorView,
+          meta: { titulo: 'Tipos de proveedores' }
         },
         {
           path: "/tiposervicio",
           name: "tiposervicio",
           component: TipoServicioView,
+          meta: { titulo: 'Tipos de Servicios' }
         },
         //reports
         {
@@ -114,16 +131,19 @@ const router = createRouter({
               path: "vet",
               name: "VetReport",
               component: VetReportView,
+              meta: { titulo: 'VetReport' }
             },
             {
               path: "feeder",
               name: "FeederReport",
               component: FeederReportView,
+              meta: { titulo: 'FeederReport' }
             },
             {
               path: "complementary",
               name: "ComplementaryReport",
               component: ComplementaryReportView,
+              meta: { titulo: 'ComplementaryReport' }
             },
           ],
         },
@@ -151,6 +171,11 @@ const router = createRouter({
 // Guard global
 router.beforeEach((to, from, next) => {
   const isAuthenticated = checkAuthentication(); // Comprueba si hay autenticación
+
+  const tituloStore = useTitleStore(); // Accedemos al store de Pinia
+  if (to.meta.titulo) {
+    tituloStore.setTitulo(to.meta.titulo); // Actualizamos el título según la ruta
+  }
 
   // Si la ruta actual NO es '/login' NI '/forgotPassword' Y el usuario NO está autenticado
   if (!["/login", "/forgotPassword"].includes(to.path) && !isAuthenticated) {
