@@ -1,10 +1,12 @@
 <template>
   <v-card class="container justify-content-center mt-5 mb-5">
-    <div class="chart-container">
-      <h2>Estadísiticas Mensuales</h2>
+    <!-- Mostrar los gráficos solo cuando los datos están cargados -->
+    <div class="chart-container" v-if="isDataLoaded">
+      <h2>Estadísticas Mensuales</h2>
       <Bar :data="barData" :options="barOptions" class="mb-5" />
       <v-divider />
-      <Line :data="lineData" :options="lineOptions" class="mb-5" />
+      <v-select :items="[2023, 2024, 2025, 2026]" label="Año" v-model="selectedYear" />
+      <Line :data="lineData" :options="lineOptions" class="mb-5" ref="lineChart" />
       <v-divider />
       <div class="pie-chart">
         <Pie :data="pieData" :options="pieOptions" class="mb-5" />
@@ -14,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive, onMounted , watch, nextTick} from 'vue';
 import {
   Chart as ChartJS,
   Title,
@@ -27,107 +29,176 @@ import {
   PointElement,
   Filler,
   ArcElement
-} from 'chart.js'
-import { Bar, Line, Pie } from 'vue-chartjs'
+} from 'chart.js';
+import { Bar, Line, Pie } from 'vue-chartjs';
+import dashboardService from '../views/dashboardService/dashboardService';
 
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, ArcElement, Title, Tooltip, Legend);
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Filler, ArcElement, Title, Tooltip, Legend)
+const lineChart = ref(null);
 
-let barData = ref({
-  labels: ['Enero', 'Febrero', 'Marzo'],
-  datasets: [{
-    label: 'Ventas',
-    data: [40, 20, 12],
-    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-    borderColor: 'rgba(75, 192, 192, 1)',
-    borderWidth: 1,
-    barThickness: 30 // Ajusta el ancho de las barras
-  }]
-})
+// Datos reactivos para los gráficos
+const isDataLoaded = ref(false);
+const selectedYear = ref(2024);
 
-let barOptions = ref({
+const barData = reactive({
+  labels: [],
+  datasets: [
+    {
+      label: 'Especies Más Registradas',
+      data: [],
+      backgroundColor: 'rgba(255, 159, 64, 0.6)',
+      borderColor: 'rgba(255, 159, 64, 1)',
+      borderWidth: 1,
+      barThickness: 30,
+    },
+  ],
+});
+
+const lineData = reactive({
+  labels: [],
+  datasets: [
+    {
+      label: 'Comportamiento mensual',
+      data: [],
+      fill: true,
+      backgroundColor: 'rgba(153, 102, 255, 0.5)',
+      borderColor: 'rgba(153, 102, 255, 1)',
+      tension: 0.3,
+    },
+  ],
+});
+
+const pieData = reactive({
+  labels: ['Especie 1', 'Especie 2', 'Especie 3', 'Especie 4', 'Especie 5'],
+  datasets: [
+    {
+      label: 'Especies Más Registradas',
+      data: [12, 19, 3, 5, 2],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+});
+
+// Opciones para los gráficos
+const barOptions = ref({
   responsive: true,
   plugins: {
     legend: {
       display: true,
-      position: 'top'
+      position: 'top',
     },
     title: {
       display: true,
-      text: 'Gráfico de Ventas por Mes'
-    }
+      text: 'Mayor cantidad de Especies',
+    },
   },
   scales: {
     y: {
-      beginAtZero: true
-    }
-  }
-})
+      beginAtZero: true,
+    },
+  },
+});
 
-let lineData = ref({
-  labels: ['Enero', 'Febrero', 'Marzo'],
-  datasets: [{
-    label: 'Tendencia de Ventas',
-    data: [30, 25, 15],
-    fill: true,
-    backgroundColor: 'rgba(153, 102, 255, 0.5)',
-    borderColor: 'rgba(153, 102, 255, 1)',
-    tension: 0.3
-  }]
-})
-
-let lineOptions = ref({
+const lineOptions = ref({
   responsive: true,
   plugins: {
     legend: {
       display: true,
-      position: 'top'
+      position: 'top',
     },
     title: {
       display: true,
-      text: 'Tendencia de Ventas'
-    }
+      text: 'Ingresos entradas de Animales',
+    },
   },
   scales: {
     y: {
-      beginAtZero: true
-    }
-  }
-})
+      beginAtZero: true,
+    },
+  },
+});
 
-let pieData = ref({
-  labels: ['Enero', 'Febrero', 'Marzo'],
-  datasets: [{
-    label: 'Distribución de Ventas',
-    data: [40, 20, 12],
-    backgroundColor: [
-      'rgba(255, 99, 132, 0.6)',
-      'rgba(54, 162, 235, 0.6)',
-      'rgba(255, 206, 86, 0.6)'
-    ],
-    borderColor: [
-      'rgba(255, 99, 132, 1)',
-      'rgba(54, 162, 235, 1)',
-      'rgba(255, 206, 86, 1)'
-    ],
-    borderWidth: 1
-  }]
-})
-
-let pieOptions = ref({
+const pieOptions = ref({
   responsive: true,
   plugins: {
     legend: {
       display: true,
-      position: 'top'
+      position: 'top',
     },
     title: {
       display: true,
-      text: 'Distribución de Ventas por Mes'
-    }
-  }
-})
+      text: 'Especies Más Registradas',
+    },
+  },
+});
 
+const updateLineChart = async () => {
+  try {
+    // Obtener los valores mensuales para el gráfico de líneas según el año seleccionado
+    const monthlyEntries = await dashboardService.getMonthEntries(selectedYear.value);
+    
+    // Actualizar los datos de las etiquetas y los valores de la línea
+    lineData.labels = monthlyEntries.map((entry) => entry.month);
+    lineData.datasets[0].data = monthlyEntries.map((entry) => entry.value);
+
+    // Forzar el re-render del gráfico
+    nextTick(() => {
+      const chartInstance = lineChart.value?.chart;  // Obtiene la instancia del gráfico
+      if (chartInstance) {
+        chartInstance.data.labels = lineData.labels;
+        chartInstance.data.datasets[0].data = lineData.datasets[0].data;
+        chartInstance.update(); // Actualiza el gráfico
+      } else {
+        console.error("El gráfico no está disponible para actualizar");
+      }
+    });
+
+    console.log(`Gráfico de líneas actualizado para el año ${selectedYear.value}`);
+  } catch (error) {
+    console.error('Error al actualizar el gráfico de líneas:', error);
+  }
+};
+
+// Observar cambios en selectedYear
+watch(selectedYear, async () => {
+  await updateLineChart();
+});
+
+// Cargar datos al montar el componente
+onMounted(async () => {
+  try {
+    const monthlyEntries = await dashboardService.getMonthEntries(2024);
+    lineData.labels = monthlyEntries.map((entry) => entry.month);
+    lineData.datasets[0].data = monthlyEntries.map((entry) => entry.value);
+
+    const topSpecies = await dashboardService.getTopSpecies();
+    barData.labels = topSpecies.map((species) => species.species);
+    barData.datasets[0].data = topSpecies.map((species) => species.count);
+
+    pieData.labels = topSpecies.map((species) => species.species);
+    pieData.datasets[0].data = topSpecies.map((species) => species.count);
+
+    isDataLoaded.value = true;
+    console.log('Datos cargados exitosamente');
+  } catch (error) {
+    console.error('Error al cargar los datos:', error);
+  }
+});
 </script>
 
 <style scoped>
