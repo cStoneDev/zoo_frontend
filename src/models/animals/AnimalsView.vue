@@ -14,8 +14,14 @@
     @crud="handleUpdate"
 > 
     <template #dialog-content="{ item, mode }">
-      <AnimalFormEdit_View_Add :item="item" :mode="mode" v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
-      <AnimalFormDelete :item="item" :mode="mode" v-if="mode == 'delete'" />
+      <AnimalFormEdit_View_Add 
+        :item="item" 
+        :mode="mode" 
+        v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
+      <AnimalFormDelete 
+      :item="item" 
+      :mode="mode" 
+      v-if="mode == 'delete'" />
     </template>
   </DataTable>
 </template>
@@ -96,9 +102,10 @@ const animalDefault = ref({
 const animalHeaders = ref([
   { title: "Nombre", value: "name", sortable: "false" },
   { title: "Edad (años)", value: "age", sortable: "false" },
-  { title: "Raza", value: "breedName", sortable: "false" },
   { title: "Especie", value: "specieName", sortable: "false" },
+  { title: "Raza", value: "breedName", sortable: "false" },
   { title: "Peso (kg)", value: "weight", sortable: "false" },
+  { title: "Día de entrada", value: "entryDate", sortable: "false" },
   { title: "Acciones", value: "actions", align: "center" },
 ]);
 
@@ -113,21 +120,36 @@ const confirmDeleteAnimal = async (id) => {
     await animalService.deleteAnimal(id); // Llama al servicio de eliminación
     animalData.value = animalData.value.filter((animal) => animal.id !== id);
     console.log(`Animal con ID ${id} eliminado exitosamente.`);
+    searchAnimalsFromService(); //para actualizar los cambios en la tabla
   } catch (error) {
     console.error(`Error al eliminar el animal con ID ${id}:`, error);
   }
 };
 
-//TIENES QUE TRABAJAR CON ESTE METODO PARA CREAR UN ANIMAL -> NO SE SI FUNCIONA
+
 
 //PUT ANIMAL
 async function handleCreateAnimal(newAnimal) {
   try {
-    const createdAnimal = await createAnimal(newAnimal);
-    animalData.value.push(createdAnimal); // Agrega el animal creado a la tabla localmente
+    console.log(newAnimal)
+    const createdAnimal = await animalService.createAnimal(newAnimal);
+    //animalData.value.push(createdAnimal); // Agrega el animal creado a la tabla localmente
     console.log('Animal agregado exitosamente:', createdAnimal);
+    searchAnimalsFromService(); //para actualizar los cambios en la tabla
   } catch (error) {
     console.error('Error al agregar el animal:', error);
+  }
+}
+
+//editar ANIMAL
+async function handleUpdateAnimal(id ,newAnimal) {
+  try {
+    const updatedAnimal = await animalService.updateAnimal(id, newAnimal);
+    //animalData.value.push(createdAnimal); // Agrega el animal creado a la tabla localmente
+    console.log('Animal editado exitosamente:', updatedAnimal);
+    searchAnimalsFromService(); //para actualizar los cambios en la tabla
+  } catch (error) {
+    console.error('Error al editar el animal:', error);
   }
 }
 
@@ -157,17 +179,12 @@ const getAnimalsFromService = async () => {
 const searchAnimalsFromService = async () => {
   try {
 
-    console.log("update peste a pinga este: ")
-    console.log( utilDataStore.searchCriteria )
+
     const { animals, pagination } = await animalService.searchAnimals(utilDataStore.searchCriteria); // Ajusta los parámetros de la paginación si es necesario
     const { totalElements, totalPages, currentPage, pageSize, sort, first, last, numberOfElements, pageable, empty, } = pagination;
     
     animalData.value = animals;
 
-    console.log("Animales que cojo del metodo")
-    console.log(animals)
-    console.log("Animales que van a la tabla")
-    console.log(animalData.value)
 
     currentPageData.value = totalElements;
     totalElementsData.value  = totalPages;
@@ -196,22 +213,18 @@ onMounted(() => {
 function handleUpdate({ mode, item }) {
   
   if (mode === 'add') {
-    animalData.value.push({ id: Date.now(), ...item });
+    handleCreateAnimal(item);
   } 
   
   else if (mode === 'edit') {
-    const index = animalData.value.findIndex((data) => data.id === item.id);
-    if (index !== -1) {
-      // Crear un nuevo arreglo con el elemento actualizado
-      animalData.value = animalData.value.map((data, i) =>
-        i === index ? { ...item } : data
-      );
-    }
+    handleUpdateAnimal(item.id , item)
   } 
   
   else if (mode === "delete") {
     confirmDeleteAnimal(item.id);
   }
+
+  
 }
 
 
