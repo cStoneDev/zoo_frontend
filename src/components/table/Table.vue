@@ -39,7 +39,7 @@
 
 					<!-- Para si es un dato de nomenclador -->
 					<component v-else-if="filterName.toLowerCase().includes('id')" is="v-autocomplete" v-model="activeFilters[filterName]" :label="filterData.label"
-						:items="['No', ...filterData.lista]" outlined dense></component>
+						:items="['0', ...filterData.lista]" outlined dense></component>
 
 					<!-- Para datos numericos -->
 					<component v-else  is="v-text-field" type="number" v-model="activeFilters[filterName]" :label="filterData.label"
@@ -53,7 +53,9 @@
 			</v-btn>
 		</div>
 
-		<!-- Tabla de Datos -->
+		<!-- Tabla de Datos 
+		 el loading en false se puede implementar en un futuro, es para que la tabla haga animacion de carga cuando hace una peticion
+		 Lo otro importante es el update options llama a la funcion loadItems, se llama siempre que se filtre o se pagine-->
 		<v-data-table-server 
 			:headers="headers" 
 			:items="filteredItems" 
@@ -61,7 +63,9 @@
 			:hover="true" 
 			:loading="false"
 			:items-length="itemsLength"
-			v-model:items-per-page="pageStore.itemsPerPage"
+			v-model:items-per-page="utilDataStore.itemsPerPage"
+			v-model:page="utilDataStore.page"
+			v-model="selected"
 			@update:options="loadItems"
 
 			height="360">
@@ -124,14 +128,18 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, computed, watch } from "vue";
 import { toRaw } from "vue";
 import { defineProps, defineEmits } from "vue";
-import { usePageStore } from '/src/stores/page.js'
 
-const pageStore = usePageStore();
+//store de pinia para los datos del paginado y demas utiles
+import { useUtilDataStore } from '/src/stores/utilData.js'
+const utilDataStore = useUtilDataStore();
 
 
+/**
+ * Props de la tabla
+ */
 const props = defineProps({
 	title: {
 		type: String,
@@ -161,7 +169,7 @@ const props = defineProps({
 	
 });
 
-
+//buscador del filtro
 const search = ref("");
 
 const selected = ref([]);
@@ -171,46 +179,76 @@ const dialogTitle = ref("");
 let animalTemplate = ref(null);
 let rawSelected = null;
 
+//variable para esconder-enseñar filtros
 const showFiltros = ref(false);
 
-
-const emit = defineEmits(["update"]);
-
-function loadItems(){
-	console.log("la tabla funciona")
-	emit("update")
-}
-
 /**
- * Funciones para los filtros
+ * Logica de la tabla y filtros
  */
 
-// Estado reactivo para los filtros activos
+
+// Funcion que existia de antes que vuelve los filtros reactivos y los inicializa
+//(no se como hacer para que inicialice en valores que yo quiera, les puse en 0 todos)
 const activeFilters = reactive(
 	Object.keys(props.filters || {}).reduce((acc, key) => {
-		acc[key] = "No"; // Inicializa todos los filtros como "No"
+		acc[key] = 0; // Inicializa todos los filtros como "No"
 		return acc;
 	}, {})
 );
 
-const JSONFilters = computed(() => ({
-    ...activeFilters,
-	searchField: search.value,
-}));
-
+// otra funcion que existia antes y no entiendo
 // Computed para filtrar los items según los filtros activos
 const filteredItems = computed(() => {
 	return props.items.filter((item) => {
 		return Object.entries(activeFilters).every(([key, value]) => {
-			if (value === "No") return true; // No filtra si está en "No"
-			if (value === "") return true; // No filtra si está en "" el date o la hora (backspace para borrar lo que hay en el campo de hora)
+			if (value === 0) return true; // No filtra si está en "No"
+			if (value === 0) return true; // No filtra si está en "" el date o la hora (backspace para borrar lo que hay en el campo de hora)
 			return item[key]?.toString() === value.toString();
 		});
 	});
 });
 
 
-//esto se usa?
+/**
+ * Funcion para Limpiar los filtros, los deja en 0, valor por defecto
+ */
+ function clearFilters() {
+    Object.keys(activeFilters).forEach(key => {
+        activeFilters[key] = 0; // O cualquier valor que consideres como "sin filtro"
+    });
+    search.value = ""; // También puedes limpiar el campo de búsqueda si lo deseas
+}
+
+
+
+//atributo computado que arma el JSON que necesita el backend para pedirle las cosas filtradas
+// se arma uniendo los filtros activos + el campo de busqueda + los valores del paginado
+const searchCriteria = computed(() => ({
+    ...activeFilters,
+	searchField: search.value,
+	pageNumber: utilDataStore.page - 1,
+	itemsPerPage: utilDataStore.itemsPerPage,
+}));
+
+//emits (solo funciona el del update que es para filtrar y cargar datos)
+const emit = defineEmits(["update", "crud"]);
+
+//funcion que llama el update, se encarga de actualizar el Json que hay q mandarle al backend para el post de update
+function loadItems(){
+	utilDataStore.searchCriteria = searchCriteria
+	emit("update")
+}
+
+//watch que detecta cuando cambie el JSON llama a la funcion de actualizar
+watch(searchCriteria, () => {
+  loadItems();
+}, { deep: true });
+
+
+
+
+
+//esto se usa?        ->   5 dias despues       sigo sin saber
 const getComponent = (filterName) => {
 	if (filterName === 'fecha') return VDatePicker;
 	if (filterName === 'hora') return VTimePicker;
@@ -218,19 +256,9 @@ const getComponent = (filterName) => {
 };
 
 
-/**
- * Funcion para Limpiar los filtros
- */
-function clearFilters() {
-    Object.keys(activeFilters).forEach(key => {
-        activeFilters[key] = "No"; // O cualquier valor que consideres como "sin filtro"
-    });
-    search.value = ""; // También puedes limpiar el campo de búsqueda si lo deseas
-}
 
-
-
-
+//3 funciones crud que corresponden a los 3 botones que hay por fila en la tabla
+//antes funcionaban ahora no
 
 // FUNCIONES DEL VER, EDITAR Y ELIMINAR QUE UTILIZAN LA LOGICA DE LOS CHECK BOXES
 function selectAndEdit(item) {
@@ -252,10 +280,51 @@ function selectAndDelete(item) {
 function selectAndView(item) {
     // Selecciona el elemento
     selected.value = [item]; // Asigna el elemento seleccionado como un array
-
     // Llama a handleAction para abrir el diálogo de edición
     handleAction('view', item, 'Ver');
 }
+
+
+/**
+ * 
+ * Funciones que habian antes funcionales, las q lanzaban los formularios del crud
+ * ya no funcionan
+ * 
+ * 
+ */
+
+function handleAction(mode, animalDefault, text) {
+	dialogMode.value = mode;
+	animalTemplate = { ...animalDefault };
+	dialogTitle.value = text;
+	if (selected != false) {
+		rawSelected = selected.value.map((item) => toRaw(item))[0];
+		animalTemplate = { ...rawSelected };
+	}
+
+	if (rawSelected == null) {
+		if (dialogMode.value === "add") {
+			animalTemplate = { ...animalDefault };
+			dialog.value = true;
+		} else {
+			dialog.value = false;
+		}
+	} else {
+		dialog.value = true;
+		if (dialogMode.value === "add") {
+			animalTemplate = { ...animalDefault };
+			rawSelected = null;
+		}
+	}
+}
+
+function onSave() {
+	emit("crud", { mode: dialogMode.value, item: animalTemplate });
+	dialog.value = false;
+}
+
+
+
 
 </script>
 

@@ -1,12 +1,17 @@
 <template>
+  <!-- Atributos del datatable -->
+  <!-- update y crud son eventos que se transmiten de padre a hijo -->
+  <!-- update es el unico que funciona, su objetivo es llamar a la funcion de actualizar(filtrar los datos) -->
+  <!-- cada vez que en la tabla se haga algo de paginado o filtrado -->
   <DataTable 
-    title="Lista de Animales" 
+    title="Lista de Animales"         
     :headers="animalHeaders" 
     :items="animalData" 
     :itemsLength="currentPageData"
     :animal-default="animalDefault" 
     :filters="animalFilters"
-    @update="getAnimalsFromService"
+    @update="searchAnimalsFromService"
+    @crud="handleUpdate"
 > 
     <template #dialog-content="{ item, mode }">
       <AnimalFormEdit_View_Add :item="item" :mode="mode" v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
@@ -23,19 +28,22 @@ import AnimalFormDelete from "./components/AnimalFormDelete.vue";
 import { ref, reactive, onMounted } from "vue";
 import animalService from "../animals/animalService"; // Asegúrate de importar el servicio correctamente
 
-import { usePageStore } from '/src/stores/page.js'
-// Datos de animales
-const animalData = ref([]);
+import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
+const utilDataStore = useUtilDataStore();         //el store
 
-const currentPageData = ref(0);
-const totalElementsData  = ref(0);
-const totalPagesData  = ref(0);
-const pageSizeData  = ref(0);
 
-const itemsPerPage = ref(10);
+const animalData = ref([]);        // los animales del backend
 
-const pageStore = usePageStore();
+const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los animales
+const totalElementsData  = ref(0);  
+const totalPagesData  = ref(0);     
+const pageSizeData  = ref(0);       
 
+
+/**
+ * Filtros que tendrá la tabla, los que sean selectores se les agrega su lista
+ * debe ser una llamada a los nomencladores supongo
+ */
 
 const animalFilters = reactive({
   breedId: {
@@ -59,18 +67,16 @@ const animalFilters = reactive({
     label: "Peso Mínimo"
   },
   maxWeight: {
-
     label: "Peso Máximo"
   },
   minDaysInShelter: {
-
     label: "Días en refugio mínimo"
   },
   maxDaysInShelter: {
-
     label: "Días en refugio máximo"
   },
 });
+
 
 const animalDefault = ref({
     id: 0,
@@ -84,7 +90,9 @@ const animalDefault = ref({
     weight:0,
 });
 
-// Encabezados de la tabla
+
+
+// Encabezados de la tabla (los sortable deben estar en true, hay q implementarlo para enviar eso en la peticion al backend)
 const animalHeaders = ref([
   { title: "Nombre", value: "name", sortable: "false" },
   { title: "Edad (años)", value: "age", sortable: "false" },
@@ -94,26 +102,10 @@ const animalHeaders = ref([
   { title: "Acciones", value: "actions", align: "center" },
 ]);
 
-
-<<<<<<< HEAD
-// Manejo de actualizaciones desde el hijo
-function handleUpdate({ mode, item }) {
-  if (mode === 'add') {
-    animalData.value.push({ id: Date.now(), ...item });
-  } else if (mode === 'edit') {
-    const index = animalData.value.findIndex((data) => data.id === item.id);
-    if (index !== -1) {
-      animalData.value = animalData.value.map((data, i) =>
-        i === index ? { ...item } : data
-      );
-    }
-  } else if (mode === "delete") {
-    confirmDeleteAnimal(item.id);
-    //animalData.value = animalData.value.filter((data) => data.id !== item.id);
-  }
-}
-=======
->>>>>>> cfe8884c24e8c5d618f843505ce1589fd4582a75
+/**
+ * Metodos del animal service que son las llamadas al backend
+ * 
+ */
 
 // DELETE ANIMAL
 const confirmDeleteAnimal = async (id) => {
@@ -139,13 +131,37 @@ async function handleCreateAnimal(newAnimal) {
   }
 }
 
-// GET ANIMALS
+// GET ANIMALS. Obtener los animales por primera vez
 const getAnimalsFromService = async () => {
   try {
-    const { animals, pagination } = await animalService.getAnimals(0, pageStore.itemsPerPage); // Ajusta los parámetros de la paginación si es necesario
-    const { totalElements, totalPages, currentPage, pageSize } = pagination;
+                                                                      //se le pasa la pagina - 1, y los items por paginas
+    const { animals, pagination } = await animalService.getAnimals(utilDataStore.page - 1, utilDataStore.itemsPerPage); 
     
-    console.log("yo pido " + pageStore.itemsPerPage)
+    const { totalElements, totalPages, currentPage, pageSize } = pagination; //para obtener los datos de la paginacion
+
+    
+    animalData.value = animals;           //aqui coges los datos que pediste
+
+    currentPageData.value = totalElements;
+    totalElementsData.value  = totalPages;      //y aqui  los datos del paginado
+    totalPagesData.value  = currentPage;
+    pageSizeData.value  = pageSize;
+
+
+  } catch (error) {
+    console.error('Error al cargar los animales:', error);
+  }
+};
+
+// Search ANIMALS
+const searchAnimalsFromService = async () => {
+  try {
+
+    console.log("update peste a pinga este: ")
+    console.log( utilDataStore.searchCriteria )
+    const { animals, pagination } = await animalService.searchAnimals(utilDataStore.searchCriteria); // Ajusta los parámetros de la paginación si es necesario
+    const { totalElements, totalPages, currentPage, pageSize, sort, first, last, numberOfElements, pageable, empty, } = pagination;
+    
     animalData.value = animals;
 
     currentPageData.value = totalElements;
@@ -153,6 +169,8 @@ const getAnimalsFromService = async () => {
     totalPagesData.value  = currentPage;
     pageSizeData.value  = pageSize;
     // Actualizar filtros basados en los datos obtenidos
+
+    console.log(search)
 
   } catch (error) {
     console.error('Error al cargar los animales:', error);
@@ -164,4 +182,34 @@ const getAnimalsFromService = async () => {
 onMounted(() => {
   getAnimalsFromService();
 });
+
+
+
+/**
+ * 
+ * Funcion del antiguo crud que hay q implementar de 0
+ */
+
+function handleUpdate({ mode, item }) {
+  
+  if (mode === 'add') {
+    animalData.value.push({ id: Date.now(), ...item });
+  } 
+  
+  else if (mode === 'edit') {
+    const index = animalData.value.findIndex((data) => data.id === item.id);
+    if (index !== -1) {
+      // Crear un nuevo arreglo con el elemento actualizado
+      animalData.value = animalData.value.map((data, i) =>
+        i === index ? { ...item } : data
+      );
+    }
+  } 
+  
+  else if (mode === "delete") {
+      animalData.value = animalData.value.filter((data) => data.id !== item.id);
+  }
+}
+
+
 </script>
