@@ -210,7 +210,7 @@ function handleUpdate({ mode, item }) {
   } 
   
   else if (mode === "delete") {
-      animalData.value = animalData.value.filter((data) => data.id !== item.id);
+    confirmDeleteAnimal(item.id);
   }
 }
 
