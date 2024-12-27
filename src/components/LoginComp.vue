@@ -65,6 +65,7 @@ const alertVisible = ref(false);
 //Para el manejo de las notificaciones
 
 const alertText = ref('');
+const visible = ref(false);
 
 let firstNameRules = [
     value => value?.length >= 3 || 'Debe tener al menos 3 caracteres',
