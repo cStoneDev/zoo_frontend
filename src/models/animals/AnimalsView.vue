@@ -207,7 +207,7 @@ onMounted(() => {
 
 /**
  * 
- * Funcion del antiguo crud que hay q implementar de 0
+ * Funcion que llama a las funciones del crud
  */
 
 function handleUpdate({ mode, item }) {

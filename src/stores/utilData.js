@@ -11,7 +11,16 @@ export const useUtilDataStore = defineStore('utilData', () => {
   const page = ref(1)  // pagina donde estamos (para la tabla la primera pagina es 1, para el backend es 0, asi que en las peticiones se pone dato-1)
   let searchCriteria = ref([])    //el json para el post de filtrar
 
-  //hacer una funcion para resetear todos estos valores para que cuando cambies de tabla no se mantengan esos datos
+  const resetData = () => {
+    itemsPerPage.value = 5
+    page.value = 1
+    searchCriteria.value = []
+  }
 
-  return { itemsPerPage, page, searchCriteria }
+  return { 
+      itemsPerPage, 
+      page, 
+      searchCriteria,
+      resetData,
+    }
 })
