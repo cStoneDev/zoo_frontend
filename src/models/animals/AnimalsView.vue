@@ -92,11 +92,36 @@ function handleUpdate({ mode, item }) {
       );
     }
   } else if (mode === "delete") {
-    animalData.value = animalData.value.filter((data) => data.id !== item.id);
+    confirmDeleteAnimal(item.id);
+    //animalData.value = animalData.value.filter((data) => data.id !== item.id);
   }
 }
 
-// Obtener animales desde el servicio
+// DELETE ANIMAL
+const confirmDeleteAnimal = async (id) => {
+  try {
+    await animalService.deleteAnimal(id); // Llama al servicio de eliminación
+    animalData.value = animalData.value.filter((animal) => animal.id !== id);
+    console.log(`Animal con ID ${id} eliminado exitosamente.`);
+  } catch (error) {
+    console.error(`Error al eliminar el animal con ID ${id}:`, error);
+  }
+};
+
+//TIENES QUE TRABAJAR CON ESTE METODO PARA CREAR UN ANIMAL -> NO SE SI FUNCIONA
+
+//PUT ANIMAL
+async function handleCreateAnimal(newAnimal) {
+  try {
+    const createdAnimal = await createAnimal(newAnimal);
+    animalData.value.push(createdAnimal); // Agrega el animal creado a la tabla localmente
+    console.log('Animal agregado exitosamente:', createdAnimal);
+  } catch (error) {
+    console.error('Error al agregar el animal:', error);
+  }
+}
+
+// GET ANIMALS
 const getAnimalsFromService = async () => {
   try {
     const { animals } = await animalService.getAnimals(0, 20); // Ajustar los parámetros de la paginación si es necesario
