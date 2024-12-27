@@ -58,7 +58,7 @@
 		 Lo otro importante es el update options llama a la funcion loadItems, se llama siempre que se filtre o se pagine-->
 		<v-data-table-server 
 			:headers="headers" 
-			:items="filteredItems" 
+			:items="items" 
 			:search="search" 
 			:hover="true" 
 			:loading="false"
@@ -196,19 +196,6 @@ const activeFilters = reactive(
 	}, {})
 );
 
-// otra funcion que existia antes y no entiendo
-// Computed para filtrar los items según los filtros activos
-const filteredItems = computed(() => {
-	return props.items.filter((item) => {
-		return Object.entries(activeFilters).every(([key, value]) => {
-			if (value === 0) return true; // No filtra si está en "No"
-			if (value === 0) return true; // No filtra si está en "" el date o la hora (backspace para borrar lo que hay en el campo de hora)
-			return item[key]?.toString() === value.toString();
-		});
-	});
-});
-
-
 /**
  * Funcion para Limpiar los filtros, los deja en 0, valor por defecto
  */
@@ -324,7 +311,18 @@ function onSave() {
 }
 
 
-
+// Funcion culpable que hacia que los filtros no funcionaban
+//actualizacion: arregle el bug de que no filtraba, era por esta funcion
+//que se encargaba de filtrar, ahora creo que no hace falta porque filtra el back
+const filteredItems = computed(() => {
+	return props.items.filter((item) => {
+		return Object.entries(activeFilters).every(([key, value]) => {
+			if (value === 0) return true; // No filtra si está en "No"
+			if (value === 0) return true; // No filtra si está en "" el date o la hora (backspace para borrar lo que hay en el campo de hora)
+			return item[key]?.toString() === value.toString();
+		});
+	});
+});
 
 </script>
 

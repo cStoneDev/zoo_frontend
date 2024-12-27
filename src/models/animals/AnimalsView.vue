@@ -164,13 +164,16 @@ const searchAnimalsFromService = async () => {
     
     animalData.value = animals;
 
+    console.log("Animales que cojo del metodo")
+    console.log(animals)
+    console.log("Animales que van a la tabla")
+    console.log(animalData.value)
+
     currentPageData.value = totalElements;
     totalElementsData.value  = totalPages;
     totalPagesData.value  = currentPage;
     pageSizeData.value  = pageSize;
     // Actualizar filtros basados en los datos obtenidos
-
-    console.log(search)
 
   } catch (error) {
     console.error('Error al cargar los animales:', error);
