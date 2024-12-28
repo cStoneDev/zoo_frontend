@@ -102,7 +102,7 @@ const animalDefault = ref({
 const animalHeaders = ref([
   { title: "Nombre", value: "name", sortable: "false" },
   { title: "Edad (años)", value: "age", sortable: "false" },
-  { title: "Especie", value: "specieName", sortable: "false" },
+  { title: "Especie", value: "speciesName", sortable: "false" },
   { title: "Raza", value: "breedName", sortable: "false" },
   { title: "Peso (kg)", value: "weight", sortable: "false" },
   { title: "Día de entrada", value: "entryDate", sortable: "false" },
