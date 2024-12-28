@@ -73,7 +73,6 @@ const razaHeaders = ref([
     confirmDeleteBreed(item.id);
   }
 
-  
 }
 
 

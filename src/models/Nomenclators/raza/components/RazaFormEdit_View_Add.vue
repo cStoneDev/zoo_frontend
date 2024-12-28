@@ -16,22 +16,13 @@
     />
 
     <v-autocomplete v-if="mode === 'view'" 
-      v-model="item.specieName" 
+      v-model="item.speciesName" 
       :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
       label="Especie" 
       required 
       :readonly="mode === 'view'" 
       no-data-text="No hay más datos disponibles" />
   </template>
-  
-
-
-  const razaDefault = ref({
-    id: 0,
-    name: "",
-    speciesId: 0,
-    speciesName: ""
-})
 
   <script setup>
     import { defineProps } from "vue";
