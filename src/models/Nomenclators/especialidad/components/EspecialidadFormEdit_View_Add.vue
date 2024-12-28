@@ -1,7 +1,7 @@
 <template>
     <v-form>
       <v-text-field 
-        v-model="item.nombre" 
+        v-model="item.name" 
         label="Nombre" 
         required 
         :readonly="mode === 'view'" 
