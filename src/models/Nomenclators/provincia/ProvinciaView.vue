@@ -164,6 +164,7 @@ async function handleUpdateProvince(id ,newProvince) {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getProvincesFromService();
+  utilDataStore.resetData();
 });
 
 

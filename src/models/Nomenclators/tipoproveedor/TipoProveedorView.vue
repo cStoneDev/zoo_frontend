@@ -164,6 +164,7 @@ async function handleUpdateProvidertype(id ,newProvidertype) {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getProvidertypeFromService();
+  utilDataStore.resetData();
 });
 
 

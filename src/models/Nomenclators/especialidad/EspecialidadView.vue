@@ -162,6 +162,7 @@ async function handleUpdateSpeciality(id ,newSpeciality) {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getSpecialityFromService();
+  utilDataStore.resetData();
 });
 
 

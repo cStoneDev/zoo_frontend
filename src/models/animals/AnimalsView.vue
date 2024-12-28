@@ -201,6 +201,7 @@ const searchAnimalsFromService = async () => {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getAnimalsFromService();
+  utilDataStore.resetData();
 });
 
 

@@ -162,6 +162,7 @@ async function handleUpdateClinic(id ,newClinic) {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getClinicFromService();
+  utilDataStore.resetData();
 });
 
 

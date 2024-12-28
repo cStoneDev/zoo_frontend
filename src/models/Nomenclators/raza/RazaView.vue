@@ -166,6 +166,7 @@ async function handleUpdateBreed(id ,newBreed) {
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getBreedsFromService();
+  utilDataStore.resetData();
 });
 
 </script>
