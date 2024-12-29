@@ -7,7 +7,7 @@
           <Bar :data="barData" :options="barOptions" class="mb-5" />
         </div>
         <div class="chart-element">
-          <Line :data="activeContractsData" :options="activeContractsOptions" class="mb-5" ref="activeContractsChart" />
+          <Line :data="line2Data" :options="lineOptions2" class="mb-5" ref="lineOptions2" />
         </div>
         <div class="chart-element">
           <div class="selector-container">
@@ -80,11 +80,12 @@ const lineData = reactive({
 });
 
 const pieData = reactive({
-  labels: ['Especie 1', 'Especie 2', 'Especie 3', 'Especie 4', 'Especie 5'],
+  labels: [],
   datasets: [
     {
-      label: 'Especies Más Registradas',
-      data: [12, 19, 3, 5, 2],
+      label: 'Contratos Activos',
+      data: [],
+      fill: true,
       backgroundColor: [
         'rgba(255, 99, 132, 0.6)',
         'rgba(54, 162, 235, 0.6)',
@@ -104,11 +105,11 @@ const pieData = reactive({
   ],
 });
 
-const activeContractsData = reactive({
+const line2Data = reactive({
   labels: [],
   datasets: [
     {
-      label: 'Contratos Activos',
+      label: 'Falta esta grafica',
       data: [],
       fill: true,
       backgroundColor: 'rgba(75, 192, 192, 0.5)',
@@ -166,12 +167,12 @@ const pieOptions = ref({
     },
     title: {
       display: true,
-      text: 'Especies Más Registradas',
+      text: 'Contratos activos',
     },
   },
 });
 
-const activeContractsOptions = ref({
+const lineOptions2 = ref({
   responsive: true,
   plugins: {
     legend: {
@@ -180,7 +181,7 @@ const activeContractsOptions = ref({
     },
     title: {
       display: true,
-      text: 'Contratos Activos',
+      text: 'Falta esta grafica',
     },
   },
   scales: {
@@ -236,11 +237,19 @@ onMounted(async () => {
 
     const contract = await dashboardService.getActiveContracts();
     console.log(contract);
-    activeContractsData.labels = contract.map((contract) => contract.contract);
-    activeContractsData.datasets[0].data = contract.map((contract) => contract.count);
+    // if (contract != null) {
+      pieData.labels = contract.map((contract) => contract.contract);
+      pieData.datasets[0].data = contract.map((contract) => contract.value);
+    // }
+    // else
+    // pieData.labels = ("No hay contratos activos");
 
-    pieData.labels = topSpecies.map((species) => species.species);
-    pieData.datasets[0].data = topSpecies.map((species) => species.count);
+    console.log('Datos de pastel:', pieData.datasets[0].data);
+
+    //REFACTORIZAR PARA ESTE line2Data
+    // const contract = await dashboardService.getActiveContracts();
+    // activeContractsData.labels = contract.map((contract) => contract.contract);
+    // activeContractsData.datasets[0].data = contract.map((contract) => contract.count);
 
     isDataLoaded.value = true;
     console.log('Datos cargados exitosamente');
@@ -290,7 +299,7 @@ h2 {
 
 .pie-chart {
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
 }
 
 @media (max-width: 1024px) {
