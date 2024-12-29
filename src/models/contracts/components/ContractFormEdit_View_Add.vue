@@ -1,27 +1,51 @@
 <template>
   <v-form>
-    <v-text-field v-model="item.id" label="ID" type="number" required :readonly="mode === 'view'"
+    <!-- <v-text-field v-model="item.id" label="ID" type="number" required :readonly="mode === 'view'"
+      :rules="numberRules" /> -->
+
+
+    <v-autocomplete 
+      v-model="item.providerId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Proveedor" 
+      required
+      :readonly="mode === 'view'"
+      no-data-text="No hay más datos disponibles" />
+
+    <v-text-field 
+      v-model="item.basePrice" 
+      label="Precio base" 
+      type="number" 
+      required 
+      :readonly="mode === 'view'"
       :rules="numberRules" />
 
-    <!-- hay que ponerle v-model al select -->
-    <v-autocomplete v-model="item.id_tipo_servicio" :items="[1, 2, 3, 4, 5]" label="Proveedor" required
-      :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
-
-    <v-text-field v-model="item.precio_base" label="Precio" type="number" required :readonly="mode === 'view'"
-      :rules="numberRules" />
-
-    <v-text-field v-model="item.recargo" label="Recargo" type="number" required :readonly="mode === 'view'"
-      :rules="numberRules" />
-
-    <v-text-field v-model="item.fecha_conciliacion" label="Fecha de conciliación" type="date" required
+    <v-text-field 
+      v-model="item.conciliationDate" 
+      label="Fecha de conciliación" 
+      type="text" 
+      required
       :readonly="mode === 'view'" />
 
-    <v-text-field v-model="item.fecha_inicio" label="Fecha de inicio" type="date" required
+    <v-text-field 
+      v-model="item.startingDate" 
+      label="Fecha de inicio" 
+      type="text" 
+      required
       :readonly="mode === 'view'" />
 
-    <v-text-field v-model="item.fecha_final" label="Fecha final" type="date" required :readonly="mode === 'view'" />
+    <v-text-field 
+      v-model="item.endingDate" 
+      label="Fecha final" 
+      type="text" 
+      required
+      :readonly="mode === 'view'" />
 
-    <v-textarea v-model="item.descripcion" label="Descripcion" required :readonly="mode === 'view'"
+    <v-textarea 
+      v-model="item.description" 
+      label="Descripcion" 
+      required 
+      :readonly="mode === 'view'"
       :rules="textRules" />
 
   </v-form>
