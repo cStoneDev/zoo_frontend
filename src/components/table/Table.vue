@@ -63,6 +63,8 @@
 			:hover="true" 
 			:loading="false"
 			:items-length="itemsLength"
+   			:itemsPerPageText="footerProps.itemsPerPageText"
+    		:itemsPerPageOptions="footerProps.itemsPerPageOptions"
 			v-model:items-per-page="utilDataStore.itemsPerPage"
 			v-model:page="utilDataStore.page"
 			v-model="selected"
@@ -164,10 +166,15 @@ const props = defineProps({
 	itemsLength: {
 		type: Number,
 		required: true,
-	},
-	
+	},	
 	
 });
+
+const footerProps = {
+  itemsPerPageText: "Elementos por página", 
+  itemsPerPageOptions: [5, 10, 20, 50] 
+}
+
 
 //buscador del filtro
 const search = ref("");
