@@ -183,6 +183,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next(); // Permite la navegación
   }
+  
 });
 
 // Funcion para comprobar autentificacion

@@ -50,7 +50,29 @@ const getMonthEntries = async (year) => {
   }
 };
 
+// GET ACTIVE CONTRACTS
+const getActiveContracts = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/dashboard/activeContracts");
+
+    const data = response.data;
+    
+    const contractEntries = Object.entries(data).map(([contract, value]) => ({
+      contract,
+      value,
+    }));
+
+    console.log("Contratos activos obtenidos:", contractEntries);
+
+    return contractEntries;
+  } catch (error) {
+    console.error("Error al obtener los contratos activos:", error);
+    throw error;
+  }
+};
+
 export default{
     getMonthEntries,
     getTopSpecies,
+    getActiveContracts,
 }

@@ -1,22 +1,32 @@
 <template>
   <v-card class="container justify-content-center mt-5 mb-5">
-    <!-- Mostrar los gráficos solo cuando los datos están cargados -->
     <div class="chart-container" v-if="isDataLoaded">
       <h2>Estadísticas Mensuales</h2>
-      <Bar :data="barData" :options="barOptions" class="mb-5" />
-      <v-divider />
-      <v-select :items="[2023, 2024, 2025, 2026]" label="Año" v-model="selectedYear" />
-      <Line :data="lineData" :options="lineOptions" class="mb-5" ref="lineChart" />
-      <v-divider />
-      <div class="pie-chart">
-        <Pie :data="pieData" :options="pieOptions" class="mb-5" />
+      <div class="matrix-container">
+        <div class="chart-element" style="align-content: center;">
+          <Bar :data="barData" :options="barOptions" class="mb-5" />
+        </div>
+        <div class="chart-element">
+          <Line :data="activeContractsData" :options="activeContractsOptions" class="mb-5" ref="activeContractsChart" />
+        </div>
+        <div class="chart-element">
+          <div class="selector-container">
+            <v-select :items="[2023, 2024, 2025, 2026]" label="Año" v-model="selectedYear" dense />
+          </div>
+          <Line :data="lineData" :options="lineOptions" class="mb-5" ref="lineChart" />
+        </div>
+        <div class="chart-element">
+          <div class="pie-chart">
+            <Pie :data="pieData" :options="pieOptions" class="mb-5" />
+          </div>
+        </div>
       </div>
     </div>
   </v-card>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted , watch, nextTick} from 'vue';
+import { ref, reactive, onMounted, watch, nextTick } from 'vue';
 import {
   Chart as ChartJS,
   Title,
@@ -94,6 +104,20 @@ const pieData = reactive({
   ],
 });
 
+const activeContractsData = reactive({
+  labels: [],
+  datasets: [
+    {
+      label: 'Contratos Activos',
+      data: [],
+      fill: true,
+      backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      tension: 0.3,
+    },
+  ],
+});
+
 // Opciones para los gráficos
 const barOptions = ref({
   responsive: true,
@@ -147,11 +171,31 @@ const pieOptions = ref({
   },
 });
 
+const activeContractsOptions = ref({
+  responsive: true,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Contratos Activos',
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+});
+
+//ESTE METODO ES ESPECIFICAMENTE PARA ACTUALIZAR EL GRAFICO DEL SELECTOR
 const updateLineChart = async () => {
   try {
     // Obtener los valores mensuales para el gráfico de líneas según el año seleccionado
     const monthlyEntries = await dashboardService.getMonthEntries(selectedYear.value);
-    
+
     // Actualizar los datos de las etiquetas y los valores de la línea
     lineData.labels = monthlyEntries.map((entry) => entry.month);
     lineData.datasets[0].data = monthlyEntries.map((entry) => entry.value);
@@ -190,6 +234,11 @@ onMounted(async () => {
     barData.labels = topSpecies.map((species) => species.species);
     barData.datasets[0].data = topSpecies.map((species) => species.count);
 
+    const contract = await dashboardService.getActiveContracts();
+    console.log(contract);
+    activeContractsData.labels = contract.map((contract) => contract.contract);
+    activeContractsData.datasets[0].data = contract.map((contract) => contract.count);
+
     pieData.labels = topSpecies.map((species) => species.species);
     pieData.datasets[0].data = topSpecies.map((species) => species.count);
 
@@ -202,26 +251,52 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.matrix-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
 .chart-container {
-  width: 70vw;
-  margin: auto;
-  height: auto;
-  padding: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  gap: 20px;
+  width: 100%;
+  padding: 20px;
+}
+
+.chart-element {
+  flex: 1 1 calc(50% - 16px);
+  max-width: calc(50% - 16px);
+  padding: 16px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selector-container {
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .pie-chart {
-  justify-content: center;
-  width: 80%;
-  margin-left: 10%;
-  height: auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 1024px) {
+  .chart-element {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
 </style>
