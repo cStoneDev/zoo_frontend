@@ -30,6 +30,7 @@ import {  ref, reactive, onMounted  } from "vue";
 
 
 import programationService from "../programs/programationService"; // Asegúrate de importar el servicio correctamente
+import speciesService from "../Nomenclators/especie/speciesService";
 
 import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
 const utilDataStore = useUtilDataStore();         //el store
@@ -42,7 +43,7 @@ const totalElementsData  = ref(0);
 const totalPagesData  = ref(0);     
 const pageSizeData  = ref(0);       
 
-
+const speciesData = ref([]);
 
 
 const programationFilters = reactive({
@@ -198,10 +199,42 @@ const searchProgramationFromService = async () => {
   }
 };
 
+
+const getSpeciesFromService = async () => {
+  try {
+    let allSpecies = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { species, pagination } = await speciesService.getSpecies(currentPage);
+        
+        if(species){
+          allSpecies.push(...species); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    speciesData.value = allSpecies; // Actualizamos breedData con todas las razas
+    console.log(speciesData.value);
+
+    programationFilters.speciesId.lista = allSpecies.map(species => ({
+        label: species.name,
+        value: species.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar las especies:', error);
+  }
+};
+
+
 //Llamar a la función al montar el componente
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getProgramationFromService();
+  getSpeciesFromService();
   utilDataStore.resetData();
 });
 
