@@ -1,49 +1,43 @@
 <template>
   <v-form>
-    <v-text-field 
-      v-model="item.id" 
-      label="ID" 
-      type="number" 
-      required 
-      :readonly="mode === 'view'"
-      :rules="numberRules" />
-
-    <v-autocomplete 
-      v-model="item.actividad" 
-      :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
-      label="Actividad" 
-      required 
-      :readonly="mode === 'view'" 
-      no-data-text="No hay más datos disponibles" />
-
-    <v-autocomplete 
-      v-model="item.especie" 
-      :items="[labrador, pitbull, booxer]" 
-      label="Especie" 
-      required
-      :readonly="mode === 'view'" 
-      no-data-text="No hay más datos disponibles" />
-
-    <v-text-field 
-      v-model="item.fecha" 
-      label="Fecha" 
-      type="date" 
+    
+    <v-text-field v-if="mode==='view'"
+      v-model="item.animalName" 
+      label="Nombre del Animal" 
       required 
       :readonly="mode === 'view'" />
 
-    <v-text-field 
-      v-model="item.hora" 
+    <v-text-field v-if="mode==='view'"
+      v-model="item.date" 
+      label="Fecha" 
+      required 
+      :readonly="mode === 'view'" />
+    
+    <v-text-field v-if="mode==='view'"
+      v-model="item.time" 
       label="Hora" 
       type="time" 
       required 
       :readonly="mode === 'view'" />
 
-    <v-textarea 
-      v-model="item.descripcion" 
-      label="Descripcion" 
+    <v-autocomplete v-if="mode!=='view'"
+      v-model="item.activityId" 
+      :items="[1,2,3]"
+      label="Actividad" 
       required 
-      :readonly="mode === 'view'"
-      :rules="textRules" />
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+
+    <v-autocomplete v-if="mode!=='view'"
+      v-model="item.animalId" 
+      :items="[1,2,3]" 
+      label="Animal" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+
+
+
 
   </v-form>
 </template>

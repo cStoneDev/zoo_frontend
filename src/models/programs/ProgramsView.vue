@@ -66,10 +66,11 @@ const programationFilters = reactive({
 
 const programDefault = reactive({
     id: 0,
-    speciesId:0,
     animalName:"",
     date: "",
     time: "",
+    activityId: 0,
+    animalId:0,
 })
 // Encabezados de la tabla
 const programHeaders = ref([
@@ -173,7 +174,8 @@ const getProgramationFromService = async () => {
 // Search Programation
 const searchProgramationFromService = async () => {
   try {
-
+    console.log("el search criteria:")
+    console.log(utilDataStore.searchCriteria)
 
     const { programation, pagination } = await programationService.searchProgramation(utilDataStore.searchCriteria); // Ajusta los parámetros de la paginación si es necesario
     const { totalElements, totalPages, currentPage, pageSize, sort, first, last, numberOfElements, pageable, empty, } = pagination;
