@@ -30,12 +30,14 @@ import ContractFormDelete from "./components/ContractFormDelete.vue";
 import {  ref, reactive, onMounted  } from "vue";
 
 import contractService from "../contracts/contractService"; // Asegúrate de importar el servicio correctamente
+import providertypeService from "../Nomenclators/tipoproveedor/tipoproveedorService";
 
 import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
 const utilDataStore = useUtilDataStore();         //el store
 
 
 const contractData = ref([]);        // los contratos del backend
+const providertypeData = ref([]);
 
 const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los contratos
 const totalElementsData  = ref(0);  
@@ -48,8 +50,8 @@ const pageSizeData  = ref(0);
  * debe ser una llamada a los nomencladores supongo
  */
 const contractFilters = reactive({
-    providerTypeId: {
-        lista: [1,2,3,4,5,6], 
+    providertypeId: {
+        lista: [], 
         label: "Tipo de proveedor"
     },
     contractState: { 
@@ -179,6 +181,35 @@ const getContractsFromService = async () => {
   }
 };
 
+
+const getProviderTypeFromService = async () => {
+  try {
+    let allProviderType = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { providertype, pagination } = await providertypeService.getProvidertype(currentPage);
+        if(providertype){
+          allProviderType.push(...providertype); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    providertypeData.value = allProviderType; // Actualizamos breedData con todas las razas
+    console.log(providertypeData.value);
+
+    contractFilters.providertypeId.lista = allProviderType.map(providertype => ({
+        label: providertype.name,
+        value: providertype.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar los tipos de proveedor:', error);
+  }
+};
+
 // Search Contract
 const searchContractsFromService = async () => {
   try {
@@ -210,6 +241,7 @@ const searchContractsFromService = async () => {
 onMounted(() => {
   getContractsFromService();
   utilDataStore.resetData();
+  getProviderTypeFromService();
 });
 
 
