@@ -126,7 +126,7 @@ const searchSpeciesFromService = async () => {
 // DELETE Species
 const confirmDeleteSpecies = async (id) => {
   try {
-    await especieService.deleteSpecies(id); // Llama al servicio de eliminación
+    await speciesService.deleteSpecies(id); // Llama al servicio de eliminación
     especieData.value = especieData.value.filter((species) => species.id !== id);
     console.log(`especie con ID ${id} eliminado exitosamente.`);
     searchSpeciesFromService(); //para actualizar los cambios en la tabla
