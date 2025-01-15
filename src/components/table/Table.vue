@@ -329,7 +329,8 @@ const filteredItems = computed(() => {
 	});
 });
 
-
+// Funcion que hace la magia, para que al final transforme el 0 con el label de seleccionar (en la inicializacion)
+// y cuando recibe la lista del backend transformar esa lista de objetos en value (id) label (name)
 const formattedItems = (items) => {
     if (!items) return [];
 
