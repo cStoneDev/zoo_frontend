@@ -30,14 +30,14 @@ import ContractFormDelete from "./components/ContractFormDelete.vue";
 import {  ref, reactive, onMounted  } from "vue";
 
 import contractService from "../contracts/contractService"; // Asegúrate de importar el servicio correctamente
-import providertypeService from "../Nomenclators/tipoproveedor/tipoproveedorService";
+import providerTypeService from "../Nomenclators/tipoproveedor/tipoproveedorService";
 
 import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
 const utilDataStore = useUtilDataStore();         //el store
 
 
 const contractData = ref([]);        // los contratos del backend
-const providertypeData = ref([]);
+const providerTypeData = ref([]);
 
 const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los contratos
 const totalElementsData  = ref(0);  
@@ -50,7 +50,7 @@ const pageSizeData  = ref(0);
  * debe ser una llamada a los nomencladores supongo
  */
 const contractFilters = reactive({
-    providertypeId: {
+    providerTypeId: {
         lista: [], 
         label: "Tipo de proveedor"
     },
@@ -189,7 +189,7 @@ const getProviderTypeFromService = async () => {
     let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
 
     do { // Usamos un bucle do-while para al menos obtener la primera página
-        const { providertype, pagination } = await providertypeService.getProvidertype(currentPage);
+        const { providertype, pagination } = await providerTypeService.getProvidertype(currentPage);
         if(providertype){
           allProviderType.push(...providertype); // Agregamos las razas de la página actual a la lista
         }
@@ -198,12 +198,12 @@ const getProviderTypeFromService = async () => {
         currentPage++; // Incrementamos para obtener la siguiente página
     } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
 
-    providertypeData.value = allProviderType; // Actualizamos breedData con todas las razas
-    console.log(providertypeData.value);
+    providerTypeData.value = allProviderType; // Actualizamos breedData con todas las razas
+    console.log(providerTypeData.value);
 
-    contractFilters.providertypeId.lista = allProviderType.map(providertype => ({
-        label: providertype.name,
-        value: providertype.id
+    contractFilters.providerTypeId.lista = allProviderType.map(providerType => ({
+        label: providerType.name,
+        value: providerType.id
       }));
   } catch (error) {
     console.error('Error al cargar los tipos de proveedor:', error);
