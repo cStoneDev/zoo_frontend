@@ -39,14 +39,14 @@
 
             <v-expansion-panel class="mb-3">
               <v-expansion-panel-title class="custom-text">
-                <v-list-item prepend-icon="mdi-table" title="Animales"></v-list-item>
+                <v-list-item prepend-icon="mdi-store" title="Zoológico"></v-list-item>
               </v-expansion-panel-title>
               <!-- Sacar lo que expande -->
               <v-expansion-panel-text>
 
                 <!-- Aca irian los router link de las tablas-->
                 <RouterLink to="/animals">
-                  <v-list-item prepend-icon="mdi-cat" title="Animales" class="custom-text mb-3"></v-list-item>
+                  <v-list-item prepend-icon="mdi-koala" title="Animales" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/activities">
@@ -59,11 +59,11 @@
                 </RouterLink>
 
                 <RouterLink to="/especie">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Especie" class="custom-text mb-3"></v-list-item>
+                  <v-list-item prepend-icon="mdi-snake" title="Especies" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/raza">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Raza" class="custom-text"></v-list-item>
+                  <v-list-item prepend-icon="mdi-dog-side" title="Razas" class="custom-text"></v-list-item>
                 </RouterLink>
 
               </v-expansion-panel-text>
@@ -71,7 +71,7 @@
 
             <v-expansion-panel>
               <v-expansion-panel-title class="custom-text">
-                <v-list-item prepend-icon="mdi-table" title="Proveedores"></v-list-item>
+                <v-list-item prepend-icon="mdi-briefcase" title="Negocios"></v-list-item>
               </v-expansion-panel-title>
               <!-- Sacar lo que expande -->
               <v-expansion-panel-text>
@@ -86,26 +86,26 @@
                 </RouterLink>
 
                 <RouterLink to="/provincia">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Provincias"
+                  <v-list-item prepend-icon="mdi-map-marker" title="Provincias"
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/especialidad">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Especialidades"
+                  <v-list-item prepend-icon="mdi-hospital" title="Especialidades"
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/clinica">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Clinicas" class="custom-text mb-3"></v-list-item>
+                  <v-list-item prepend-icon="mdi-hospital-building" title="Clinicas" class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/tipoproveedor">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Tipo Proveedor"
+                  <v-list-item prepend-icon="mdi-card-account-details" title="Tipo Proveedor"
                     class="custom-text mb-3"></v-list-item>
                 </RouterLink>
 
                 <RouterLink to="/tiposervicio">
-                  <v-list-item prepend-icon="mdi-tag-multiple" title="Tipo Servicio" class="custom-text"></v-list-item>
+                  <v-list-item prepend-icon="mdi-handshake" title="Tipo Servicio" class="custom-text"></v-list-item>
                 </RouterLink>
 
               </v-expansion-panel-text>
