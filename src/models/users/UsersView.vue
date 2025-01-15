@@ -57,6 +57,7 @@ const usersDefault = reactive({
     email: "",
     roleId: 0,
     roleName:"",
+    password:"",
 
 
 })

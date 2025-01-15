@@ -22,6 +22,14 @@
             required 
             :readonly="mode === 'view'"
             :rules="emailRules" />
+
+        <v-text-field 
+            v-if="mode === 'add'"
+            v-model="item.password" 
+            label="Contraseña" 
+            required 
+            :readonly="mode === 'view'" 
+            :rules="firstNameRules" />
     </v-form>
 </template>
 
