@@ -50,6 +50,33 @@ const getMonthEntries = async (year) => {
   }
 };
 
+// GET MONTHLY VALUES
+const getMonthActivities = async (year) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/dashboard/monthActivities",
+      {
+        params: { year },
+      }
+    );
+
+    // Obtenemos los datos de la respuesta
+    const data = response.data;
+
+    const monthlyValues = Object.entries(data).map(([month, value]) => ({
+      month,
+      value,
+    }));
+
+    console.log(`Valores mensuales para el año ${year}:`, monthlyValues);
+
+    return monthlyValues;
+  } catch (error) {
+    console.error("Error al obtener los valores mensuales:", error);
+    throw error;
+  }
+};
+
 // GET ACTIVE CONTRACTS
 const getActiveContracts = async () => {
   try {
@@ -75,4 +102,5 @@ export default{
     getMonthEntries,
     getTopSpecies,
     getActiveContracts,
+    getMonthActivities
 }

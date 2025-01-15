@@ -7,6 +7,9 @@
           <Bar :data="barData" :options="barOptions" class="mb-5" />
         </div>
         <div class="chart-element">
+          <div class="selector-container">
+            <v-select :items="[2023, 2024, 2025, 2026]" label="Año" v-model="selectedYear2" dense />
+          </div>
           <Line :data="line2Data" :options="lineOptions2" class="mb-5" ref="lineOptions2" />
         </div>
         <div class="chart-element">
@@ -47,9 +50,12 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointEleme
 
 const lineChart = ref(null);
 
+
 // Datos reactivos para los gráficos
 const isDataLoaded = ref(false);
 const selectedYear = ref(2024);
+
+const selectedYear2 = ref(2024);
 
 const barData = reactive({
   labels: [],
@@ -109,7 +115,7 @@ const line2Data = reactive({
   labels: [],
   datasets: [
     {
-      label: 'Falta esta grafica',
+      label: 'Comportamiento mensual',
       data: [],
       fill: true,
       backgroundColor: 'rgba(75, 192, 192, 0.5)',
@@ -181,7 +187,7 @@ const lineOptions2 = ref({
     },
     title: {
       display: true,
-      text: 'Falta esta grafica',
+      text: 'Actividades',
     },
   },
   scales: {
@@ -219,9 +225,42 @@ const updateLineChart = async () => {
   }
 };
 
+//ESTE METODO ES ESPECIFICAMENTE PARA ACTUALIZAR EL GRAFICO DEL SELECTOR
+const updateLineChart2 = async () => {
+  try {
+    // Obtener los valores mensuales para el gráfico de líneas según el año seleccionado
+    const monthlyActivities = await dashboardService.getMonthActivities(selectedYear2.value);
+
+    // Actualizar los datos de las etiquetas y los valores de la línea
+    line2Data.labels = monthlyActivities.map((entry) => entry.month);
+    line2Data.datasets[0].data = monthlyActivities.map((entry) => entry.value);
+
+    // Forzar el re-render del gráfico
+    nextTick(() => {
+      const chartInstance = lineOptions2.value?.chart;  // Obtiene la instancia del gráfico
+      if (chartInstance) {
+        chartInstance.data.labels = line2Data.labels;
+        chartInstance.data.datasets[0].data = line2Data.datasets[0].data;
+        chartInstance.update(); // Actualiza el gráfico
+      } else {
+        console.error("El gráfico no está disponible para actualizar");
+      }
+    });
+
+    console.log(`Gráfico de líneas actualizado para el año ${selectedYear2.value}`);
+  } catch (error) {
+    console.error('Error al actualizar el gráfico de líneas:', error);
+  }
+};
+
 // Observar cambios en selectedYear
 watch(selectedYear, async () => {
   await updateLineChart();
+});
+
+// Observar cambios en selectedYear
+watch(selectedYear2, async () => {
+  await updateLineChart2();
 });
 
 // Cargar datos al montar el componente
@@ -230,6 +269,10 @@ onMounted(async () => {
     const monthlyEntries = await dashboardService.getMonthEntries(2024);
     lineData.labels = monthlyEntries.map((entry) => entry.month);
     lineData.datasets[0].data = monthlyEntries.map((entry) => entry.value);
+
+    const monthlyActivities = await dashboardService.getMonthActivities(2024);
+    line2Data.labels = monthlyEntries.map((entry) => entry.month);
+    line2Data.datasets[0].data = monthlyActivities.map((entry) => entry.value);
 
     const topSpecies = await dashboardService.getTopSpecies();
     barData.labels = topSpecies.map((species) => species.species);
