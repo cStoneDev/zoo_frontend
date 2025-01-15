@@ -1,25 +1,101 @@
 <template>
   <v-form>
-    <v-text-field v-model="item.id" label="ID" type="number" required :readonly="mode === 'view'"
+    <!-- <v-text-field v-model="item.id" label="ID" type="number" required :readonly="mode === 'view'"
+      :rules="numberRules" /> -->
+    
+      <v-text-field 
+      v-model="item.name" 
+      label="Nombre" 
+      required 
+      :readonly="mode === 'view'" />
+
+    <v-autocomplete 
+      v-model="item.provinceId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Provincia" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+
+    <v-autocomplete 
+      v-model="item.serviceTypeId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Tipo servicio" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+
+    <v-autocomplete 
+      v-model="item.providerTypeId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Tipo" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+      
+    <v-text-field 
+      v-model="item.address" 
+      label="Dirección" 
+      required 
+      :readonly="mode === 'view'" />
+    
+    <v-text-field 
+      v-model="item.phone" 
+      label="Teléfono" 
+      required 
+      :readonly="mode === 'view'" 
+      :rules="phoneRules" />
+    
+    <v-text-field 
+      v-model="item.email" 
+      label="Email" 
+      type="email" 
+      required 
+      :readonly="mode === 'view'"
+      :rules="emailRules" />
+
+    <v-text-field 
+      v-model="item.responsibleName" 
+      label="Nombre del responsable" 
+      required 
+      :readonly="mode === 'view'" />
+
+    <v-text-field 
+      v-if="item.providerTypeId == 1"
+      v-model="item.fax" 
+      label="Teléfono" 
+      required 
+      :readonly="mode === 'view'" 
+      :rules="phoneRules" />
+
+    <v-text-field 
+      v-if="item.providerTypeId == 1"
+      v-model="item.cityDistance" 
+      label="Distancia de la ciudad" 
+      type="number" 
+      required 
+      :readonly="mode === 'view'"
       :rules="numberRules" />
 
-    <v-autocomplete v-model="item.id_provincia" :items="[1, 2, 3, 4, 5]" label="Provincia" required
-      :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
+    <v-autocomplete 
+      v-if="item.providerTypeId == 1"
+      v-model="item.clinicId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Clínica" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
 
+    <v-autocomplete 
+      v-if="item.providerTypeId == 1"
+      v-model="item.specialityId" 
+      :items="[1, 2, 3, 4, 5]" 
+      label="Especialidad" 
+      required
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
 
-    <v-text-field v-model="item.nombre" label="Nombre" required :readonly="mode === 'view'" />
-
-    <v-autocomplete v-model="item.id_tipo_servicio" :items="[1, 2, 3, 4, 5]" label="Tipo servicio" required
-      :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
-
-    <v-autocomplete v-model="item.id_tipo_proveedor" :items="[1, 2, 3, 4, 5]" label="Tipo" required
-      :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
-
-    <v-text-field v-model="item.telefono" label="Telefono" required :readonly="mode === 'view'" :rules="phoneRules" />
-    <v-text-field v-model="item.direccion" label="Direccion" required :readonly="mode === 'view'" />
-    <v-text-field v-model="item.email" label="Email" type="email" required :readonly="mode === 'view'"
-      :rules="emailRules" />
-    <v-text-field v-model="item.nombre_responsable" label="Nombre responsable" required :readonly="mode === 'view'" />
+      
   </v-form>
 </template>
 
@@ -48,10 +124,10 @@ let numberRules = [
 
 let phoneRules = [
   value => {
-    if (value?.length == 7) {
+    if (value?.length == 8) {
       return true;
     }
-    return 'Un teléfono tiene 7 dígitos';
+    return 'Un teléfono tiene 8 dígitos';
   }
 ];
 
