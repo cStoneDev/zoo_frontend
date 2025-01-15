@@ -90,7 +90,7 @@ const router = createRouter({
           path: "/especialidad",
           name: "especialidad",
           component: EspecialidadView,
-          meta: { titulo: 'Especialidades' }
+          meta: { titulo: 'Especialidades'}
         },
         {
           path: "/especie",
@@ -150,20 +150,33 @@ const router = createRouter({
       ],
     },
 
+
+
+    //DEFINIR COMPONETE VUE PARA EL FORBIDDEN
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/utils/notFound.vue'), // Define un componente de error
+      meta: { requiresAuth: false },
+    },
+
     {
       path: "/login",
       name: "login",
       component: LoginView,
+      meta: { requiresAuth: false },
     },
     {
       path: "/forgotPassword",
       name: "forgotPassword",
       component: forgotPassword,
+      meta: { requiresAuth: false },
     },
     {
       path: "/resetPassword",
       name: "resetPassword",
       component: resetPassword,
+      meta: { requiresAuth: false },
     },
   ],
 });
@@ -177,18 +190,16 @@ router.beforeEach((to, from, next) => {
     tituloStore.setTitulo(to.meta.titulo); // Actualizamos el título según la ruta
   }
 
-  // Si la ruta actual NO es '/login' NI '/forgotPassword' Y el usuario NO está autenticado
-  if (!["/login", "/forgotPassword"].includes(to.path) && !isAuthenticated) {
+  // Si la ruta requiere autenticación y el usuario no está autenticado
+  if (to.meta.requiresAuth !== false && !isAuthenticated) {
     next("/login"); // Redirige a '/login'
   } else {
     next(); // Permite la navegación
   }
-  
 });
 
 // Funcion para comprobar autentificacion
 function checkAuthentication() {
-  // Ejemplo: usando localStorage para un token
   return localStorage.getItem("token") !== null;
 }
 
