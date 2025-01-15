@@ -1,132 +1,207 @@
 <template>
-    <DataTable title="Lista de Actividades" 
-        :items="activitiesData" 
+    <DataTable 
+        title="Lista de Actividades" 
         :headers="activityHeaders"
-        :buttons="activityButtons" 
-        :activity-default="activityDefault" @update="handleUpdate"
-        :filters="activityFilters">
+        :items="activitiesData" 
+        :itemsLength="currentPageData"
+        :activity-default="activityDefault" 
+        :filters="activityFilters"
+        @update="searchActivitiesFromService"
+        @crud="handleUpdate"
+        >
         <template #dialog-content="{ item, mode }">
-            <ActivityFormEdit_View_Add :item="item" :mode="mode"
+            <ActivityFormEdit_View_Add 
+                :item="item" 
+                :mode="mode"
                 v-if="mode == 'edit' || mode == 'view' || mode == 'add'" />
-            <ActivityFormDelete :item="item" :mode="mode" v-if="mode == 'delete'" />
+            <ActivityFormDelete 
+                :item="item" 
+                :mode="mode" 
+                v-if="mode == 'delete'" />
         </template>
     </DataTable>
 </template>
 
 <script setup>
-import {ref, computed} from 'vue';
-import {reactive} from 'vue';
 import DataTable from "../../components/table/Table.vue";
 import ActivityFormEdit_View_Add from "./components/ActivityFormEdit_View_Add.vue";
 import ActivityFormDelete from "./components/ActivityFormDelete.vue";
+import {  ref, reactive, onMounted  } from 'vue';
+
+import activityService from "../activities/activityService"; // Asegúrate de importar el servicio correctamente
+
+import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
+const utilDataStore = useUtilDataStore();         //el store
 
 
-// Datos de animales
-const activitiesData = ref([
-    {
-        id: 1,
-        fecha: "2025-10-12",
-        hora: "06:05",
-        id_contrato: 5,
-        descripcion: "Muchacho pongase a trabajar"
-    },
-    {
-        id: 2,
-        fecha: "2025-11-12",
-        hora: "07:05",
-        id_contrato: 2,
-        descripcion: "Muchachote pongase a trabajar"
-    },
-    {
-        id: 3,
-        fecha: "2025-11-15",
-        hora: "10:05",
-        id_contrato: 1,
-        descripcion: "Muchacha pongase a trabajar"
-    },
-    {
-        id: 4,
-        fecha: "2025-12-12",
-        hora: "08:05",
-        id_contrato: 3,
-        descripcion: "Mano pongase a trabajar"
-    },
-    {
-        id: 5,
-        fecha: "2025-11-16",
-        hora: "07:23",
-        id_contrato: 9,
-        descripcion: "Pancito de la bodega"
-    },
-    {
-        id: 6,
-        fecha: "2025-11-18",
-        hora: "07:23",
-        id_contrato: 9,
-        descripcion: "Boniatillo"
-    }
-]);
+const activitiesData = ref([]);        // los actividades del backend
+
+const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los contratos
+const totalElementsData  = ref(0);  
+const totalPagesData  = ref(0);     
+const pageSizeData  = ref(0);       
+
+
 
 const activityFilters = reactive({
-  date: {
-    lista: [], // Fechas específicas
-    label: "Fecha"
+providerTypeId: {
+    lista: [1,2,3], 
+    label: "Tipo de Proveedor"
   },
-  time: {
-    lista: [], // Horarios disponibles
-    label: "Hora"
+contractId: {
+    lista: [1,2,3], 
+    label: "Contrato"
   },
-  contractId: {
-    lista: new Set(activitiesData.value.map(item=>item.id_contrato).sort((a,b)=>a-b)), // IDs de contrato posibles
-    label: "ID Contrato"
-  }
+  activitiesState: {
+    lista: [1,2,3], // Horarios disponibles
+    label: "Estado"
+  },
 });
 
 
 const activityDefault = ref({
     id: 0,
-    fecha: "2024-0-0",
-    hora: "09:00:00",
-    id_contrato: 0,
-    descripcion: ""
+    contractId: 0,
+    date: "",
+    time: "",
+    description: ""
 })
+
 // Encabezados de la tabla
 const activityHeaders = ref([
 //    { title: "ID", value: "id", sortable: "true" },
-    { title: "Fecha", value: "fecha", sortable: "true" },
-    { title: "Contrato", value: "id_contrato", sortable: "true" },
+    { title: "Descripción", value: "description", sortable: "false" },
+    { title: "Fecha", value: "date", sortable: "false" },
+    { title: "Hora", value: "time", sortable: "false" },
+    // { title: "Contrato", value: "contractId", sortable: "false" },
     { title: "Acciones", value: "actions", align: "center"},
 ]);
 
-// Configuración de botones CRUD
-const activityButtons = ref([
 
-    {
-        text: "Agregar",
-        icon: "mdi-plus",
-        mode: "add",
 
-    },
+/**
+ * 
+ * Funcion que llama a las funciones del crud
+ */
 
-]);
+ function handleUpdate({ mode, item }) {
+  
+  if (mode === 'add') {
+    handleCreateActivity(item);
+  } 
+  
+  else if (mode === 'edit') {
+    handleUpdateActivity(item.id , item)
+  } 
+  
+  else if (mode === "delete") {
+    confirmDeleteActivity(item.id);
+  }
 
-// Manejo de actualizaciones desde el hijo
-function handleUpdate({ mode, item }) {
-
-    if (mode === 'add') {
-        activitiesData.value.push({ id: Date.now(), ...item });
-    } else if (mode === 'edit') {
-        const index = activitiesData.value.findIndex((data) => data.id === item.id);
-        if (index !== -1) {
-            // Crear un nuevo arreglo con el elemento actualizado
-            activitiesData.value = activitiesData.value.map((data, i) =>
-                i === index ? { ...item } : data
-            );
-        }
-    } else if (mode === "delete") {
-        activitiesData.value = activitiesData.value.filter((data) => data.id !== item.id);
-    }
+  
 }
+
+
+/**
+ * Metodos del actividades service que son las llamadas al backend
+ * 
+ */
+
+// DELETE Activity
+const confirmDeleteActivity = async (id) => {
+  try {
+    await activityService.deleteActivity(id); // Llama al servicio de eliminación
+    activitiesData.value = activitiesData.value.filter((activity) => activity.id !== id);
+    console.log(`Actividades con ID ${id} eliminado exitosamente.`);
+    searchActivitiesFromService(); //para actualizar los cambios en la tabla
+  } catch (error) {
+    console.error(`Error al eliminar el actividades con ID ${id}:`, error);
+  }
+};
+
+
+
+//PUT Activity
+async function handleCreateActivity(newActivity) {
+  try {
+    console.log(newActivity)
+    const createdActivity = await activityService.createActivity(newActivity);
+
+    console.log('Actividad agregado exitosamente:', createdActivity);
+    searchActivitiesFromService(); //para actualizar los cambios en la tabla
+  } catch (error) {
+    console.error('Error al agregar el Actividades:', error);
+  }
+}
+
+//editar Activity
+async function handleUpdateActivity(id ,newActivity) {
+  try {
+    const updatedActivity = await activityService.updateActivity(id, newActivity);
+
+    console.log('Activity editado exitosamente:', updatedActivity);
+    searchActivitiesFromService(); //para actualizar los cambios en la tabla
+  } catch (error) {
+    console.error('Error al editar el Activity:', error);
+  }
+}
+
+// GET Activity. Obtener los Activity por primera vez
+const getActivitiesFromService = async () => {
+  try {
+                                                                      //se le pasa la pagina - 1, y los items por paginas
+    const { activities, pagination } = await activityService.getActivity(utilDataStore.page - 1, utilDataStore.itemsPerPage); 
+    
+    const { totalElements, totalPages, currentPage, pageSize } = pagination; //para obtener los datos de la paginacion
+
+    
+    activitiesData .value = activities;           //aqui coges los datos que pediste
+
+    currentPageData.value = totalElements;
+    totalElementsData.value  = totalPages;      //y aqui  los datos del paginado
+    totalPagesData.value  = currentPage;
+    pageSizeData.value  = pageSize;
+
+
+  } catch (error) {
+    console.error('Error al cargar los actividades:', error);
+  }
+};
+
+// Search Activity
+const searchActivitiesFromService = async () => {
+  try {
+
+
+    const { activities, pagination } = await activityService.searchActivity(utilDataStore.searchCriteria); // Ajusta los parámetros de la paginación si es necesario
+    const { totalElements, totalPages, currentPage, pageSize, sort, first, last, numberOfElements, pageable, empty, } = pagination;
+    
+    console.log("los valores")
+    console.log(activities)
+    activitiesData.value = activities;
+
+
+    currentPageData.value = totalElements;
+    totalElementsData.value  = totalPages;
+    totalPagesData.value  = currentPage;
+    pageSizeData.value  = pageSize;
+    // Actualizar filtros basados en los datos obtenidos
+
+    console.log("Busqué con estos valores:")
+    console.log(utilDataStore.searchCriteria)
+  } catch (error) {
+    console.error('Error al cargar los actividades:', error);
+  }
+};
+
+//Llamar a la función al montar el componente
+//Este metodo nada más que se monta la página se ejecuta
+onMounted(() => {
+  getActivitiesFromService();
+  utilDataStore.resetData();
+});
+
+
 
 </script>
 

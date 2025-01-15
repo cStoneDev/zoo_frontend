@@ -1,17 +1,37 @@
 <template>
   <v-form>
-    <v-text-field v-model="item.id" label="ID" type="number" required :rules="numberRules"
+
+    <v-textarea 
+      v-model="item.description" 
+      label="Descripcion" 
+      required 
+      :readonly="mode === 'view'"
+      :rules="textRules" />
+
+
+    <v-autocomplete 
+      v-model="item.contractId" 
+      :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
+      label="Contrato" 
+      required 
+      :readonly="mode === 'view'" 
+      no-data-text="No hay más datos disponibles" />
+
+    <v-text-field 
+      v-model="item.date" 
+      label="Fecha" 
+      type="text" 
+      required
       :readonly="mode === 'view'" />
 
-    <v-autocomplete v-model="item.id_contrato" :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
-      label="Id Contrato" required :readonly="mode === 'view'" no-data-text="No hay más datos disponibles" />
+    <v-text-field 
+      v-model="item.time" 
+      label="Hora" 
+      type="time" 
+      required 
+      :readonly="mode === 'view'" />
 
-    <v-text-field v-model="item.fecha" label="Fecha" type="date" required :readonly="mode === 'view'" />
 
-    <v-text-field v-model="item.hora" label="Hora" type="time" required :readonly="mode === 'view'" />
-
-    <v-textarea v-model="item.descripcion" label="Descripcion" required :readonly="mode === 'view'"
-      :rules="textRules" />
 
   </v-form>
 </template>
