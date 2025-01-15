@@ -39,7 +39,8 @@
 
 					<!-- Para si es un dato de nomenclador -->
 					<component v-else-if="filterName.toLowerCase().includes('id')" is="v-autocomplete" v-model="activeFilters[filterName]" :label="filterData.label"
-						:items="['0', ...filterData.lista]" outlined dense></component>
+						:items="formattedItems(filterData.lista)" item-title="label"  
+						item-value="value" outlined dense></component>
 
 					<!-- Para datos numericos -->
 					<component v-else  is="v-text-field" type="number" v-model="activeFilters[filterName]" :label="filterData.label"
@@ -203,6 +204,7 @@ const activeFilters = reactive(
 	}, {})
 );
 
+
 /**
  * Funcion para Limpiar los filtros, los deja en 0, valor por defecto
  */
@@ -212,7 +214,6 @@ const activeFilters = reactive(
     });
     search.value = ""; // También puedes limpiar el campo de búsqueda si lo deseas
 }
-
 
 
 //atributo computado que arma el JSON que necesita el backend para pedirle las cosas filtradas
@@ -237,9 +238,6 @@ function loadItems(){
 watch(searchCriteria, () => {
   loadItems();
 }, { deep: true });
-
-
-
 
 
 //esto se usa?        ->   5 dias despues       sigo sin saber
@@ -330,6 +328,20 @@ const filteredItems = computed(() => {
 		});
 	});
 });
+
+
+const formattedItems = (items) => {
+    if (!items) return [];
+
+    return [
+        { value: 0, label: 'Seleccionar' }, // Asegura que value sea número para que la comparación de abajo funcione
+        ...items.map(item => ({
+           value: item.value,
+            label: item.value == 0 ? 'Seleccionar' : item.label
+        }))
+    ];
+};
+
 
 </script>
 
