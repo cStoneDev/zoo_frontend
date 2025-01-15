@@ -35,6 +35,16 @@ import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para
 const utilDataStore = useUtilDataStore();         //el store
 
 
+import provinciaService from "../Nomenclators/provincia/provinciaService";
+const provinceData = ref([]);
+
+import tiposervicioService from "../Nomenclators/tiposervicio/tiposervicioService";
+const servicetypeData = ref([]);
+
+import tipoproveedorService from "../Nomenclators/tipoproveedor/tipoproveedorService";
+const providertypeData = ref([]);
+
+
 const providerData = ref([]);        // los proveedores del backend
 
 const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los proveedores
@@ -49,15 +59,15 @@ const pageSizeData  = ref(0);
  */
 const providerFilter = reactive({
     provinceId: {
-        lista: [1,2,3,4,5,6], 
+        lista: [], 
         label: "Provincia"
     },
     serviceTypeId: {
-        lista: [1,2,3,4,5,6], 
+        lista: [], 
         label: "Tipo de Servicio"
     },
     providerTypeId: {
-        lista: [1,2,3,4,5,6], 
+        lista: [], 
         label: "Tipo de proveedor"
     }
 });
@@ -213,10 +223,106 @@ const searchProvidersFromService = async () => {
   }
 };
 
+const getProvincesFromService = async () => {
+  try {
+    let allProvinces = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { provinces, pagination } = await provinciaService.getProvinces(currentPage);
+        
+        if(provinces){
+          allProvinces.push(...provinces); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    provinceData.value = allProvinces; // Actualizamos provincesData con todas las razas
+    console.log(provinceData.value);
+
+    providerFilter.provinceId.lista = allProvinces.map(provinces => ({
+        label: provinces.name,
+        value: provinces.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar las razas:', error);
+  }
+};
+
+
+const getProvidertypesFromService = async () => {
+  try {
+    let allProvidertypes = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { providertype, pagination } = await tipoproveedorService.getProvidertype(currentPage);
+        
+        if(providertype){
+          allProvidertypes.push(...providertype); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    providertypeData.value = allProvidertypes; // Actualizamos providertypeData con todas las razas
+    console.log("holaholahola")
+    console.log(providertypeData.value);
+
+    providerFilter.providerTypeId.lista = allProvidertypes.map(providertype => ({
+        label: providertype.name,
+        value: providertype.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar las razas:', error);
+  }
+};
+
+
+tiposervicioService
+servicetypeData
+
+const getServicetypesFromService = async () => {
+  try {
+    let allservicetypes = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { servicetype, pagination } = await tiposervicioService.getServicetype(currentPage);
+        
+        if(servicetype){
+          allservicetypes.push(...servicetype); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    servicetypeData.value = allservicetypes; // Actualizamos servicetypeData con todas las razas
+    console.log(servicetypeData.value);
+
+    providerFilter.serviceTypeId.lista = allservicetypes.map(servicetype => ({
+        label: servicetype.name,
+        value: servicetype.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar las razas:', error);
+  }
+};
+
 //Llamar a la función al montar el componente
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getProvidersFromService();
+  getProvincesFromService();
+  getProvidertypesFromService();
+  getServicetypesFromService();
   utilDataStore.resetData();
 });
 
