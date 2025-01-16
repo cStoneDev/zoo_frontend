@@ -5,21 +5,32 @@ const forgotPasswordService = {
    * Envía una solicitud al backend para iniciar el proceso de recuperación de contraseña.
    *
    * @param {string} email - El correo electrónico del usuario.
-   * @returns {Promise<object>} Respuesta del servidor.
+   * @throws {string} Mensaje de error en caso de fallo.
    */
   async sendRecoveryEmail(email) {
     try {
+      // Construir el cuerpo de la solicitud
+      const requestBody = { email };
+
       // Realiza la solicitud POST al backend
-      const response = await axios.post('http://localhost:8080/users/forgot-password', {
-        email, // El correo electrónico se pasa en el cuerpo de la solicitud
+      await axios.post('http://localhost:8080/users/forgot-password', requestBody, {
+        headers: { 'Content-Type': 'application/json' }, // Asegura que se envía como JSON
       });
-      
-      // Devuelve los datos de la respuesta
-      return response.data; 
     } catch (error) {
-      // Manejo de errores: muestra el error en la consola y lanza una excepción
-      console.error('Error en forgotPasswordService:', error.response || error);
-      throw error.response?.data || error.message || 'Error al enviar el correo de recuperación';
+      // Manejo de errores según el código de estado HTTP
+      if (error.response) {
+        // Si el servidor respondió con un código de estado distinto de 2xx
+        console.error(`Error en forgotPasswordService: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
+        throw error.response.data.message || 'Error en el servidor al procesar la solicitud';
+      } else if (error.request) {
+        // Si no se recibió respuesta del servidor
+        console.error('Error en forgotPasswordService: No se recibió respuesta del servidor');
+        throw 'No se recibió respuesta del servidor. Inténtalo de nuevo más tarde.';
+      } else {
+        // Otro tipo de error
+        console.error('Error en forgotPasswordService:', error.message);
+        throw 'Ocurrió un error desconocido. Inténtalo de nuevo.';
+      }
     }
   },
 };
