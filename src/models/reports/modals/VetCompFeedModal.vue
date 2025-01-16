@@ -209,42 +209,26 @@
     endMenu.value = false;
   };
 
-  // Función para validar las fechas
   const validarYSeleccionar = async () => {
-    startDateError.value = false;
-    endDateError.value = false;
+  startDateError.value = false;
+  endDateError.value = false;
 
-    // Validar fecha de inicio
-    if (!startDate.value) {
-      startDateError.value = true;
-    }
+  // Validar formato del reporte
+  if (!selectedFormat.value) {
+    console.error("El formato del reporte es obligatorio.");
+    return;
+  }
 
-    // Validar fecha de terminación
-    if (!endDate.value) {
-      endDateError.value = true;
-    }
+  const formattedStartDate = startDate.value
+    ? formatDateToYYYYMMDD(startDate.value)
+    : null;
+  const formattedEndDate = endDate.value
+    ? formatDateToYYYYMMDD(endDate.value)
+    : null;
 
-    if (new Date(endDate.value) <= new Date(startDate.value)) {
-      endDateError.value = true;
-    }
-
-    if (!startDateError.value && !endDateError.value) {
-      const formattedStartDate = formatDateToYYYYMMDD(startDate.value);
-      const formattedEndDate = formatDateToYYYYMMDD(endDate.value);
-      console.log(formattedStartDate)
-      console.log(formattedEndDate)
-
-      // Generar el reporte con fechas formateadas
-      await handleObtainReport(
-        props.mode,
-        formattedStartDate,
-        formattedEndDate
-      );
-    }
-    // Generar el Reporte
-
-    // Si las validaciones son correctas, navegar según el modo seleccionado
-  };
+  // Generar el reporte con fechas formateadas o nulas
+  await handleObtainReport(props.mode, formattedStartDate, formattedEndDate);
+};
 
   const minEndDate = computed(() => {
     if (startDate.value) {

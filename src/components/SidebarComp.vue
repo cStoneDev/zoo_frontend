@@ -139,20 +139,20 @@
 
                 <!-- Aca irian los router link de los reportes-->
 
-                <v-list-item @click="showModal2('vet')" prepend-icon="mdi-cat" title="Contratos veterinarios"
+                <v-list-item @click="showModal2('vet')" prepend-icon="mdi-clipboard-text-outline" title="Contratos veterinarios"
                   class="custom-text mb-3"></v-list-item>
 
 
 
-                <v-list-item @click="showModal2('feeder')" prepend-icon="mdi-view-dashboard" title="Contratos alimentadores"
+                <v-list-item @click="showModal2('feeder')" prepend-icon="mdi-clipboard-text-outline" title="Contratos alimentadores"
                   class="custom-text mb-3"></v-list-item>
 
 
 
-                <v-list-item @click="showModal2('complementary')" prepend-icon="mdi-view-dashboard"
+                <v-list-item @click="showModal2('complementary')" prepend-icon="mdi-clipboard-text-outline"
                   title="Contratos complementarios" class="custom-text mb-3"></v-list-item>
 
-                <v-list-item @click="showModal1()" prepend-icon="mdi-view-dashboard"
+                <v-list-item @click="showModal1()" prepend-icon="mdi-clipboard-text-outline"
                   title="Veterinarios activos" class="custom-text mb-3"></v-list-item>
 
               </v-expansion-panel-text>

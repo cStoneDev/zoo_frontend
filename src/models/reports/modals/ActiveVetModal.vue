@@ -25,7 +25,6 @@
             :items="provincesData"
             label="Provincia"
             variant="outlined"
-            :rules="[validateProvince]"
           ></v-autocomplete>
         </v-row>
       </v-card-text>
@@ -85,27 +84,16 @@ const loadProvinces = async () => {
   }
 };
 
-// Validar selección de provincia
-const validateProvince = (value) => {
-  if (!value) return "Debe seleccionar una provincia";
-  if (!provincesData.value.includes(value)) return "Provincia no válida";
-  return true;
-};
-
 // Validar campos y obtener reporte
 const validarYSeleccionar = () => {
   if (!selectedFormat.value) {
     alert("Debe seleccionar un formato");
     return;
   }
-  if (!selectedProvince.value || !provincesData.value.includes(selectedProvince.value)) {
-    alert("Debe seleccionar una provincia válida");
-    return;
-  }
 
-  handleObtainReport(selectedFormat.value, selectedProvince.value);
+  // Obtener el reporte
+  handleObtainReport(selectedFormat.value, selectedProvince.value || null);
 };
-
 // Obtener reporte
 const handleObtainReport = async (format, province) => {
   try {
