@@ -255,11 +255,12 @@ router.beforeEach((to, from, next) => {
     if (!isAuthenticated) {
       return next("/login");
     }
+    
+  } else {
     const requiredRoles = to.meta.roles;
     if (requiredRoles && !hasRole(requiredRoles)) {
       return next("/dashboard"); // Redirige al Dashboard u otra página de acceso denegado
     }
-  } else {
     next(); // Permite la navegación
   }
 });
