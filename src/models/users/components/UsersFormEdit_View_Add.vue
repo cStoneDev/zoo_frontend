@@ -5,11 +5,12 @@
             label="Usuario" 
             required 
             :readonly="mode === 'view'" 
-            :rules="firstNameRules" />
+            :rules="firstNameRules"
+            />
 
         <v-autocomplete 
-            v-model="item.roleId" 
-            :items="[1,2]" 
+            v-model="roles" 
+            :items="['Moderador','Administrador']" 
             label="Rol del Usuario" 
             required 
             :readonly="mode === 'view'"
@@ -34,9 +35,9 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref, watch, defineProps } from 'vue';
 
-defineProps({
+let props = defineProps({
     item: {
         type: Object,
         default: () => ({}),
@@ -46,6 +47,7 @@ defineProps({
         required: true,
     },
 });
+
 
 let firstNameRules = [
     value => {
@@ -65,5 +67,17 @@ let emailRules = [
     return 'Por favor, ingrese un correo electrónico válido';
   }
 ];
-const roles = ["Admin", "Moderador"];
+const roles = ref(props.item.roleName);
+
+watch(roles, (newRoles) => {
+ 
+  // Ejemplo de cómo actualizar un campo relacionado con el rol
+  if (newRoles === 'Administrador') {
+    props.item.roleId = 2;
+  } else {
+    props.item.roleId = 1;
+  }
+
+});
+
 </script>
