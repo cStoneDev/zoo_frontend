@@ -67,7 +67,10 @@ const getProgramationById = async (id) => {
 //POST SEARCH Programation
 const searchProgramation = async (searchCriteria) => {
   try {
-    const response = await axios.post('http://localhost:8080/programation/search', searchCriteria, {
+    const formattedCriteria = formatSearchCriteria(searchCriteria);
+    console.log("El nuevo search Criteria:")
+    console.log(formattedCriteria)
+    const response = await axios.post('http://localhost:8080/programation/search', formattedCriteria, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -197,6 +200,33 @@ const deleteProgramation = async (id) => {
   }
 };
 
+
+//Formatear hora y fecha
+
+const formatSearchCriteria = (searchCriteria) => {
+  const { itemsPerPage, maxDate, maxTime, minDate, minTime, pageNumber, searchField, speciesId } = searchCriteria;
+
+  function formatDateAndTime(value) {
+    if (value === 0 || typeof value === 'number') {
+      return "";
+    } else if (typeof value === 'string' && value.includes(':')) {
+      return value + ":00";
+    }
+    return value;
+  }
+
+  return {
+    itemsPerPage,
+    maxDate: formatDateAndTime(maxDate),
+    maxTime: formatDateAndTime(maxTime),
+    minDate: formatDateAndTime(minDate),
+    minTime: formatDateAndTime(minTime),
+    pageNumber,
+    searchField,
+    speciesId
+  };
+};
+
 // Exportar todas las funciones
 export default {
   getProgramation,
@@ -204,5 +234,6 @@ export default {
   createProgramation,
   updateProgramation,
   deleteProgramation,
-  searchProgramation
+  searchProgramation,
+  formatSearchCriteria
 };
