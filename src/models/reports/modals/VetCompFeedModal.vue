@@ -14,9 +14,8 @@
             label="Fecha de inicio"
             type="text"
             variant="solo"
-            single-line="true"
-            readonly="true"
-            bg-color="secondary"
+            single-line
+            readonly
             :error-messages="
               startDateError ? ['Formato de fecha inválido'] : []
             "
@@ -62,9 +61,8 @@
             label="Fecha de terminación"
             type="text"
             variant="solo"
-            single-line="true"
-            readonly="true"
-            bg-color="secondary"
+            single-line
+            readonly
             :error-messages="endDateError ? ['Formato de fecha inválido'] : []"
             :class="{ 'error--text': endDateError }"
           ></v-text-field>
@@ -99,6 +97,16 @@
             />
           </v-menu>
         </v-row>
+
+        <!-- Selector para el formato del reporte -->
+        <v-row class="d-flex container align-items-center">
+          <v-autocomplete
+            v-model="selectedFormat"
+            :items="formats"
+            label="Formato del reporte"
+            variant="outlined"
+          ></v-autocomplete>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -113,7 +121,9 @@
 
 <script setup>
   import { ref, computed } from "vue";
-  import router from "@/router";
+  import reportService from "../reportService";
+  const formats = ref(["pdf", "csv", "xlsx", "html", "xml", "doc"]);
+  const selectedFormat = ref("pdf");
 
   const isVisible = ref(false);
   const startMenu = ref(false);
@@ -129,6 +139,15 @@
       required: true,
     },
   });
+
+  const formatDateToYYYYMMDD = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   const startDateFormatted = computed({
     get: () =>
@@ -153,7 +172,6 @@
       }
     },
   });
-
 
   const open = () => {
     isVisible.value = true;
@@ -192,7 +210,7 @@
   };
 
   // Función para validar las fechas
-  const validarYSeleccionar = () => {
+  const validarYSeleccionar = async () => {
     startDateError.value = false;
     endDateError.value = false;
 
@@ -211,8 +229,19 @@
     }
 
     if (!startDateError.value && !endDateError.value) {
-      seleccionar(props.mode);
+      const formattedStartDate = formatDateToYYYYMMDD(startDate.value);
+      const formattedEndDate = formatDateToYYYYMMDD(endDate.value);
+      console.log(formattedStartDate)
+      console.log(formattedEndDate)
+
+      // Generar el reporte con fechas formateadas
+      await handleObtainReport(
+        props.mode,
+        formattedStartDate,
+        formattedEndDate
+      );
     }
+    // Generar el Reporte
 
     // Si las validaciones son correctas, navegar según el modo seleccionado
   };
@@ -234,28 +263,45 @@
     }
     return null;
   });
-  
 
   defineExpose({
     openModal: open,
   });
 
-  const seleccionar = (mode) => {
-    //here goes the calls to the back to generate reports
-    /*switch (mode) {
-      case "vet":
-        router.push("/reports/vet");
-        break;
-      case "feeder":
-        router.push("/reports/feeder");
-        break;
-      case "complementary":
-        router.push("/reports/complementary");
-        break;
-      default:
-        console.error("Opción no válida");
-    }*/
-    close(); // Cierra el modal después de la navegación
+  const handleObtainReport = async (
+    mode,
+    formattedStartDate,
+    formattedEndDate
+  ) => {
+    try {
+      const response = await reportService.obtainReportByDates(
+        formattedStartDate,
+        formattedEndDate,
+        selectedFormat.value,
+        mode
+      );
+
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+
+      const contentDisposition = response.headers["content-disposition"];
+      const filename = contentDisposition
+        ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+        : `reporte.${selectedFormat.value}`;
+
+      if (selectedFormat.value === "pdf" || selectedFormat.value === "html") {
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+      } else {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+      }
+    } catch (error) {
+      console.error("Error al generar el reporte:", error);
+    }
   };
 </script>
 

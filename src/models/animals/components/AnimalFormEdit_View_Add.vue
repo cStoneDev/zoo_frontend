@@ -11,7 +11,6 @@
 
     <v-autocomplete v-if="mode === 'view'" 
       v-model="item.specieName" 
-      :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
       label="Especie" 
       required 
       :readonly="mode === 'view'" 
@@ -19,7 +18,6 @@
 
     <v-autocomplete v-if="mode=== 'view'"
       v-model="item.breedName" 
-      :items="[101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]"
       label="Raza" 
       required 
       :readonly="mode === 'view'" 

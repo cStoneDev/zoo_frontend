@@ -139,21 +139,25 @@
 
                 <!-- Aca irian los router link de los reportes-->
 
-                <v-list-item @click="showModal2('vet')" prepend-icon="mdi-cat" title="Veterinarian contracts"
+                <v-list-item @click="showModal2('vet')" prepend-icon="mdi-cat" title="Contratos veterinarios"
                   class="custom-text mb-3"></v-list-item>
 
 
 
-                <v-list-item @click="showModal2('feeder')" prepend-icon="mdi-view-dashboard" title="Feeder contracts"
+                <v-list-item @click="showModal2('feeder')" prepend-icon="mdi-view-dashboard" title="Contratos alimentadores"
                   class="custom-text mb-3"></v-list-item>
 
 
 
                 <v-list-item @click="showModal2('complementary')" prepend-icon="mdi-view-dashboard"
-                  title="Complementary contracts" class="custom-text mb-3"></v-list-item>
+                  title="Contratos complementarios" class="custom-text mb-3"></v-list-item>
+
+                <v-list-item @click="showModal1()" prepend-icon="mdi-view-dashboard"
+                  title="Veterinarios activos" class="custom-text mb-3"></v-list-item>
 
               </v-expansion-panel-text>
               <VetCompFeedModal ref="modalRef2" :mode="mode" />
+              <ActiveVetModal ref="modalRef1"/>
             </v-expansion-panel>
 
           </v-expansion-panels>
@@ -176,6 +180,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 import { useTitleStore } from '../stores/titleStore'
+import ActiveVetModal from '@/models/reports/modals/ActiveVetModal.vue';
 
 const titleStore = useTitleStore(); // Creamos una instancia del store
 
@@ -194,10 +199,15 @@ const drawer = ref(false);
 
 
 const modalRef2 = ref();
+const modalRef1 = ref();
 
 const showModal2 = (modeText) => {
   mode = modeText;
   modalRef2.value.openModal();
+};
+
+const showModal1 = () => {
+  modalRef1.value.openModal();
 };
 
 
