@@ -27,8 +27,16 @@ text="Este es un mensaje informativo."
 
 
 <template>
-    <v-alert v-if="visible" :color="alertColor" :icon="alertIcon" :title="alertTitle" :dismissible="dismissible"
-        @input="toggleVisibility" class="alert-overlay">
+    <v-alert 
+        v-if="visible" 
+        :color="alertColor" 
+        :icon="alertIcon" 
+        :title="alertTitle" 
+        :dismissible="dismissible"
+        @input="toggleVisibility"
+        variant="tonal"
+        closable
+         class="alert-overlay">
         <slot>{{ text }}</slot>
     </v-alert>
 </template>
