@@ -46,7 +46,10 @@ const pageSizeData  = ref(0);
 
 const usersFilters = reactive({
     roleId: {
-        lista: [1,2], 
+      lista: [
+          { label: 'Moderador', value: 1 },
+          { label: 'Administrador', value: 2 },
+        ], 
         label: "Rol"
     }
 });
