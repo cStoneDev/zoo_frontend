@@ -4,7 +4,8 @@
             <v-container>
                 <v-card class="mx-auto" max-width="400" width="100%">
 
-                    <v-card-title class="text-h5 font-weight-bold text-center" style="color: #1A3E45; font-size: large;">
+                    <v-card-title class="text-h5 font-weight-bold text-center"
+                        style="color: #1A3E45; font-size: large;">
                         Restablecer Contraseña
                     </v-card-title>
 
@@ -19,8 +20,8 @@
                                 <v-text-field v-model="password" :rules="passwordRules" variant="underlined"
                                     label="Nueva Contraseña" type="password"></v-text-field>
 
-                                <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules" variant="underlined"
-                                    label="Confirmar Contraseña" type="password"></v-text-field>
+                                <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules"
+                                    variant="underlined" label="Confirmar Contraseña" type="password"></v-text-field>
 
                                 <v-btn class="submit_button mt-4" type="submit" block
                                     aria-label="Restablecer contraseña">
@@ -42,6 +43,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import forgotPasswordService from './forgotPasswordService';
 
 const router = useRouter();
 
@@ -52,7 +54,7 @@ let confirmPassword = ref('');
 // Reglas de validación para las contraseñas
 let passwordRules = [
     value => !!value || 'La contraseña es obligatoria',
-    value => value.length >= 6 || 'La contraseña debe tener al menos 6 caracteres'
+    value => value.length >= 4 || 'La contraseña debe tener al menos 6 caracteres'
 ];
 
 let confirmPasswordRules = [
@@ -60,12 +62,19 @@ let confirmPasswordRules = [
     value => value === password.value || 'Las contraseñas no coinciden'
 ];
 
-// Función para manejar el restablecimiento de la contraseña
-const handleReset = () => {
-    if (password.value === confirmPassword.value) {
-        alert('Tu contraseña ha sido restablecida con éxito.');
-        // Aquí iría una petición al backend para actualizar la contraseña.
-        router.push('/'); // Redirige a la pantalla principal de inicio de sesión
+//Reiniciar contraseña
+const handleReset = async () => {
+    try {
+        if (password.value === confirmPassword.value) {
+            await forgotPasswordService.resetPassword(password.value);
+            alert('Tu contraseña ha sido restablecida con éxito.');
+            router.push('/'); // Redirige a la pantalla principal de inicio de sesión
+        } else {
+            alert('Las contraseñas no coinciden.');
+        }
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        alert('Hubo un error al intentar restablecer tu contraseña. Por favor, inténtalo nuevamente.');
     }
 };
 
@@ -81,7 +90,8 @@ const returnToLogin = () => {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #F5F1E3, #f9f0cd); /* Degradado */
+    background: linear-gradient(135deg, #F5F1E3, #f9f0cd);
+    /* Degradado */
     padding: 16px;
     box-sizing: border-box;
 }

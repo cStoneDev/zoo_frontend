@@ -69,7 +69,7 @@ const handleRecover = async () => {
 
 // Función para volver a la pantalla de inicio de sesión
 const returnToLogin = () => {
-  router.push('/'); // Redirige a la pantalla principal de inicio de sesión
+  router.push('/login'); // Redirige a la pantalla principal de inicio de sesión
 };
 </script>
 
