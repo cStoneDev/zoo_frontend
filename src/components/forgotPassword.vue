@@ -39,6 +39,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import forgotPasswordService from './forgotPasswordService';
 
 const router = useRouter();
 
@@ -56,14 +57,19 @@ let emailRules = [
 ];
 
 // Función para manejar el envío del formulario
-const handleRecover = () => {
+const handleRecover = async () => {
+  try {
+    await forgotPasswordService.sendRecoveryEmail(email.value);
     alert(`Se ha enviado un correo a ${email.value} para restablecer tu contraseña.`);
-    // Aquí iría una petición al backend para enviar el correo de recuperación.
+    router.push('/'); // Redirige al inicio de sesión después de enviar el correo
+  } catch (error) {
+    alert(`Error: ${error}`);
+  }
 };
 
 // Función para volver a la pantalla de inicio de sesión
 const returnToLogin = () => {
-    router.push('/'); // Redirige a la pantalla principal de inicio de sesión
+  router.push('/'); // Redirige a la pantalla principal de inicio de sesión
 };
 </script>
 

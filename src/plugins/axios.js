@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from '@/stores/auth'; // Asegúrate de que esta ruta sea correcta
+import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const instance = axios.create({
