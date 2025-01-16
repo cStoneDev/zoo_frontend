@@ -45,15 +45,20 @@ const pageSizeData  = ref(0);
 
 const activityFilters = reactive({
 providerTypeId: {
-    lista: [1,2,3], 
+  lista: [],
     label: "Tipo de Proveedor"
   },
-contractId: {
-    lista: [1,2,3], 
-    label: "Contrato"
-  },
+
+  
+// contractId: {
+//     lista: [1,2,3], 
+//     label: "Contrato"
+//   },
   activitiesState: {
-    lista: [1,2,3], // Horarios disponibles
+    lista: [
+          { label: 'Activo', value: 1 },
+          { label: 'No activo', value: 2 },
+        ], 
     label: "Estado"
   },
 });

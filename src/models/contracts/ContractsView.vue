@@ -56,7 +56,11 @@ const contractFilters = reactive({
     },
     contractState: { 
         // 0 = no filtra, 1 = activo, 2 = no activo, 3 = futuro
-        lista: [0, 1, 2, 3],
+        lista: [
+          { label: 'Activo', value: 1 },
+          { label: 'No activo', value: 2 },
+          { label: 'Futuro', value: 3 },
+        ], 
         label: "Estado de contrato"
     },
     minBasePrice: {
