@@ -4,10 +4,13 @@
       :rules="numberRules" /> -->
 
 
-    <v-autocomplete 
+    <v-autocomplete
       v-model="item.providerId" 
-      :items="[1, 2, 3, 4, 5]" 
+      :items="getFormattedItems(providerData)"
+      item-title="label" 
+      item-value="value"
       label="Proveedor" 
+      type="text"
       required
       :readonly="mode === 'view'"
       no-data-text="No hay más datos disponibles" />
@@ -23,21 +26,21 @@
     <v-text-field 
       v-model="item.conciliationDate" 
       label="Fecha de conciliación" 
-      type="text" 
+      type="date" 
       required
       :readonly="mode === 'view'" />
 
     <v-text-field 
       v-model="item.startingDate" 
       label="Fecha de inicio" 
-      type="text" 
+      type="date" 
       required
       :readonly="mode === 'view'" />
 
     <v-text-field 
       v-model="item.endingDate" 
       label="Fecha final" 
-      type="text" 
+      type="date" 
       required
       :readonly="mode === 'view'" />
 
@@ -52,9 +55,10 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref, computed, defineProps, onMounted } from 'vue';
+import providerService from '../../providers/providerService';
 
-defineProps({
+let props = defineProps({
   item: {
     type: Object,
     default: () => ({}),
@@ -65,6 +69,45 @@ defineProps({
   },
 });
 
+const providerData = ref([]);
+
+const getProviderService = async () => {
+  try {
+    let allProvider = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { providers, pagination } = await providerService.getProviders(currentPage);
+        
+        if(providers){
+          allProvider.push(...providers); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    providerData.value = allProvider; // Actualizamos providerData con todas las razas
+    console.log(providerData.value);
+
+        // Establece el valor predeterminado si estamos en modo 'add'
+        if (props.mode === 'add' && providerData.value.length > 0) {
+      props.item.providerId = providerData.value[0].id; // Selecciona el primer elemento
+    }
+
+  } catch (error) {
+    console.error('Error al cargar las razas:', error);
+  }
+};
+
+// Método para formatear los items
+const getFormattedItems = (items) => {
+  return items.map(item => ({
+    value: item.id,
+    label: item.name
+  }));
+};
 
 let numberRules = [
   value => {
@@ -74,6 +117,11 @@ let numberRules = [
     return true;
   }
 ];
+
+onMounted(() => {
+  getProviderService();
+});
+
 
 let textRules = [
   value => {

@@ -29,12 +29,15 @@ import ActivityFormDelete from "./components/ActivityFormDelete.vue";
 import {  ref, reactive, onMounted  } from 'vue';
 
 import activityService from "../activities/activityService"; // Asegúrate de importar el servicio correctamente
+import providerTypeService from "../Nomenclators/tipoproveedor/tipoproveedorService";
+
 
 import { useUtilDataStore } from '/src/stores/utilData.js' //store de pinia para datos de la tabla que cambian como el paginado (para que sean de acceso global)
 const utilDataStore = useUtilDataStore();         //el store
 
 
 const activitiesData = ref([]);        // los actividades del backend
+const providerTypeData = ref([]);
 
 const currentPageData = ref(0);     //datos del paginado que se obtienen cuando pides los contratos
 const totalElementsData  = ref(0);  
@@ -44,18 +47,23 @@ const pageSizeData  = ref(0);
 
 
 const activityFilters = reactive({
-providerTypeId: {
-    lista: [1,2,3], 
+  providerTypeId: {
+    lista: [],
     label: "Tipo de Proveedor"
   },
-contractId: {
-    lista: [1,2,3], 
-    label: "Contrato"
-  },
+
   activitiesState: {
-    lista: [1,2,3], // Horarios disponibles
+    lista: [
+      { label: 'Activo', value: 1 },
+      { label: 'No activo', value: 2 },
+    ], 
     label: "Estado"
   },
+
+  // contractId: {
+  //     lista: [1,2,3], 
+  //     label: "Contrato"
+  //   },
 });
 
 
@@ -194,10 +202,41 @@ const searchActivitiesFromService = async () => {
   }
 };
 
+
+const getProviderTypeFromService = async () => {
+  try {
+    let allProviderType = []; // Array para acumular todas las razas
+    let currentPage = 0; // Comenzamos con la página 0 (o 1, según el backend)
+    let totalPages = 1; // Inicializamos totalPages a 1 (para la primera llamada)
+
+    do { // Usamos un bucle do-while para al menos obtener la primera página
+        const { providertype, pagination } = await providerTypeService.getProvidertype(currentPage);
+        if(providertype){
+          allProviderType.push(...providertype); // Agregamos las razas de la página actual a la lista
+        }
+
+        totalPages = pagination.totalPages; // Actualizamos el número total de páginas
+        currentPage++; // Incrementamos para obtener la siguiente página
+    } while (currentPage < totalPages); // Continuamos hasta procesar todas las páginas
+
+    providerTypeData.value = allProviderType; // Actualizamos breedData con todas las razas
+    console.log(providerTypeData.value);
+
+    activityFilters.providerTypeId.lista = allProviderType.map(providerType => ({
+        label: providerType.name,
+        value: providerType.id
+      }));
+  } catch (error) {
+    console.error('Error al cargar los tipos de proveedor:', error);
+  }
+};
+
+
 //Llamar a la función al montar el componente
 //Este metodo nada más que se monta la página se ejecuta
 onMounted(() => {
   getActivitiesFromService();
+  getProviderTypeFromService();
   utilDataStore.resetData();
 });
 

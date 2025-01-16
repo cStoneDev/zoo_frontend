@@ -34,11 +34,16 @@
 						:label="filterData.label" type="date" outlined dense></component>
 
 					<!-- Para si es un dato de hora -->
-					<component v-else-if="filterName === 'time'" is="v-text-field" v-model="activeFilters[filterName]"
+					<component v-else-if="filterName.toLowerCase().includes('time')" is="v-text-field" v-model="activeFilters[filterName]"
 						:label="filterData.label" type="time" outlined dense></component>
 
 					<!-- Para si es un dato de nomenclador -->
 					<component v-else-if="filterName.toLowerCase().includes('id')" is="v-autocomplete" v-model="activeFilters[filterName]" :label="filterData.label"
+						:items="formattedItems(filterData.lista)" item-title="label"  
+						item-value="value" outlined dense></component>
+
+					<!-- Para para estados -->
+					<component v-else-if="filterName.toLowerCase().includes('state')" is="v-autocomplete" v-model="activeFilters[filterName]" :label="filterData.label"
 						:items="formattedItems(filterData.lista)" item-title="label"  
 						item-value="value" outlined dense></component>
 
