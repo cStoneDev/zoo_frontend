@@ -28,6 +28,8 @@ import resetPassword from "@/components/resetPassword.vue";
 //Manejo de titulos con pinia
 import { useTitleStore } from '../stores/titleStore'
 
+import { hasRole } from "@/stores/middleware";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
