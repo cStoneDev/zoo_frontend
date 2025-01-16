@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { useErrorsStore } from '../stores/errors'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080', // Cambia esto por tu URL de backend
@@ -36,6 +37,8 @@ instance.interceptors.response.use(
       // Depuración de la respuesta de error
       console.log('Estado de la respuesta:', status);
       console.log('Detalles del error:', data);
+      const errorsStore = useErrorsStore(); 
+      errorsStore.showError(data.message);
 
       // Si el código de estado es 403 (Forbidden), intenta renovar el token.
       if (status === 403) {

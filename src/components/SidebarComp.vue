@@ -167,6 +167,13 @@
 
       <v-main class="main-container">
         <!-- Aquí se renderizan las vistas hijas -->
+        <v-alert 
+          closable 
+          type="error" 
+          variant="tonal"
+          icon="mdi-alert-circle-outline"
+          v-model="errorsStore.isVisible"
+          >{{ errorsStore.message }}</v-alert>
         <RouterView />
       </v-main>
     </v-layout>
@@ -180,6 +187,8 @@ import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 import { useTitleStore } from '../stores/titleStore'
+import { useErrorsStore } from '../stores/errors'
+const errorsStore = useErrorsStore(); 
 import ActiveVetModal from '@/models/reports/modals/ActiveVetModal.vue';
 
 const titleStore = useTitleStore(); // Creamos una instancia del store
