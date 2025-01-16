@@ -33,6 +33,43 @@ const forgotPasswordService = {
       }
     }
   },
+
+async resetPassword(newPassword) {
+  // Extraer el token de la URL
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+
+  if (!token) {
+    throw 'Token no encontrado en la URL. Verifica el enlace recibido.';
+  }
+
+  console.log('Token:', token);
+
+  const requestBody = {
+    token: token, // Token extraído de la URL
+    password: newPassword, // Nueva contraseña
+  };
+
+  try {
+    const response = await axios.post('http://localhost:8080/users/reset-password', requestBody, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    console.log('Contraseña restablecida con éxito:', response.data);
+    alert('Tu contraseña ha sido restablecida con éxito.');
+  } catch (error) {
+    if (error.response) {
+      console.error(`Error en resetPassword: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
+      throw error.response.data.message || 'Error al restablecer la contraseña.';
+    } else if (error.request) {
+      console.error('Error en resetPassword: No se recibió respuesta del servidor');
+      throw 'No se recibió respuesta del servidor. Inténtalo de nuevo más tarde.';
+    } else {
+      console.error('Error en resetPassword:', error.message);
+      throw 'Ocurrió un error desconocido. Inténtalo de nuevo.';
+    }
+  }
+},
 };
 
 export default forgotPasswordService;

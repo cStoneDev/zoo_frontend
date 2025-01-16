@@ -177,6 +177,16 @@ const router = createRouter({
       name: "resetPassword",
       component: resetPassword,
       meta: { requiresAuth: false },
+      beforeEnter: (to, from, next) => {
+        const token = to.query.token; // Obtener el token de la URL
+
+        if (token) {
+          // Si el token está presente en la URL, se permite el acceso
+          next();
+        } else {
+          next("/login"); // O redirigir a una página de error
+        }
+      }
     },
   ],
 });

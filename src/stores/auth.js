@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
   const token = ref(localStorage.getItem("token") || null);
   const refreshToken = ref(localStorage.getItem("refresh_token") || null);
+  const resetPasswordToken = ref(localStorage.getItem("reset_password_token") || null); // Nuevo token para restablecer la contraseña
 
   // Función para iniciar sesión
   const login = async (username, password) => {
@@ -35,42 +36,41 @@ export const useAuthStore = defineStore("auth", () => {
     clearTokens();
     user.value = null;
     isAuthenticated.value = false;
+    clearResetPasswordToken(); // Limpiar el token de restablecimiento al hacer logout
   };
 
-  //renovar token
+  // Función para renovar el token
   const renewToken = async () => {
     try {
       if (!refreshToken.value) throw new Error("No hay refresh token disponible");
-  
+
       console.log("Renovando token con refresh token:", refreshToken.value);
-  
-      // Agregar el token de acceso actual en el encabezado Authorization
+
       const response = await axios.post(
-        "http://localhost:8080/auth/refresh", // URL para la renovación
-        null, // No se pasa cuerpo 
+        "http://localhost:8080/auth/refresh", 
+        null, 
         {
-         params: { refresh_token: refreshToken.value }, // Pasamos el refresh_token como parámetro en la URL
+         params: { refresh_token: refreshToken.value },
           headers: {
-            Authorization: `Bearer ${token.value}`, // Pasar el token de acceso actual en el encabezado
+            Authorization: `Bearer ${token.value}`,
           },
         }
       );
-  
+
       if (response.data?.access_token && response.data?.refresh_token) {
         token.value = response.data.access_token;
         refreshToken.value = response.data.refresh_token;
-  
-        // Guardar los nuevos tokens en el almacenamiento local
+
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("refresh_token", response.data.refresh_token);
-  
-        return response.data.access_token; // Retornar el nuevo token de acceso
+
+        return response.data.access_token;
       } else {
         throw new Error("Error al renovar el token");
       }
     } catch (error) {
       console.error("Error al renovar el token:", error);
-      logout(); // Si falla la renovación, cierra sesión
+      logout();
       throw error;
     }
   };
@@ -93,13 +93,28 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("refresh_token");
   };
 
+  // Función para establecer el resetPasswordToken
+  const setResetPasswordToken = (resetToken) => {
+    resetPasswordToken.value = resetToken;
+    localStorage.setItem("reset_password_token", resetToken); // Guardar en el localStorage
+  };
+
+  // Función para limpiar el resetPasswordToken
+  const clearResetPasswordToken = () => {
+    resetPasswordToken.value = null;
+    localStorage.removeItem("reset_password_token"); // Limpiar el localStorage
+  };
+
   return {
     isAuthenticated,
     user,
     token,
     refreshToken,
+    resetPasswordToken,
     login,
     logout,
     renewToken,
+    setResetPasswordToken,
+    clearResetPasswordToken,
   };
 });
