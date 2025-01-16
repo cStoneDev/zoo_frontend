@@ -113,12 +113,12 @@
 
           </v-expansion-panels>
 
-          <v-card class="my-3">
+          <v-card class="my-3" v-if="!isModerator">
             <v-card-title class="pr-5">
               <span class="headline custom-text">
                 <RouterLink to="/users">
                   <v-defaults-provider :defaults="{ 'VIcon': { 'size': '22.5' } }">
-                    <v-list-item prepend-icon="mdi-account-group" title="Usuarios" class="custom-text"></v-list-item>
+                    <v-list-item  prepend-icon="mdi-account-group" title="Usuarios" class="custom-text"></v-list-item>
                   </v-defaults-provider>
                 </RouterLink>
               </span>
@@ -182,10 +182,10 @@
 
 <script setup>
 import VetCompFeedModal from '@/models/reports/modals/VetCompFeedModal.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useRouter } from 'vue-router';
-
+import { jwtDecode } from "jwt-decode";
 import { useTitleStore } from '../stores/titleStore'
 import { useErrorsStore } from '../stores/errors'
 const errorsStore = useErrorsStore(); 
@@ -219,6 +219,19 @@ const showModal1 = () => {
   modalRef1.value.openModal();
 };
 
+const isAdmin = computed(() => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+  const decoded = jwtDecode(token);
+  return decoded.role.name === "Administrador";
+});
+
+const isModerator = computed(() => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+  const decoded = jwtDecode(token);
+  return decoded.role.name === "Moderador";
+});
 
 </script>
 

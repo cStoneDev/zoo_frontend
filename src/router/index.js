@@ -27,8 +27,8 @@ import resetPassword from "@/components/resetPassword.vue";
 
 //Manejo de titulos con pinia
 import { useTitleStore } from '../stores/titleStore'
-
 import { hasRole } from "@/stores/middleware";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,43 +42,65 @@ const router = createRouter({
           path: "dashboard",
           name: "Dashboard",
           component: DashboardView,
-          meta: { titulo: 'Estadísticas' }
+          meta: {
+            titulo: "Estadísticas",
+            roles: ["Administrador", "Moderador"],
+            requiresAuth: true,
+          },
         },
         {
           path: "/animals",
           name: "animals",
           component: AnimalsView,
-          meta: { titulo: 'Animales' }
+          meta: { titulo: "Animales", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/activities",
           name: "activities",
           component: ActivitiesView,
-          meta: { titulo: 'Actividades' }
+          meta: {
+            titulo: "Actividades",
+            requiresAuth: true,
+            roles: ["Administrador", "Moderador"],
+          },
         },
         {
           path: "/providers",
           name: "providers",
           component: ProvidersView,
-          meta: { titulo: 'Proveedores' }
+          meta: {
+            titulo: "Proveedores",
+            requiresAuth: true,
+            roles: ["Administrador", "Moderador"],
+          },
         },
         {
           path: "/users",
           name: "users",
           component: UsersView,
-          meta: { titulo: 'Usuarios' }
+          meta: {
+            titulo: "Usuarios",
+            roles: ["Administrador"],
+            requiresAuth: true,
+          },
         },
         {
           path: "/contracts",
           name: "contracts",
           component: ContractsView,
-          meta: { titulo: 'Contratos' }
+          meta: { titulo: "Contratos", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/programs",
           name: "programs",
           component: ProgramsView,
-          meta: { titulo: 'Programación' }
+          meta: {
+            titulo: "Programación",
+            roles: ["Administrador", "Moderador"],
+            requiresAuth: true,
+          },
         },
 
         // nomencladores
@@ -86,43 +108,59 @@ const router = createRouter({
           path: "/clinica",
           name: "clinica",
           component: ClinicaView,
-          meta: { titulo: 'Clinicas' }
+          meta: { titulo: "Clinicas", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/especialidad",
           name: "especialidad",
           component: EspecialidadView,
-          meta: { titulo: 'Especialidades'}
+          meta: {
+            titulo: "Especialidades",
+            roles: ["Administrador", "Moderador"],
+            requiresAuth: true,
+          },
         },
         {
           path: "/especie",
           name: "especie",
           component: EspecieView,
-          meta: { titulo: 'Especies' }
+          meta: { titulo: "Especies", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/provincia",
           name: "provincia",
           component: ProvinciaView,
-          meta: { titulo: 'Provincias' }
+          meta: { titulo: "Provincias", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/raza",
           name: "raza",
           component: RazaView,
-          meta: { titulo: 'Razas' }
+          meta: { titulo: "Razas", roles: ["Administrador", "Moderador"] },
+          requiresAuth: true,
         },
         {
           path: "/tipoproveedor",
           name: "tipoproveedor",
           component: TipoProveedorView,
-          meta: { titulo: 'Tipos de proveedores' }
+          meta: {
+            titulo: "Tipos de proveedores",
+            roles: ["Administrador", "Moderador"],
+            requiresAuth: true,
+          },
         },
         {
           path: "/tiposervicio",
           name: "tiposervicio",
           component: TipoServicioView,
-          meta: { titulo: 'Tipos de Servicios' }
+          meta: {
+            titulo: "Tipos de Servicios",
+            roles: ["Administrador", "Moderador"],
+            requiresAuth: true,
+          },
         },
         //reports
         {
@@ -133,32 +171,42 @@ const router = createRouter({
               path: "vet",
               name: "VetReport",
               component: VetReportView,
-              meta: { titulo: 'VetReport' }
+              meta: {
+                titulo: "VetReport",
+                roles: ["Administrador", "Moderador"],
+                requiresAuth: true,
+              },
             },
             {
               path: "feeder",
               name: "FeederReport",
               component: FeederReportView,
-              meta: { titulo: 'FeederReport' }
+              meta: {
+                titulo: "FeederReport",
+                roles: ["Administrador", "Moderador"],
+                requiresAuth: true,
+              },
             },
             {
               path: "complementary",
               name: "ComplementaryReport",
               component: ComplementaryReportView,
-              meta: { titulo: 'ComplementaryReport' }
+              meta: {
+                titulo: "ComplementaryReport",
+                roles: ["Administrador", "Moderador"],
+                requiresAuth: true,
+              },
             },
           ],
         },
       ],
     },
 
-
-
     //DEFINIR COMPONETE VUE PARA EL FORBIDDEN
     {
-      path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: () => import('@/utils/notFound.vue'), // Define un componente de error
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: () => import("@/utils/notFound.vue"), // Define un componente de error
       meta: { requiresAuth: false },
     },
 
@@ -188,7 +236,7 @@ const router = createRouter({
         } else {
           next("/login"); // O redirigir a una página de error
         }
-      }
+      },
     },
   ],
 });
@@ -204,7 +252,13 @@ router.beforeEach((to, from, next) => {
 
   // Si la ruta requiere autenticación y el usuario no está autenticado
   if (to.meta.requiresAuth !== false && !isAuthenticated) {
-    next("/login"); // Redirige a '/login'
+    if (!isAuthenticated) {
+      return next("/login");
+    }
+    const requiredRoles = to.meta.roles;
+    if (requiredRoles && !hasRole(requiredRoles)) {
+      return next("/dashboard"); // Redirige al Dashboard u otra página de acceso denegado
+    }
   } else {
     next(); // Permite la navegación
   }
