@@ -56,7 +56,7 @@ import { useAuthStore } from '../stores/auth';
 import NotificationV from '../utils/NotificationV.vue';
 
 const router = useRouter();
-const authStore = useAuthStore(); // Aquí invocas el store correctamente
+const authStore = useAuthStore(); // invocar al store
 
 let firstName = ref('');
 let password = ref('');
